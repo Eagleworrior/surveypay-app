@@ -1166,8 +1166,8 @@ const firebaseConfig = {
   appId: "1:53135596216:web:45b90079f9b50a17e8724d",
   measurementId: "G-1LR7CXY762"
 };
-/* Paste your Web Push VAPID public key here (from Firebase Console -> Cloud Messaging) */
-const VAPID_KEY = "PASTE_YOUR_WEB_PUSH_VAPID_PUBLIC_KEY_HERE";
+/* VAPID public key (from your Firebase console) */
+const VAPID_KEY = "BE5cvN2FA86TsCciAK5RwhIbnma4fXHfqp7zCJA_3oqJJmeqPjTwhbY3hH8BFqbC9Glcw-NdVUuahmX_DhN_zeQ";
 
 /* Initialize Firebase (for messaging) */
 try {
@@ -1459,14 +1459,16 @@ function setAdminKey(key) {
     const next = getNextLevelIndex();
     btn.textContent = 'Start Level ' + next;
   }, 2000);
+  // ensure displayed username matches user object
+  document.getElementById('user-firstname').textContent = user.name.split(' ')[0] || user.name;
 })();
 
-// ---- Helper: ensure UI currency prefixes updated after rates fetched ----
+// Ensure UI currency prefixes updated after rates fetched
 setTimeout(()=> {
   updateCurrencyDisplay();
 }, 1200);
 
-// ---- Save state periodically ----
+// Save state periodically
 setInterval(saveLocalState, 5000);
 
 // ---- AUTH: register & login (modified to call FCM token send) ----
