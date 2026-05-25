@@ -1,471 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>SurveyPay – Earn Money Taking Surveys</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0820;
-  --bg2: #0f0d2a;
-  --bg3: #151236;
-  --card: rgba(255,255,255,0.06);
-  --card-border: rgba(255,255,255,0.12);
-  --accent: #7c5cfc;
-  --accent2: #f7b731;
-  --green: #2ed573;
-  --red: #ff4757;
-  --blue: #1e90ff;
-  --text: #ffffff;
-  --text2: rgba(255,255,255,0.6);
-  --text3: rgba(255,255,255,0.35);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --nav-h: 68px;
+:root{
+  --bg:#0a0820;--bg2:#0f0d2a;--bg3:#151236;--card:rgba(255,255,255,0.06);
+  --card-border:rgba(255,255,255,0.12);--accent:#7c5cfc;--accent2:#f7b731;
+  --green:#2ed573;--red:#ff4757;--blue:#1e90ff;--text:#ffffff;--text2:rgba(255,255,255,0.6);
+  --text3:rgba(255,255,255,0.35);--radius:16px;--radius-sm:10px;--nav-h:68px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+/* Layout & base */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:auto;-webkit-overflow-scrolling:touch}
+#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg)}
 
-#app {
-  max-width: 430px;
-  margin: 0 auto;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  background: var(--bg);
-}
+/* Ambient glow */
+#app::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(124,92,252,0.3) 0%,transparent 70%);pointer-events:none;z-index:0}
 
-/* Ambient background glow */
-#app::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(124,92,252,0.3) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+/* Screens */
+.screen{display:none;flex-direction:column;flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(var(--nav-h)+8px);position:relative;z-index:1;scroll-behavior:smooth}
+.screen.active{display:flex}
+.screen::-webkit-scrollbar{display:none}
 
-/* ---- SCREENS ---- */
-.screen {
-  display: none;
-  flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-bottom: calc(var(--nav-h) + 8px);
-  position: relative;
-  z-index: 1;
-  scroll-behavior: smooth;
-}
-.screen.active { display: flex; }
-.screen::-webkit-scrollbar { display: none; }
+/* Nav */
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;height:var(--nav-h);width:calc(100% - 24px);max-width:430px;background:rgba(10,8,32,0.95);backdrop-filter:blur(20px);border-radius:14px;border:1px solid var(--card-border);display:flex;z-index:400;padding:8px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:none;border:none;color:var(--text3);font-family:'DM Sans';font-size:11px;font-weight:500;border-radius:10px;padding:6px}
+.nav-btn.active{color:var(--accent2);background:linear-gradient(90deg,rgba(247,183,49,0.06),rgba(124,92,252,0.03))}
+.nav-btn svg{width:20px;height:20px;stroke-width:1.6}
 
-/* ---- NAV ---- */
-nav {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  background: rgba(10,8,32,0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--card-border);
-  display: flex;
-  z-index: 100;
-}
-.nav-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: var(--text3);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  transition: color 0.2s;
-  padding-bottom: env(safe-area-inset-bottom, 0);
-}
-.nav-btn.active { color: var(--accent2); }
-.nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+/* Header */
+.page-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.page-title{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.icon-btn{width:40px;height:40px;background:var(--card);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-/* ---- HEADER ---- */
-.page-header {
-  padding: 20px 20px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.page-title {
-  font-family: 'Exo 2', sans-serif;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-.icon-btn {
-  width: 40px; height: 40px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-}
+/* Home */
+.welcome-banner{margin:16px 20px 0;padding:18px 20px;background:linear-gradient(135deg,#1a1240 0%,#0f0d2a 100%);border:1px solid var(--card-border);border-radius:var(--radius);position:relative;overflow:hidden}
+.welcome-banner::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(124,92,252,0.4) 0%,transparent 70%)}
+.welcome-text{font-size:13px;color:var(--text2);margin-bottom:4px}
+.welcome-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:700}
 
-/* ---- HOME SCREEN ---- */
-.welcome-banner {
-  margin: 16px 20px 0;
-  padding: 18px 20px;
-  background: linear-gradient(135deg, #1a1240 0%, #0f0d2a 100%);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  position: relative;
-  overflow: hidden;
-}
-.welcome-banner::after {
-  content: '';
-  position: absolute;
-  right: -20px; top: -20px;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(124,92,252,0.4) 0%, transparent 70%);
-}
-.welcome-text { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
-.welcome-title { font-family: 'Exo 2', sans-serif; font-size: 18px; font-weight: 700; }
-
-/* Balance card */
-.balance-card {
-  margin: 12px 20px 0;
-  padding: 24px;
-  background: linear-gradient(135deg, #5c35e8 0%, #7c5cfc 50%, #9b6eff 100%);
-  border-radius: var(--radius);
-  position: relative;
-  overflow: hidden;
-}
-.balance-card::before {
-  content: '';
-  position: absolute;
-  right: -30px; bottom: -30px;
-  width: 160px; height: 160px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-}
-.balance-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase; }
-.balance-amount { font-family: 'Exo 2', sans-serif; font-size: 42px; font-weight: 900; line-height: 1; }
-.balance-row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 16px; }
-.today-badge {
-  background: rgba(255,255,255,0.2);
-  border-radius: var(--radius-sm);
-  padding: 8px 14px;
-  text-align: right;
-}
-.today-label { font-size: 11px; color: rgba(255,255,255,0.7); }
-.today-amount { font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
+/* Balance */
+.balance-card{margin:12px 20px 0;padding:24px;background:linear-gradient(135deg,#5c35e8 0%,#7c5cfc 50%,#9b6eff 100%);border-radius:var(--radius);position:relative;overflow:hidden}
+.balance-card::before{content:'';position:absolute;right:-30px;bottom:-30px;width:160px;height:160px;background:rgba(255,255,255,0.08);border-radius:50%}
+.balance-label{font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
+.balance-amount{font-family:'Exo 2',sans-serif;font-size:42px;font-weight:900;line-height:1}
+.balance-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px}
+.today-badge{background:rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;text-align:right}
+.today-label{font-size:11px;color:rgba(255,255,255,0.7)}
+.today-amount{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:700;color:#fff}
 
 /* Category grid */
-.section-title {
-  font-family: 'Exo 2', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 20px 20px 12px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.section-title span { font-size: 12px; color: var(--accent); font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; }
-.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
-.cat-card {
-  padding: 16px;
-  border-radius: var(--radius);
-  border: 1px solid var(--card-border);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: transform 0.15s, opacity 0.15s;
-}
-.cat-card:active { transform: scale(0.96); opacity: 0.8; }
-.cat-card.blue { background: linear-gradient(135deg, #1e3a8a, #2563eb); }
-.cat-card.orange { background: linear-gradient(135deg, #9a3412, #ea580c); }
-.cat-card.green { background: linear-gradient(135deg, #14532d, #16a34a); }
-.cat-card.purple { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
-.cat-icon { width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 20px; }
-.cat-name { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; }
-.cat-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.section-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:700;margin:20px 20px 12px;display:flex;align-items:center;justify-content:space-between}
+.section-title span{font-size:12px;color:var(--accent);font-family:'DM Sans';font-weight:500;cursor:pointer}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px}
+.cat-card{padding:16px;border-radius:var(--radius);border:1px solid var(--card-border);cursor:pointer;display:flex;align-items:center;gap:12px;transition:transform .15s,opacity .15s}
+.cat-card:active{transform:scale(.96);opacity:.8}
+.cat-card.blue{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+.cat-card.orange{background:linear-gradient(135deg,#9a3412,#ea580c)}
+.cat-card.green{background:linear-gradient(135deg,#14532d,#16a34a)}
+.cat-card.purple{background:linear-gradient(135deg,#4c1d95,#7c3aed)}
+.cat-icon{width:38px;height:38px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.cat-name{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700}
+.cat-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px}
 
-/* Featured surveys */
-.featured-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
-.feat-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  padding: 14px;
-  cursor: pointer;
-  transition: transform 0.15s;
-}
-.feat-card:active { transform: scale(0.96); }
-.feat-icon { font-size: 28px; margin-bottom: 8px; }
-.feat-title { font-family: 'Exo 2', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
-.feat-earn { font-size: 20px; font-weight: 700; color: var(--green); font-family: 'Exo 2', sans-serif; }
-.feat-meta { font-size: 10px; color: var(--text3); margin: 4px 0; }
-.start-btn {
-  width: 100%;
-  padding: 8px;
-  background: var(--accent);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: 'Exo 2', sans-serif;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.2s;
-}
-.start-btn:hover { background: #9b6eff; }
+/* Featured */
+.featured-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px}
+.feat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:transform .15s}
+.feat-icon{font-size:28px;margin-bottom:8px}
+.feat-title{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;margin-bottom:4px}
+.feat-earn{font-size:20px;font-weight:700;color:var(--green);font-family:'Exo 2',sans-serif}
+.feat-meta{font-size:10px;color:var(--text3);margin:4px 0}
+.start-btn{width:100%;padding:8px;background:var(--accent);border:none;border-radius:8px;color:white;font-size:11px;font-weight:700;font-family:'Exo 2';cursor:pointer}
+.start-btn:hover{background:#9b6eff}
 
-/* Bonus banner */
-.bonus-banner {
-  margin: 16px 20px;
-  padding: 16px 18px;
-  background: linear-gradient(135deg, #1a1040, #0f0d2a);
-  border: 1px solid rgba(247,183,49,0.3);
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.bonus-text { flex: 1; }
-.bonus-title { font-size: 13px; font-weight: 600; }
-.bonus-title strong { color: var(--accent2); }
-.bonus-progress-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 6px; overflow: hidden; }
-.bonus-progress-fill { height: 100%; background: var(--accent2); border-radius: 10px; width: 33%; }
-.bonus-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
-.view-btn {
-  padding: 8px 14px;
-  background: var(--accent2);
-  border: none;
-  border-radius: 8px;
-  color: #000;
-  font-size: 11px;
-  font-weight: 800;
-  font-family: 'Exo 2', sans-serif;
-  cursor: pointer;
-  white-space: nowrap;
-}
+/* Bonus */
+.bonus-banner{margin:16px 20px;padding:16px 18px;background:linear-gradient(135deg,#1a1040,#0f0d2a);border:1px solid rgba(247,183,49,0.3);border-radius:var(--radius);display:flex;align-items:center;gap:12px}
+.bonus-progress-bar{height:5px;background:rgba(255,255,255,0.1);border-radius:10px;margin-top:6px;overflow:hidden}
+.bonus-progress-fill{height:100%;background:var(--accent2);border-radius:10px;width:33%}
+.view-btn{padding:8px 14px;background:var(--accent2);border:none;border-radius:8px;color:#000;font-size:11px;font-weight:800;cursor:pointer}
 
-/* ---- SURVEY LIST ---- */
-.surveys-header {
-  padding: 20px 20px 0;
-}
-.surveys-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.stat-pill {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 12px;
-}
-.stat-pill .val { color: var(--green); font-weight: 600; }
+/* Surveys list */
+.surveys-header{padding:20px 20px 0}
+.stat-pill{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:6px 14px;font-size:12px}
+.stat-pill .val{color:var(--green);font-weight:600}
+.filter-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.ftab{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid var(--card-border);background:none;color:var(--text2);cursor:pointer}
+.ftab.active{background:var(--accent);border-color:var(--accent);color:white}
+.survey-list{padding:12px 20px;display:flex;flex-direction:column;gap:10px}
+.survey-item{padding:14px 16px;border-radius:var(--radius);border:1px solid var(--card-border);display:flex;align-items:center;gap:14px;cursor:pointer}
+.s-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.s-info{flex:1;min-width:0}
+.s-name{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
+.s-meta{font-size:11px;color:var(--text3)}
+.s-earn{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--green);margin-bottom:4px}
+.s-start-btn{padding:8px 14px;border-radius:8px;border:none;font-size:11px;font-weight:800;cursor:pointer}
 
-.filter-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
-.filter-tabs::-webkit-scrollbar { display: none; }
-.ftab {
-  padding: 7px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  border: 1px solid var(--card-border);
-  background: none;
-  color: var(--text2);
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s;
-}
-.ftab.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* Rewards */
+.rewards-grid{padding:12px 20px 120px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.reward-card{background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 
-.survey-list { padding: 12px 20px; display: flex; flex-direction: column; gap: 10px; }
-.survey-item {
-  padding: 14px 16px;
-  border-radius: var(--radius);
-  border: 1px solid var(--card-border);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  transition: transform 0.15s;
-}
-.survey-item:active { transform: scale(0.98); }
-.s-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-.s-info { flex: 1; min-width: 0; }
-.s-name { font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-.s-meta { font-size: 11px; color: var(--text3); }
-.s-earn { font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
-.s-start-btn {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  font-size: 11px;
-  font-weight: 800;
-  font-family: 'Exo 2', sans-serif;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.2s;
-}
-.s-start-btn:active { opacity: 0.7; }
-
-/* Rewards screen */
-.rewards-hero {
-  padding: 20px;
-  margin: 12px 20px;
-  background: linear-gradient(135deg,#0f0d2a,#151236);
-  border-radius: var(--radius);
-  border: 1px solid var(--card-border);
-}
-.rewards-title { font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px; }
-.rewards-pts { font-size:12px;color:var(--text2); }
-
-/* Rewards grid */
-.rewards-grid { padding: 12px 20px 80px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.reward-card { background:var(--card); border:1px solid var(--card-border); padding:12px; border-radius:12px; display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
-.reward-icon { font-size:22px; }
-.reward-name { font-weight:700; }
-.reward-pts { font-size:12px;color:var(--text2); }
-.redeem-btn { padding:8px 12px; background:var(--accent2); border:none; border-radius:8px; font-weight:800; cursor:pointer; }
-
-/* Withdraw screen */
-.withdraw-header { display:flex; align-items:center; gap:12px; padding:16px 20px; }
-.back-btn { font-size:18px; cursor:pointer; color:var(--text2); }
-.avail-balance { padding:12px 20px; }
-.avail-label { font-size:12px; color:var(--text2); }
-.avail-amount { font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;margin-top:6px; }
-.method-grid { display:flex; gap:10px; padding:12px 20px; }
-.method-card { flex:1; background:var(--card); border:1px solid var(--card-border); padding:12px; border-radius:12px; cursor:pointer; text-align:center; }
-.method-card.selected { border-color:var(--accent); box-shadow:0 6px 18px rgba(124,92,252,0.12); }
-.method-icon { font-size:20px; margin-bottom:6px; }
-.amount-section { padding:12px 20px; }
-.amt-label { font-size:12px; color:var(--text2); margin-bottom:6px; }
-.amt-input-wrap { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--card-border); padding:8px; border-radius:10px; }
-.amt-prefix { padding:6px 8px; background:rgba(255,255,255,0.03); border-radius:8px; color:var(--text2); }
-.amt-input { background:transparent; border:none; outline:none; color:var(--text); font-size:16px; width:100%; }
-.preset-btns { display:flex; gap:8px; margin-top:8px; }
-.preset-btn { padding:8px 12px; background:rgba(255,255,255,0.03); border:1px solid var(--card-border); border-radius:8px; cursor:pointer; color:var(--text2); }
-.fee-row { padding:12px 20px; display:flex; justify-content:space-between; gap:12px; }
-.fee-line { display:flex; gap:8px; align-items:center; }
-.green { color:var(--green); font-weight:800; }
-.withdraw-btn { margin:12px 20px; padding:12px; background:linear-gradient(90deg,#2ed573,#1e90ff); border:none; border-radius:12px; font-weight:900; cursor:pointer; }
+/* Withdraw */
+.withdraw-header{display:flex;align-items:center;gap:12px;padding:16px 20px}
+.back-btn{font-size:18px;cursor:pointer;color:var(--text2)}
+.avail-balance{padding:12px 20px}
+.avail-label{font-size:12px;color:var(--text2)}
+.avail-amount{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;margin-top:6px}
+.method-grid{display:flex;gap:10px;padding:12px 20px}
+.method-card{flex:1;background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;cursor:pointer;text-align:center}
+.method-card.selected{border-color:var(--accent);box-shadow:0 6px 18px rgba(124,92,252,0.12)}
+.amount-section{padding:12px 20px}
+.amt-input-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--card-border);padding:8px;border-radius:10px}
+.amt-prefix{padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--text2)}
+.amt-input{background:transparent;border:none;outline:none;color:var(--text);font-size:16px;width:100%}
+.preset-btns{display:flex;gap:8px;margin-top:8px}
+.preset-btn{padding:8px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:8px;cursor:pointer;color:var(--text2)}
+.fee-row{padding:12px 20px;display:flex;justify-content:space-between;gap:12px}
+.fee-line{display:flex;gap:8px;align-items:center}
+.green{color:var(--green);font-weight:800}
+.withdraw-btn{margin:12px 20px;padding:12px;background:linear-gradient(90deg,#2ed573,#1e90ff);border:none;border-radius:12px;font-weight:900;cursor:pointer}
 
 /* Recent */
-.recent-section { padding:12px 20px 120px; }
-.recent-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,0.03); }
-.recent-icon { font-size:20px; }
-.recent-info { flex:1; }
-.recent-name { font-weight:700; }
-.recent-date { font-size:12px; color:var(--text3); }
-.recent-amt { font-weight:800; color:var(--green); }
+.recent-section{padding:12px 20px 120px}
+.recent-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+.recent-icon{font-size:20px}
+.recent-info{flex:1}
+.recent-name{font-weight:700}
+.recent-date{font-size:12px;color:var(--text3)}
+.recent-amt{font-weight:800;color:var(--green)}
 
 /* Profile */
-.profile-hero { display:flex; gap:12px; align-items:center; padding:12px 20px; }
-.avatar { width:64px; height:64px; border-radius:16px; background:linear-gradient(90deg,#7c5cfc,#5c35e8); display:flex; align-items:center; justify-content:center; font-weight:900; font-family:'Exo 2'; font-size:20px; }
-.profile-name { font-weight:800; font-family:'Exo 2'; }
-.profile-handle { font-size:12px; color:var(--text2); }
-.profile-since { font-size:11px; color:var(--text3); margin-top:6px; }
-.stats-row { display:flex; gap:8px; padding:12px 20px; }
-.stat-card { flex:1; background:var(--card); border:1px solid var(--card-border); padding:12px; border-radius:12px; text-align:center; }
-.stat-label { font-size:12px; color:var(--text2); }
-.stat-val { font-weight:800; margin-top:6px; }
+.profile-hero{display:flex;gap:12px;align-items:center;padding:12px 20px}
+.avatar{width:64px;height:64px;border-radius:16px;background:linear-gradient(90deg,#7c5cfc,#5c35e8);display:flex;align-items:center;justify-content:center;font-weight:900;font-family:'Exo 2';font-size:20px}
+.profile-name{font-weight:800;font-family:'Exo 2'}
+.profile-handle{font-size:12px;color:var(--text2)}
+.profile-since{font-size:11px;color:var(--text3);margin-top:6px}
+.stats-row{display:flex;gap:8px;padding:12px 20px}
+.stat-card{flex:1;background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;text-align:center}
+.stat-label{font-size:12px;color:var(--text2)}
+.stat-val{font-weight:800;margin-top:6px}
 
-/* Level bar */
-.level-bar-wrap { padding:12px 20px; }
-.level-top { display:flex; justify-content:space-between; align-items:center; }
-.level-name { font-weight:800; }
-.level-pts { font-size:12px; color:var(--text2); }
-.lbar { height:10px; background:rgba(255,255,255,0.06); border-radius:10px; margin-top:8px; overflow:hidden; }
-.lbar-fill { width:40%; height:100%; background:linear-gradient(90deg,#f7b731,#fff); }
+/* Level & achievements */
+.level-bar-wrap{padding:12px 20px}
+.lbar{height:10px;background:rgba(255,255,255,0.06);border-radius:10px;margin-top:8px;overflow:hidden}
+.lbar-fill{width:40%;height:100%;background:linear-gradient(90deg,#f7b731,#fff)}
+.achiev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 20px 120px}
+.achiev-item{background:var(--card);border:1px solid var(--card-border);padding:10px;border-radius:12px;display:flex;gap:10px;align-items:center}
 
-/* Achievements */
-.achievements { padding:12px 20px 120px; }
-.achiev-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.achiev-item { background:var(--card); border:1px solid var(--card-border); padding:10px; border-radius:12px; display:flex; gap:10px; align-items:center; }
-.achiev-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
-.achiev-name { font-weight:700; }
+/* Interests & profile buttons */
+.interests-wrap{padding:12px 20px 120px}
+.interests-grid{display:flex;gap:8px;flex-wrap:wrap}
+.int-tag{background:var(--card);border:1px solid var(--card-border);padding:8px 10px;border-radius:12px;font-size:13px;display:flex;gap:8px;align-items:center}
+.profile-btns{display:flex;gap:8px;padding:12px 20px 120px}
+.pbtn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--card-border);background:transparent;color:var(--text2);cursor:pointer}
+.pbtn.edit{background:linear-gradient(90deg,#7c5cfc,#5c35e8);color:#fff;border:none}
 
-/* Interests */
-.interests-wrap { padding:12px 20px 120px; }
-.interests-grid { display:flex; gap:8px; flex-wrap:wrap; }
-.int-tag { background:var(--card); border:1px solid var(--card-border); padding:8px 10px; border-radius:12px; font-size:13px; display:flex; gap:8px; align-items:center; }
+/* Modal & toast */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal{width:92%;max-width:420px;background:#0b0a1a;border-radius:14px;padding:16px;border:1px solid var(--card-border)}
+.input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--card-border);background:transparent;color:var(--text);margin-top:8px}
+.small{font-size:12px;color:var(--text2);margin-top:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h)+40px);background:rgba(0,0,0,0.8);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;opacity:0;transition:opacity .18s,transform .18s;z-index:9999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
-/* Profile buttons */
-.profile-btns { display:flex; gap:8px; padding:12px 20px 120px; }
-.pbtn { flex:1; padding:10px; border-radius:10px; border:1px solid var(--card-border); background:transparent; color:var(--text2); cursor:pointer; }
-.pbtn.edit { background:linear-gradient(90deg,#7c5cfc,#5c35e8); color:#fff; border:none; }
-
-/* BOTTOM NAV */
-nav { z-index: 200; }
-
-/* TOAST */
-.toast {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(var(--nav-h) + 20px);
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity 0.18s, transform 0.18s;
-  z-index: 9999;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
-
-/* Small helpers for added UI */
-.floating-action {
-  position: fixed;
-  right: 18px;
-  bottom: calc(var(--nav-h) + 90px);
-  z-index: 300;
-  background: linear-gradient(90deg,#7c5cfc,#f7b731);
-  color: #000;
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 8px 30px rgba(124,92,252,0.18);
-  border: none;
-}
-.modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000;
-}
-.modal { width: 92%; max-width:420px; background: #0b0a1a; border-radius: 14px; padding: 16px; border: 1px solid var(--card-border); }
-.modal.show { display:flex; }
-.input { width:100%; padding:10px; border-radius:10px; border:1px solid var(--card-border); background:transparent; color:var(--text); margin-top:8px; }
-.small { font-size:12px; color:var(--text2); margin-top:6px; }
-.badge { display:inline-block; padding:6px 8px; border-radius:8px; background:linear-gradient(90deg,#7c5cfc,#f7b731); color:#000; font-weight:800; font-size:12px; margin-right:6px; }
-
-/* Responsive tweaks */
-@media (max-width:420px) {
-  .balance-amount { font-size:36px; }
-}
+/* Responsive */
+@media(max-width:420px){.balance-amount{font-size:36px}}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ===== HOME SCREEN ===== -->
+  <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="page-header">
       <div class="page-title">SurveyPay</div>
@@ -498,31 +206,19 @@ nav { z-index: 200; }
     <div class="cat-grid" style="padding-bottom:12px">
       <div class="cat-card blue" onclick="switchTab('surveys')">
         <div class="cat-icon">📝</div>
-        <div>
-          <div class="cat-name">Quick Surveys</div>
-          <div class="cat-sub">Short Tasks</div>
-        </div>
+        <div><div class="cat-name">Quick Surveys</div><div class="cat-sub">Short Tasks</div></div>
       </div>
       <div class="cat-card orange" onclick="switchTab('surveys')">
         <div class="cat-icon">💰</div>
-        <div>
-          <div class="cat-name">High Paying</div>
-          <div class="cat-sub">Big Rewards</div>
-        </div>
+        <div><div class="cat-name">High Paying</div><div class="cat-sub">Big Rewards</div></div>
       </div>
       <div class="cat-card green" onclick="switchTab('surveys')">
         <div class="cat-icon">🧪</div>
-        <div>
-          <div class="cat-name">Product Testing</div>
-          <div class="cat-sub">Try Products</div>
-        </div>
+        <div><div class="cat-name">Product Testing</div><div class="cat-sub">Try Products</div></div>
       </div>
       <div class="cat-card purple" onclick="switchTab('surveys')">
         <div class="cat-icon">📊</div>
-        <div>
-          <div class="cat-name">Daily Polls</div>
-          <div class="cat-sub">New Polls</div>
-        </div>
+        <div><div class="cat-name">Daily Polls</div><div class="cat-sub">New Polls</div></div>
       </div>
     </div>
 
@@ -556,7 +252,7 @@ nav { z-index: 200; }
     <button class="floating-action" id="start-level-btn" onclick="startNextLevel()">Start Level</button>
   </div>
 
-  <!-- ===== SURVEYS SCREEN ===== -->
+  <!-- SURVEYS -->
   <div class="screen" id="screen-surveys">
     <div class="surveys-header">
       <div style="display:flex;align-items:center;justify-content:space-between">
@@ -576,11 +272,9 @@ nav { z-index: 200; }
     <div class="survey-list" id="survey-list"></div>
   </div>
 
-  <!-- ===== REWARDS SCREEN ===== -->
+  <!-- REWARDS -->
   <div class="screen" id="screen-rewards">
-    <div class="page-header">
-      <div class="page-title">Rewards 🏆</div>
-    </div>
+    <div class="page-header"><div class="page-title">Rewards 🏆</div></div>
     <div class="rewards-hero">
       <div class="rewards-title">1,240 Points</div>
       <div class="rewards-pts">You're 260 points away from Gold status!</div>
@@ -590,53 +284,21 @@ nav { z-index: 200; }
     </div>
     <div class="section-title" style="margin-top:16px">Redeem Rewards</div>
     <div class="rewards-grid">
-      <div class="reward-card">
-        <div class="reward-icon">🎮</div>
-        <div class="reward-name">Amazon Gift Card</div>
-        <div class="reward-pts">500 points</div>
-        <button class="redeem-btn" onclick="showToast('Amazon Gift Card redeemed!')">Redeem</button>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">☕</div>
-        <div class="reward-name">Starbucks Voucher</div>
-        <div class="reward-pts">300 points</div>
-        <button class="redeem-btn" onclick="showToast('Starbucks Voucher redeemed!')">Redeem</button>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">📱</div>
-        <div class="reward-name">Airtime Top-Up</div>
-        <div class="reward-pts">200 points</div>
-        <button class="redeem-btn" onclick="showToast('Airtime added to your number!')">Redeem</button>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">💵</div>
-        <div class="reward-name">Cash Bonus $5</div>
-        <div class="reward-pts">400 points</div>
-        <button class="redeem-btn" onclick="redeemCash()">Redeem</button>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">🎬</div>
-        <div class="reward-name">Netflix Credit</div>
-        <div class="reward-pts">600 points</div>
-        <button class="redeem-btn" onclick="showToast('Netflix credit applied!')">Redeem</button>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">✈️</div>
-        <div class="reward-name">Travel Miles</div>
-        <div class="reward-pts">1000 points</div>
-        <button class="redeem-btn" onclick="showToast('1000 travel miles added!')">Redeem</button>
-      </div>
+      <div class="reward-card"><div class="reward-icon">🎮</div><div class="reward-name">Amazon Gift Card</div><div class="reward-pts">500 points</div><button class="redeem-btn" onclick="showToast('Amazon Gift Card redeemed!')">Redeem</button></div>
+      <div class="reward-card"><div class="reward-icon">☕</div><div class="reward-name">Starbucks Voucher</div><div class="reward-pts">300 points</div><button class="redeem-btn" onclick="showToast('Starbucks Voucher redeemed!')">Redeem</button></div>
+      <div class="reward-card"><div class="reward-icon">📱</div><div class="reward-name">Airtime Top-Up</div><div class="reward-pts">200 points</div><button class="redeem-btn" onclick="showToast('Airtime added to your number!')">Redeem</button></div>
+      <div class="reward-card"><div class="reward-icon">💵</div><div class="reward-name">Cash Bonus $5</div><div class="reward-pts">400 points</div><button class="redeem-btn" onclick="redeemCash()">Redeem</button></div>
+      <div class="reward-card"><div class="reward-icon">🎬</div><div class="reward-name">Netflix Credit</div><div class="reward-pts">600 points</div><button class="redeem-btn" onclick="showToast('Netflix credit applied!')">Redeem</button></div>
+      <div class="reward-card"><div class="reward-icon">✈️</div><div class="reward-name">Travel Miles</div><div class="reward-pts">1000 points</div><button class="redeem-btn" onclick="showToast('1000 travel miles added!')">Redeem</button></div>
     </div>
   </div>
 
-  <!-- ===== WITHDRAW SCREEN ===== -->
+  <!-- WITHDRAW -->
   <div class="screen" id="screen-withdraw">
     <div class="withdraw-header">
       <div class="back-btn" onclick="switchTab('home')">←</div>
-      <div style="flex:1;text-align:center">
-        <div class="page-title">Withdraw Funds</div>
-      </div>
-      <div style="font-size:12px;color:var(--accent);cursor:pointer">Help</div>
+      <div style="flex:1;text-align:center"><div class="page-title">Withdraw Funds</div></div>
+      <div style="font-size:12px;color:var(--accent);cursor:pointer" onclick="openDepositModal()">Deposit</div>
     </div>
 
     <div class="avail-balance">
@@ -646,21 +308,9 @@ nav { z-index: 200; }
 
     <div class="section-title" style="margin-top:16px">Withdrawal Method</div>
     <div class="method-grid">
-      <div class="method-card selected" onclick="selectMethod(this,'mpesa')">
-        <div class="method-icon">📱</div>
-        <div class="method-name">M-PESA</div>
-        <div class="method-sub">Mobile Money</div>
-      </div>
-      <div class="method-card" onclick="selectMethod(this,'paypal')">
-        <div class="method-icon">💳</div>
-        <div class="method-name">PayPal</div>
-        <div class="method-sub">Transfer Funds</div>
-      </div>
-      <div class="method-card" onclick="selectMethod(this,'bank')">
-        <div class="method-icon">🏦</div>
-        <div class="method-name">Bank Transfer</div>
-        <div class="method-sub">Direct to Account</div>
-      </div>
+      <div class="method-card selected" onclick="selectMethod(this,'mpesa')"><div class="method-icon">📱</div><div class="method-name">M-PESA</div><div class="method-sub">Mobile Money</div></div>
+      <div class="method-card" onclick="selectMethod(this,'paypal')"><div class="method-icon">💳</div><div class="method-name">PayPal</div><div class="method-sub">Transfer Funds</div></div>
+      <div class="method-card" onclick="selectMethod(this,'bank')"><div class="method-icon">🏦</div><div class="method-name">Bank Transfer</div><div class="method-sub">Direct to Account</div></div>
     </div>
 
     <div class="amount-section">
@@ -685,25 +335,13 @@ nav { z-index: 200; }
 
     <div class="recent-section">
       <div class="section-title" style="margin:0 0 8px">Recent Withdrawals</div>
-      <div class="recent-item">
-        <div class="recent-icon">💳</div>
-        <div class="recent-info"><div class="recent-name">PayPal Withdrawal</div><div class="recent-date">May 20, 2026</div></div>
-        <div class="recent-amt">+$45.00</div>
-      </div>
-      <div class="recent-item">
-        <div class="recent-icon">📱</div>
-        <div class="recent-info"><div class="recent-name">M-Pesa Withdrawal</div><div class="recent-date">May 14, 2026</div></div>
-        <div class="recent-amt">+$30.00</div>
-      </div>
-      <div class="recent-item">
-        <div class="recent-icon">🏦</div>
-        <div class="recent-info"><div class="recent-name">Bank Transfer</div><div class="recent-date">May 5, 2026</div></div>
-        <div class="recent-amt">+$50.00</div>
-      </div>
+      <div class="recent-item"><div class="recent-icon">💳</div><div class="recent-info"><div class="recent-name">PayPal Withdrawal</div><div class="recent-date">May 20, 2026</div></div><div class="recent-amt">+$45.00</div></div>
+      <div class="recent-item"><div class="recent-icon">📱</div><div class="recent-info"><div class="recent-name">M-Pesa Withdrawal</div><div class="recent-date">May 14, 2026</div></div><div class="recent-amt">+$30.00</div></div>
+      <div class="recent-item"><div class="recent-icon">🏦</div><div class="recent-info"><div class="recent-name">Bank Transfer</div><div class="recent-date">May 5, 2026</div></div><div class="recent-amt">+$50.00</div></div>
     </div>
   </div>
 
-  <!-- ===== PROFILE SCREEN ===== -->
+  <!-- PROFILE -->
   <div class="screen" id="screen-profile">
     <div class="page-header">
       <div class="page-title">My Profile</div>
@@ -738,22 +376,10 @@ nav { z-index: 200; }
     <div class="section-title" style="margin-top:16px">Achievements</div>
     <div class="achievements">
       <div class="achiev-grid" id="achiev-grid">
-        <div class="achiev-item">
-          <div class="achiev-icon" style="background:rgba(37,99,235,0.2)">✅</div>
-          <div class="achiev-name">Survey Pro</div>
-        </div>
-        <div class="achiev-item">
-          <div class="achiev-icon" style="background:rgba(247,183,49,0.2)">👑</div>
-          <div class="achiev-name">Cash Out King</div>
-        </div>
-        <div class="achiev-item">
-          <div class="achiev-icon" style="background:rgba(168,85,247,0.2)">📣</div>
-          <div class="achiev-name">Top Referrer</div>
-        </div>
-        <div class="achiev-item">
-          <div class="achiev-icon" style="background:rgba(234,88,12,0.2)">🔥</div>
-          <div class="achiev-name">Daily Streak</div>
-        </div>
+        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(37,99,235,0.2)">✅</div><div class="achiev-name">Survey Pro</div></div>
+        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(247,183,49,0.2)">👑</div><div class="achiev-name">Cash Out King</div></div>
+        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(168,85,247,0.2)">📣</div><div class="achiev-name">Top Referrer</div></div>
+        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(234,88,12,0.2)">🔥</div><div class="achiev-name">Daily Streak</div></div>
       </div>
     </div>
 
@@ -774,85 +400,102 @@ nav { z-index: 200; }
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
-  <nav>
-    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
-    </button>
-    <button class="nav-btn" id="nav-surveys" onclick="switchTab('surveys')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Surveys
-    </button>
-    <button class="nav-btn" id="nav-rewards" onclick="switchTab('rewards')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-      Rewards
-    </button>
-    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Profile
-    </button>
-  </nav>
+</div>
 
-  <!-- AUTH / ACTIVATION MODALS (injected UI) -->
-  <div class="modal-backdrop" id="modal-backdrop">
-    <div class="modal" id="modal-auth" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-weight:900">Account</div>
-        <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeAuthModal()">Close</div>
-      </div>
+<!-- NAV (includes Withdraw button) -->
+<nav>
+  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </button>
+  <button class="nav-btn" id="nav-surveys" onclick="switchTab('surveys')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Surveys
+  </button>
+  <button class="nav-btn" id="nav-rewards" onclick="switchTab('rewards')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+    Rewards
+  </button>
+  <button class="nav-btn" id="nav-withdraw" onclick="switchTab('withdraw')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1v22"/><path d="M5 7h14"/></svg>
+    Withdraw
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profile
+  </button>
+</nav>
 
-      <div id="auth-forms" style="margin-top:12px">
-        <!-- Login form -->
-        <div id="login-form">
-          <input class="input" id="login-email" placeholder="Email or phone">
-          <input class="input" id="login-password" placeholder="Password" type="password">
-          <button class="view-btn" style="width:100%;margin-top:10px" onclick="doLogin()">Login</button>
-          <div class="small" style="margin-top:8px">No account? <span style="color:var(--accent);cursor:pointer" onclick="showRegister()">Register</span></div>
-        </div>
-
-        <!-- Register form (hidden by default) -->
-        <div id="register-form" style="display:none">
-          <input class="input" id="reg-name" placeholder="Full name">
-          <input class="input" id="reg-email" placeholder="Email or phone">
-          <input class="input" id="reg-password" placeholder="Password" type="password">
-          <button class="view-btn" style="width:100%;margin-top:10px" onclick="doRegister()">Create account</button>
-          <div class="small" style="margin-top:8px">Have an account? <span style="color:var(--accent);cursor:pointer" onclick="showLogin()">Login</span></div>
-        </div>
-      </div>
+<!-- MODALS -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal-auth" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:900">Account</div>
+      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeAuthModal()">Close</div>
     </div>
-
-    <div class="modal" id="modal-activate" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-weight:900">Activate Surveys</div>
-        <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeActivateModal()">Close</div>
+    <div id="auth-forms" style="margin-top:12px">
+      <div id="login-form">
+        <input class="input" id="login-email" placeholder="Email or phone">
+        <input class="input" id="login-password" placeholder="Password" type="password">
+        <button class="view-btn" style="width:100%;margin-top:10px" onclick="doLogin()">Login</button>
+        <div class="small" style="margin-top:8px">No account? <span style="color:var(--accent);cursor:pointer" onclick="showRegister()">Register</span></div>
       </div>
-
-      <div style="margin-top:12px">
-        <div class="small">To activate your account and unlock surveys, please pay the activation fee via Paybill.</div>
-        <div style="margin-top:10px">
-          <div class="small">Paybill: <strong>880100</strong></div>
-          <div class="small">Account: <strong>1004508555</strong></div>
-          <div class="small">Amount: <strong id="activation-amount">180 KES</strong></div>
-        </div>
-        <div style="margin-top:12px">
-          <button class="view-btn" style="width:100%" onclick="verifyActivationPayment()">I have paid (Verify)</button>
-          <div class="small" style="margin-top:8px">Or use Daraja server integration: <span id="daraja-key" class="small" style="color:var(--accent)">(not configured)</span></div>
-        </div>
+      <div id="register-form" style="display:none">
+        <input class="input" id="reg-name" placeholder="Full name">
+        <input class="input" id="reg-email" placeholder="Email or phone">
+        <input class="input" id="reg-password" placeholder="Password" type="password">
+        <button class="view-btn" style="width:100%;margin-top:10px" onclick="doRegister()">Create account</button>
+        <div class="small" style="margin-top:8px">Have an account? <span style="color:var(--accent);cursor:pointer" onclick="showLogin()">Login</span></div>
       </div>
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+  <div class="modal" id="modal-activate" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:900">Activate Surveys</div>
+      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeActivateModal()">Close</div>
+    </div>
+    <div style="margin-top:12px">
+      <div class="small">To activate your account and unlock surveys, please pay the activation fee via Paybill.</div>
+      <div style="margin-top:10px">
+        <div class="small">Paybill: <strong>880100</strong></div>
+        <div class="small">Account: <strong>1004508555</strong></div>
+        <div class="small">Amount: <strong id="activation-amount">180 KES</strong></div>
+      </div>
+      <div style="margin-top:12px">
+        <button class="view-btn" style="width:100%" onclick="verifyActivationPayment()">I have paid (Verify)</button>
+        <div class="small" style="margin-top:8px">Or use Daraja server integration: <span id="daraja-key" class="small" style="color:var(--accent)">(not configured)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-deposit" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:900">Deposit Funds</div>
+      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeDepositModal()">Close</div>
+    </div>
+    <div style="margin-top:12px">
+      <div class="small">Deposit to your account using PayPal. The recipient is hidden for security.</div>
+      <div style="margin-top:10px">
+        <div class="small">Amount</div>
+        <input class="input" id="deposit-amount" placeholder="Enter amount" type="number" />
+      </div>
+      <div style="margin-top:12px">
+        <button class="view-btn" style="width:100%" onclick="startDeposit()">Proceed to PayPal</button>
+        <div class="small" style="margin-top:8px" id="deposit-note">You will be redirected to PayPal to complete payment.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Firebase (compat) for web push -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase compat -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
 
 <script>
-// ---- State ----
+/* ---------------- State ---------------- */
 let balance = 245.75;
 let availBalance = 58.75;
 let user = {
@@ -868,102 +511,64 @@ let user = {
   badges: ['Survey Pro','Cash Out King']
 };
 
-// Currency & conversion
 let userRegion = (navigator.language || 'en-US').split('-')[1] || 'US';
-const regionToCurrency = {
-  'US':'USD','GB':'GBP','KE':'KES','NG':'NGN','UG':'UGX','TZ':'TZS','EU':'EUR','CA':'CAD','AU':'AUD','IN':'INR','ZA':'ZAR'
-};
+const regionToCurrency = {'US':'USD','GB':'GBP','KE':'KES','NG':'NGN','UG':'UGX','TZ':'TZS','EU':'EUR','CA':'CAD','AU':'AUD','IN':'INR','ZA':'ZAR'};
 let userCurrency = regionToCurrency[userRegion] || 'USD';
-let exchangeRates = null; // rates relative to USD
+let exchangeRates = null;
 let currencySymbol = '$';
-const MIN_WITHDRAWAL_KES = 18000; // as requested
-const ACTIVATION_FEE_KES = 180; // as requested
-const LEVEL_MIN_REWARD_USD = 0.50; // per level minimum
+const MIN_WITHDRAWAL_KES = 18000;
+const ACTIVATION_FEE_KES = 180;
+const LEVEL_MIN_REWARD_USD = 0.50;
 
-// ---- Utility: fetch exchange rates (USD base) ----
-async function fetchRates() {
-  try {
+/* ---------------- Utilities ---------------- */
+async function fetchRates(){
+  try{
     const res = await fetch('https://api.exchangerate.host/latest?base=USD');
     const data = await res.json();
-    if(data && data.rates) {
-      exchangeRates = data.rates;
-      updateCurrencyDisplay();
-      return;
-    }
-  } catch(e) {
-    console.warn('Rate fetch failed', e);
-  }
-  exchangeRates = null; // fallback
-  updateCurrencyDisplay();
+    if(data && data.rates){ exchangeRates = data.rates; updateCurrencyDisplay(); return; }
+  }catch(e){ console.warn('Rate fetch failed', e); }
+  exchangeRates = null; updateCurrencyDisplay();
 }
-
-// Map currency to symbol (fallback)
 const currencySymbols = { USD:'$', KES:'KSh', GBP:'£', EUR:'€', NGN:'₦', UGX:'USh', TZS:'TSh', CAD:'CA$', AUD:'A$', INR:'₹', ZAR:'R' };
-function getSymbol(code) { return currencySymbols[code] || code + ' '; }
-
-// Convert USD -> target currency
-function convertFromUSD(amountUSD) {
-  if(!exchangeRates) return { value: amountUSD, formatted: formatCurrency(amountUSD, 'USD') , code:'USD' };
-  const rate = exchangeRates[userCurrency] || 1;
-  const val = +(amountUSD * rate).toFixed(2);
-  return { value: val, formatted: formatCurrency(val, userCurrency), code: userCurrency };
+function getSymbol(code){ return currencySymbols[code] || code + ' '; }
+function formatCurrency(amount, code){
+  try{ return new Intl.NumberFormat(navigator.language || 'en-US',{style:'currency',currency:code}).format(amount); }
+  catch(e){ return (getSymbol(code) + amount.toFixed(2)); }
 }
-
-// Convert KES -> target currency (via USD)
-function convertFromKES(amountKES) {
-  if(!exchangeRates) return { value: amountKES, formatted: formatCurrency(amountKES, 'KES'), code:'KES' };
-  // get USD per KES: USD = KES / (rate_KES) when base USD: 1 USD = rate_KES KES -> USD = KES / rate_KES
+function convertFromKES(amountKES){
+  if(!exchangeRates) return { value: amountKES, formatted: formatCurrency(amountKES,'KES'), code:'KES' };
   const rateKES = exchangeRates['KES'] || 1;
   const amountUSD = amountKES / rateKES;
   const rateTarget = exchangeRates[userCurrency] || 1;
   const val = +(amountUSD * rateTarget).toFixed(2);
   return { value: val, formatted: formatCurrency(val, userCurrency), code: userCurrency };
 }
-
-function formatCurrency(amount, code) {
-  try {
-    return new Intl.NumberFormat(navigator.language || 'en-US', { style:'currency', currency: code }).format(amount);
-  } catch(e) {
-    return (getSymbol(code) + amount.toFixed(2));
-  }
+function convertFromUSD(amountUSD){
+  if(!exchangeRates) return { value: amountUSD, formatted: formatCurrency(amountUSD,'USD'), code:'USD' };
+  const rate = exchangeRates[userCurrency] || 1;
+  const val = +(amountUSD * rate).toFixed(2);
+  return { value: val, formatted: formatCurrency(val, userCurrency), code: userCurrency };
 }
-
-function updateCurrencyDisplay() {
+function updateCurrencyDisplay(){
   currencySymbol = getSymbol(userCurrency);
-  // update withdraw prefixes
-  document.querySelectorAll('#currency-prefix, #currency-prefix-2, #currency-prefix-3').forEach(el => el.textContent = currencySymbol);
-  // update amounts that depend on currency
+  document.querySelectorAll('#currency-prefix,#currency-prefix-2,#currency-prefix-3').forEach(el=>el.textContent = currencySymbol);
   document.getElementById('stat-available').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('avail-amount').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('home-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('survey-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('stat-total-earned').textContent = formatCurrency(user.totalEarnedUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('stat-referral').textContent = formatCurrency(user.referralBonusUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  // activation amount display
   const act = convertFromKES(ACTIVATION_FEE_KES);
   document.getElementById('activation-amount').textContent = act.formatted + ' (' + ACTIVATION_FEE_KES + ' KES)';
-  // update min withdrawal display in console (used in logic)
   window._minWithdrawalLocal = convertFromKES(MIN_WITHDRAWAL_KES).value;
 }
 
-// ---- Persist & load user/local state ----
-function saveLocalState() {
-  const state = { balance, availBalance, user, exchangeRates, userCurrency };
-  localStorage.setItem('surveypay_state_v1', JSON.stringify(state));
-}
-function loadLocalState() {
-  try {
-    const s = JSON.parse(localStorage.getItem('surveypay_state_v1') || '{}');
-    if(s.balance) balance = s.balance;
-    if(s.availBalance) availBalance = s.availBalance;
-    if(s.user) user = s.user;
-    if(s.exchangeRates) exchangeRates = s.exchangeRates;
-    if(s.userCurrency) userCurrency = s.userCurrency;
-  } catch(e) {}
-}
+/* ---------------- Persist ---------------- */
+function saveLocalState(){ const state={balance,availBalance,user,exchangeRates,userCurrency}; localStorage.setItem('surveypay_state_v1',JSON.stringify(state)); }
+function loadLocalState(){ try{ const s=JSON.parse(localStorage.getItem('surveypay_state_v1')||'{}'); if(s.balance) balance=s.balance; if(s.availBalance) availBalance=s.availBalance; if(s.user) user=s.user; if(s.exchangeRates) exchangeRates=s.exchangeRates; if(s.userCurrency) userCurrency=s.userCurrency; }catch(e){} }
 loadLocalState();
 
-// ---- Render surveys (existing list) ----
+/* ---------------- Surveys list (unchanged text) ---------------- */
 const surveys = [
   { id:1, name:'Product Feedback Survey', time:12, slots:200, earn:5.00, icon:'🛒', color:'#16a34a', cat:['all','high'] },
   { id:2, name:'Travel Habits Survey', time:15, slots:150, earn:4.50, icon:'✈️', color:'#ea580c', cat:['all','high'] },
@@ -973,7 +578,7 @@ const surveys = [
   { id:6, name:'Food & Beverage Survey', time:6, slots:300, earn:2.00, icon:'🍕', color:'#dc2626', cat:['all','quick','new'] },
 ];
 
-function renderSurveys(filter='all') {
+function renderSurveys(filter='all'){
   const list = document.getElementById('survey-list');
   const filtered = surveys.filter(s => s.cat.includes(filter));
   list.innerHTML = filtered.map(s => `
@@ -989,128 +594,73 @@ function renderSurveys(filter='all') {
   `).join('');
 }
 renderSurveys();
+function filterSurveys(cat, btn){ document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderSurveys(cat); }
 
-function filterSurveys(cat, btn) {
-  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSurveys(cat);
-}
-
-// ---- Navigation ----
-function switchTab(tab) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+/* ---------------- Navigation ---------------- */
+function switchTab(tab){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const screenMap = { home:'screen-home', surveys:'screen-surveys', rewards:'screen-rewards', withdraw:'screen-withdraw', profile:'screen-profile' };
-  const navMap = { home:'nav-home', surveys:'nav-surveys', rewards:'nav-rewards', withdraw:'nav-surveys', profile:'nav-profile' };
+  const navMap = { home:'nav-home', surveys:'nav-surveys', rewards:'nav-rewards', withdraw:'nav-withdraw', profile:'nav-profile' };
   const screenId = screenMap[tab] || 'screen-home';
   document.getElementById(screenId).classList.add('active');
   const navEl = document.getElementById(navMap[tab]);
   if(navEl) navEl.classList.add('active');
 }
 
-// ---- Survey action (existing) ----
-function startSurvey(name, earn) {
-  // Activation gating: require activation to start surveys
-  if(!user.activated) {
-    showToast('🔒 Activate account to start surveys');
-    openActivateModal();
-    return;
-  }
-  // Add earn in USD, then convert for display
-  balance += earn;
-  availBalance += earn;
-  user.totalEarnedUSD += earn;
-  user.surveysDone += 1;
-  updateUIAfterEarnings();
-  showToast('🎉 +' + formatCurrency(earn, 'USD') + ' earned from ' + name + '!');
-  saveLocalState();
+/* ---------------- Survey action (requires activation) ---------------- */
+function startSurvey(name, earn){
+  if(!user.activated){ showToast('🔒 Activate account to start surveys'); openActivateModal(); return; }
+  balance += earn; availBalance += earn; user.totalEarnedUSD += earn; user.surveysDone += 1;
+  updateUIAfterEarnings(); showToast('🎉 +' + formatCurrency(earn,'USD') + ' earned from ' + name + '!'); saveLocalState();
 }
 
-// ---- Withdraw (existing) with enforcement of min withdrawal KES ----
+/* ---------------- Withdraw logic ---------------- */
 let selectedMethod = 'mpesa';
-function selectMethod(el, method) {
-  document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedMethod = method;
-  calcFee();
+function selectMethod(el, method){
+  document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); selectedMethod = method; calcFee();
 }
-
-function calcFee() {
+function calcFee(){
   const amtRaw = parseFloat(document.getElementById('amt-input').value) || 0;
-  // amtRaw is in user's currency; convert to USD for fee calc consistency
   let amtUSD = amtRaw;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) {
-    const rate = exchangeRates[userCurrency];
-    amtUSD = +(amtRaw / rate).toFixed(2);
-  }
+  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]){ const rate = exchangeRates[userCurrency]; amtUSD = +(amtRaw / rate).toFixed(2); }
   const feeRate = selectedMethod === 'bank' ? 0.05 : 0.04;
   let feeUSD = Math.max(1, +(amtUSD * feeRate).toFixed(2));
-  // convert feeUSD back to user currency for display
   let feeLocal = feeUSD;
-  if(exchangeRates && exchangeRates[userCurrency]) {
-    feeLocal = +(feeUSD * exchangeRates[userCurrency]).toFixed(2);
-  }
+  if(exchangeRates && exchangeRates[userCurrency]) feeLocal = +(feeUSD * exchangeRates[userCurrency]).toFixed(2);
   const payoutLocal = Math.max(0, +(amtRaw - feeLocal).toFixed(2));
   document.getElementById('fee-amt').textContent = feeLocal.toFixed(2);
   document.getElementById('payout-amt').textContent = payoutLocal.toFixed(2);
 }
-
-function setAmt(val) {
-  // val is in USD by original UI; convert to local currency if needed
+function setAmt(val){
   let displayVal = val;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) {
-    displayVal = +(val * exchangeRates[userCurrency]).toFixed(2);
-  }
-  document.getElementById('amt-input').value = displayVal;
-  calcFee();
+  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) displayVal = +(val * exchangeRates[userCurrency]).toFixed(2);
+  document.getElementById('amt-input').value = displayVal; calcFee();
 }
-
-function doWithdraw() {
+function doWithdraw(){
   const amtLocal = parseFloat(document.getElementById('amt-input').value) || 0;
-  if(amtLocal <= 0) { showToast('⚠️ Enter a valid amount'); return; }
-  // Convert min withdrawal (KES) to local currency
+  if(amtLocal <= 0){ showToast('⚠️ Enter a valid amount'); return; }
   const minLocal = convertFromKES(MIN_WITHDRAWAL_KES).value;
-  if(amtLocal < minLocal) {
-    showToast('⚠️ Minimum withdrawal is ' + formatCurrency(minLocal, userCurrency));
-    return;
-  }
-  // Convert local amt to USD for balance comparison
+  if(amtLocal < minLocal){ showToast('⚠️ Minimum withdrawal is ' + formatCurrency(minLocal, userCurrency)); return; }
   let amtUSD = amtLocal;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) {
-    amtUSD = +(amtLocal / exchangeRates[userCurrency]).toFixed(2);
-  }
-  if(amtUSD > availBalance) { showToast('⚠️ Insufficient balance'); return; }
-  // Deduct in USD
-  availBalance -= amtUSD;
-  balance -= amtUSD;
-  updateUIAfterEarnings();
+  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) amtUSD = +(amtLocal / exchangeRates[userCurrency]).toFixed(2);
+  if(amtUSD > availBalance){ showToast('⚠️ Insufficient balance'); return; }
+  availBalance -= amtUSD; balance -= amtUSD; updateUIAfterEarnings();
   const methods = { mpesa:'M-Pesa', paypal:'PayPal', bank:'Bank Transfer' };
   showToast('✅ ' + formatCurrency(amtLocal, userCurrency) + ' sent via ' + methods[selectedMethod]);
   saveLocalState();
 }
 
-// ---- Redeem cash (existing) ----
-function redeemCash() {
-  balance += 5;
-  availBalance += 5;
-  user.totalEarnedUSD += 5;
-  updateUIAfterEarnings();
-  showToast('💵 $5.00 cash bonus added to balance!');
-  saveLocalState();
-}
+/* ---------------- Redeem ---------------- */
+function redeemCash(){ balance += 5; availBalance += 5; user.totalEarnedUSD += 5; updateUIAfterEarnings(); showToast('💵 $5.00 cash bonus added to balance!'); saveLocalState(); }
 
-// ---- Toast ----
+/* ---------------- Toast ---------------- */
 let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-}
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800); }
 
-// ---- UI updates after earnings/changes ----
-function updateUIAfterEarnings() {
+/* ---------------- UI updates ---------------- */
+function updateUIAfterEarnings(){
   document.getElementById('home-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('survey-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('avail-amount').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
@@ -1118,7 +668,6 @@ function updateUIAfterEarnings() {
   document.getElementById('stat-total-earned').textContent = formatCurrency(user.totalEarnedUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
   document.getElementById('stat-surveys-done').textContent = user.surveysDone;
   document.getElementById('stat-referral').textContent = formatCurrency(user.referralBonusUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  // update profile level/badges
   document.getElementById('profile-name').textContent = user.name;
   document.getElementById('profile-handle').textContent = user.handle;
   document.getElementById('profile-avatar').textContent = user.name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
@@ -1126,38 +675,18 @@ function updateUIAfterEarnings() {
   document.getElementById('level-pts').textContent = user.levelPoints + ' pts to Level Up';
   const fill = Math.min(100, (user.levelPoints / 200) * 100);
   document.getElementById('lbar-fill').style.width = fill + '%';
-  // achievements grid: append new badges if any
-  const grid = document.getElementById('achiev-grid');
-  grid.innerHTML = '';
-  user.badges.forEach(b => {
-    const div = document.createElement('div');
-    div.className = 'achiev-item';
-    div.innerHTML = `<div class="achiev-icon" style="background:rgba(124,92,252,0.12)">🏅</div><div class="achiev-name">${b}</div>`;
-    grid.appendChild(div);
-  });
+  const grid = document.getElementById('achiev-grid'); grid.innerHTML = '';
+  user.badges.forEach(b => { const div=document.createElement('div'); div.className='achiev-item'; div.innerHTML=`<div class="achiev-icon" style="background:rgba(124,92,252,0.12)">🏅</div><div class="achiev-name">${b}</div>`; grid.appendChild(div); });
 }
 
-// ---- AUTH UI handlers ----
-function openAuthModal() {
-  document.getElementById('modal-backdrop').style.display = 'flex';
-  document.getElementById('modal-auth').style.display = 'block';
-  document.getElementById('modal-activate').style.display = 'none';
-}
-function closeAuthModal() {
-  document.getElementById('modal-backdrop').style.display = 'none';
-  document.getElementById('modal-auth').style.display = 'none';
-}
-function showRegister() {
-  document.getElementById('login-form').style.display = 'none';
-  document.getElementById('register-form').style.display = 'block';
-}
-function showLogin() {
-  document.getElementById('login-form').style.display = 'block';
-  document.getElementById('register-form').style.display = 'none';
-}
+/* ---------------- Auth UI handlers ---------------- */
+function openAuthModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-auth').style.display='block'; document.getElementById('modal-activate').style.display='none'; }
+function closeAuthModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-auth').style.display='none'; }
+function showRegister(){ document.getElementById('login-form').style.display='none'; document.getElementById('register-form').style.display='block'; }
+function showLogin(){ document.getElementById('login-form').style.display='block'; document.getElementById('register-form').style.display='none'; }
 
-// ---- Firebase Messaging client helpers (added) ----
-/* ---------- Firebase client config (filled) ---------- */
+/* ---------------- Firebase Messaging (client) ---------------- */
+/* Firebase config (public) */
 const firebaseConfig = {
   apiKey: "AIzaSyCJxSae246Rh-8xc7loxOULiOHfSJjJDIU",
   authDomain: "omnisuite-4f4f7.firebaseapp.com",
@@ -1166,56 +695,39 @@ const firebaseConfig = {
   appId: "1:53135596216:web:45b90079f9b50a17e8724d",
   measurementId: "G-1LR7CXY762"
 };
-/* VAPID public key (from your Firebase console) */
+/* VAPID public key (from Firebase console) */
 const VAPID_KEY = "BE5cvN2FA86TsCciAK5RwhIbnma4fXHfqp7zCJA_3oqJJmeqPjTwhbY3hH8BFqbC9Glcw-NdVUuahmX_DhN_zeQ";
 
-/* Initialize Firebase (for messaging) */
-try {
-  firebase.initializeApp(firebaseConfig);
-} catch(e) {
-  // ignore if already initialized
-}
+/* Initialize Firebase (messaging) */
+try{ firebase.initializeApp(firebaseConfig); }catch(e){}
 const messaging = firebase.messaging();
 
-// Register service worker and set it for messaging
-async function initFCM() {
-  try {
+/* Register service worker for FCM */
+async function initFCM(){
+  try{
     const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
     messaging.useServiceWorker(reg);
     console.log('Service worker registered for FCM');
-  } catch (err) {
-    console.error('SW registration failed', err);
-  }
+  }catch(err){ console.error('SW registration failed', err); }
 }
+initFCM();
 
-// Request permission, get token, send to server
-async function requestPushPermissionAndSendToken(userId) {
-  try {
-    if (!('Notification' in window)) {
-      console.warn('Notifications not supported');
-      return;
-    }
+/* Request permission and send token to server */
+async function requestPushPermissionAndSendToken(userId){
+  try{
+    if(!('Notification' in window)){ console.warn('Notifications not supported'); return; }
     const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      showToast('Push permission denied');
-      return;
-    }
+    if(permission !== 'granted'){ showToast('Push permission denied'); return; }
     const token = await messaging.getToken({ vapidKey: VAPID_KEY });
-    if (!token) { showToast('FCM token not available'); return; }
-    // send token to your server
+    if(!token){ showToast('FCM token not available'); return; }
     await fetch('/api/user/' + encodeURIComponent(userId) + '/push-token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token })
     });
     showToast('Push notifications enabled');
-  } catch (e) {
-    console.error(e);
-    showToast('Failed to enable push');
-  }
+  }catch(e){ console.error(e); showToast('Failed to enable push'); }
 }
 
-// Handle foreground messages
+/* Foreground messages */
 messaging.onMessage(payload => {
   console.log('FCM foreground message', payload);
   const title = payload.notification?.title || 'Notification';
@@ -1223,50 +735,33 @@ messaging.onMessage(payload => {
   showToast(title + ' — ' + body);
 });
 
-// Initialize SW immediately
-initFCM();
+/* ---------------- Activation verification (server required) ---------------- */
+async function openActivateModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-activate').style.display='block'; document.getElementById('modal-auth').style.display='none'; }
+function closeActivateModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-activate').style.display='none'; }
 
-// ---- Activation modal & verification ----
-function openActivateModal() {
-  document.getElementById('modal-backdrop').style.display = 'flex';
-  document.getElementById('modal-activate').style.display = 'block';
-  document.getElementById('modal-auth').style.display = 'none';
-}
-function closeActivateModal() {
-  document.getElementById('modal-backdrop').style.display = 'none';
-  document.getElementById('modal-activate').style.display = 'none';
-}
-
-// This function is a placeholder for server-side Daraja verification.
-// It will attempt to call /api/pay/activate with payment details you collect server-side.
-// If you don't have a backend yet, clicking "I have paid" will mark activation locally for testing.
-async function verifyActivationPayment() {
-  // Attempt to call backend (replace URL with your server endpoint)
-  try {
-    // Example payload you can verify server-side using Safaricom Daraja
+/* This function now calls your server endpoint /api/pay/activate and only marks activated when server returns verified:true */
+async function verifyActivationPayment(){
+  try{
+    const btn = document.querySelector('#modal-activate .view-btn');
+    if(btn){ btn.disabled = true; btn.textContent = 'Verifying...'; }
     const payload = { userId: user.id, paybill: '880100', account: '1004508555', amountKES: ACTIVATION_FEE_KES };
-    // Uncomment and configure when you have a backend:
-    // const res = await fetch('/api/pay/activate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    // const data = await res.json();
-    // if(data && data.verified) { ... }
-    // For now, mark activated locally:
-    user.activated = true;
-    saveLocalState();
-    updateUIAfterEarnings();
-    closeActivateModal();
-    showToast('✅ Account activated. Surveys unlocked!');
-  } catch(e) {
-    showToast('⚠️ Activation verification failed');
+    const res = await fetch('/api/pay/activate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data && data.verified){
+      user.activated = true; saveLocalState(); updateUIAfterEarnings(); closeActivateModal(); showToast('✅ Account activated. Surveys unlocked!');
+    } else {
+      showToast('⚠️ Payment not verified. Please confirm payment and try again.');
+    }
+  }catch(e){
+    console.error('Activation verify error', e);
+    showToast('⚠️ Activation verification failed. Try again later.');
+  }finally{
+    const btn = document.querySelector('#modal-activate .view-btn');
+    if(btn){ btn.disabled = false; btn.textContent = 'I have paid (Verify)'; }
   }
 }
 
-// ---- Auto survey generator (free) & endless levels ----
-/*
-  - Generates 50 questions per level using templates.
-  - Each level awards at least $0.50 USD (converted to user's currency).
-  - Levels are endless and stored in localStorage.
-  - Admin key field: if provided, you can swap in an external generator later.
-*/
+/* ---------------- Auto survey generator & level runner (unchanged content) ---------------- */
 const SURVEY_TEMPLATES = [
   { q: 'How often do you use {product}?', type:'single', choices:['Daily','Weekly','Monthly','Rarely','Never'] },
   { q: 'Rate your satisfaction with {product} on a scale of 1-5.', type:'scale', scale:5 },
@@ -1280,8 +775,8 @@ const SURVEY_TEMPLATES = [
   { q: 'How satisfied are you with customer support for {product}?', type:'scale', scale:5 }
 ];
 
-function generateLevel(levelIndex) {
-  const questions = [];
+function generateLevel(levelIndex){
+  const questions=[];
   for(let i=0;i<50;i++){
     const t = SURVEY_TEMPLATES[Math.floor(Math.random()*SURVEY_TEMPLATES.length)];
     const product = ['our app','this product','the service','the website'][Math.floor(Math.random()*4)];
@@ -1292,210 +787,104 @@ function generateLevel(levelIndex) {
   }
   return { level: levelIndex, questions, rewardUSD: LEVEL_MIN_REWARD_USD };
 }
-
-function shuffleArray(arr) {
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
-
-// Manage levels
-function getNextLevelIndex() {
-  const idx = parseInt(localStorage.getItem('surveypay_next_level') || '1', 10);
-  return idx;
-}
-function incrementLevelIndex() {
-  const next = getNextLevelIndex() + 1;
-  localStorage.setItem('surveypay_next_level', String(next));
-  return next;
-}
-function startNextLevel() {
-  if(!user.activated) {
-    showToast('🔒 Activate account to start levels');
-    openActivateModal();
-    return;
-  }
-  const idx = getNextLevelIndex();
-  const level = generateLevel(idx);
-  // store current level in localStorage
+function shuffleArray(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
+function getNextLevelIndex(){ return parseInt(localStorage.getItem('surveypay_next_level')||'1',10); }
+function incrementLevelIndex(){ const next=getNextLevelIndex()+1; localStorage.setItem('surveypay_next_level',String(next)); return next; }
+function startNextLevel(){
+  if(!user.activated){ showToast('🔒 Activate account to start levels'); openActivateModal(); return; }
+  const idx = getNextLevelIndex(); const level = generateLevel(idx);
   localStorage.setItem('surveypay_current_level', JSON.stringify(level));
-  // open a simple survey runner UI (lightweight)
   openLevelRunner(level);
 }
-
-// Simple level runner UI (non-destructive overlay)
-function openLevelRunner(level) {
-  const backdrop = document.getElementById('modal-backdrop');
-  backdrop.style.display = 'flex';
-  // create runner modal
-  const runner = document.createElement('div');
-  runner.className = 'modal';
-  runner.id = 'level-runner';
-  runner.style.display = 'flex';
-  runner.style.flexDirection = 'column';
-  runner.style.maxHeight = '80vh';
-  runner.style.overflow = 'auto';
-  runner.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
-    <div style="font-weight:900">Level ${level.level} · ${level.questions.length} Questions</div>
-    <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeLevelRunner()">Close</div>
-  </div>
-  <div id="level-questions" style="margin-top:12px"></div>
-  <div style="margin-top:12px;display:flex;gap:8px">
-    <button class="view-btn" style="flex:1" onclick="submitLevelAnswers()">Submit Level</button>
-    <button class="pbtn" style="flex:1" onclick="skipLevel()">Skip</button>
-  </div>`;
-  backdrop.appendChild(runner);
-  // render first 10 questions for performance, allow paging
-  renderLevelQuestions(level, 0);
+function openLevelRunner(level){
+  const backdrop = document.getElementById('modal-backdrop'); backdrop.style.display='flex';
+  const runner = document.createElement('div'); runner.className='modal'; runner.id='level-runner'; runner.style.display='flex'; runner.style.flexDirection='column'; runner.style.maxHeight='80vh'; runner.style.overflow='auto';
+  runner.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:900">Level ${level.level} · ${level.questions.length} Questions</div><div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeLevelRunner()">Close</div></div><div id="level-questions" style="margin-top:12px"></div><div style="margin-top:12px;display:flex;gap:8px"><button class="view-btn" style="flex:1" onclick="submitLevelAnswers()">Submit Level</button><button class="pbtn" style="flex:1" onclick="skipLevel()">Skip</button></div>`;
+  backdrop.appendChild(runner); renderLevelQuestions(level,0);
 }
-
-function renderLevelQuestions(level, page=0) {
-  const perPage = 10;
-  const start = page * perPage;
-  const end = Math.min(level.questions.length, start + perPage);
-  const container = document.getElementById('level-questions');
-  container.innerHTML = '';
+function renderLevelQuestions(level,page=0){
+  const perPage=10; const start=page*perPage; const end=Math.min(level.questions.length,start+perPage);
+  const container=document.getElementById('level-questions'); container.innerHTML='';
   for(let i=start;i<end;i++){
-    const q = level.questions[i];
-    const div = document.createElement('div');
-    div.style.marginBottom = '10px';
+    const q=level.questions[i]; const div=document.createElement('div'); div.style.marginBottom='10px';
     div.innerHTML = `<div style="font-weight:700;margin-bottom:6px">${i+1}. ${q.text}</div>`;
-    if(q.type === 'single' || q.type === 'multi') {
-      q.choices.forEach((c, idx) => {
-        const id = `q_${q.id}_c${idx}`;
-        div.innerHTML += `<label style="display:block;margin-bottom:6px"><input type="${q.type==='multi'?'checkbox':'radio'}" name="${q.id}" id="${id}" value="${c}"> ${c}</label>`;
-      });
-    } else if(q.type === 'scale') {
-      for(let s=1;s<= (q.scale||5); s++){
-        div.innerHTML += `<label style="margin-right:8px"><input type="radio" name="${q.id}" value="${s}"> ${s}</label>`;
-      }
-    } else {
-      div.innerHTML += `<textarea class="input" id="open_${q.id}" placeholder="Your answer"></textarea>`;
-    }
+    if(q.type==='single' || q.type==='multi'){ q.choices.forEach((c,idx)=>{ const id=`q_${q.id}_c${idx}`; div.innerHTML += `<label style="display:block;margin-bottom:6px"><input type="${q.type==='multi'?'checkbox':'radio'}" name="${q.id}" id="${id}" value="${c}"> ${c}</label>`; }); }
+    else if(q.type==='scale'){ for(let s=1;s<= (q.scale||5); s++){ div.innerHTML += `<label style="margin-right:8px"><input type="radio" name="${q.id}" value="${s}"> ${s}</label>`; } }
+    else { div.innerHTML += `<textarea class="input" id="open_${q.id}" placeholder="Your answer"></textarea>`; }
     container.appendChild(div);
   }
-  // paging controls
-  const pages = Math.ceil(level.questions.length / perPage);
-  const pager = document.createElement('div');
-  pager.style.display = 'flex';
-  pager.style.justifyContent = 'center';
-  pager.style.gap = '8px';
-  pager.style.marginTop = '8px';
-  for(let p=0;p<pages;p++){
-    const btn = document.createElement('button');
-    btn.className = 'preset-btn';
-    btn.textContent = (p+1);
-    btn.onclick = () => renderLevelQuestions(level, p);
-    pager.appendChild(btn);
-  }
+  const pages=Math.ceil(level.questions.length/perPage); const pager=document.createElement('div'); pager.style.display='flex'; pager.style.justifyContent='center'; pager.style.gap='8px'; pager.style.marginTop='8px';
+  for(let p=0;p<pages;p++){ const btn=document.createElement('button'); btn.className='preset-btn'; btn.textContent=(p+1); btn.onclick=()=>renderLevelQuestions(level,p); pager.appendChild(btn); }
   container.appendChild(pager);
 }
-
-function closeLevelRunner() {
-  const runner = document.getElementById('level-runner');
-  if(runner) runner.remove();
-  document.getElementById('modal-backdrop').style.display = 'none';
-}
-
-function skipLevel() {
-  closeLevelRunner();
-  showToast('Level skipped');
-}
-
-// Submit level answers: award reward (minimum $0.50 USD) and badge
-function submitLevelAnswers() {
-  const level = JSON.parse(localStorage.getItem('surveypay_current_level') || '{}');
-  if(!level || !level.level) { showToast('No active level'); return; }
-  // Award reward
+function closeLevelRunner(){ const runner=document.getElementById('level-runner'); if(runner) runner.remove(); document.getElementById('modal-backdrop').style.display='none'; }
+function skipLevel(){ closeLevelRunner(); showToast('Level skipped'); }
+function submitLevelAnswers(){
+  const level = JSON.parse(localStorage.getItem('surveypay_current_level')||'{}'); if(!level || !level.level){ showToast('No active level'); return; }
   const rewardUSD = Math.max(LEVEL_MIN_REWARD_USD, level.rewardUSD || LEVEL_MIN_REWARD_USD);
-  balance += rewardUSD;
-  availBalance += rewardUSD;
-  user.totalEarnedUSD += rewardUSD;
-  user.surveysDone += level.questions.length;
-  // award badge for level completion
-  const badge = `Level ${level.level} Complete`;
-  if(!user.badges.includes(badge)) user.badges.push(badge);
-  // increment level index for next time
-  incrementLevelIndex();
-  saveLocalState();
-  updateUIAfterEarnings();
-  closeLevelRunner();
-  showToast('🏅 Level ' + level.level + ' complete! +' + formatCurrency(rewardUSD, 'USD'));
+  balance += rewardUSD; availBalance += rewardUSD; user.totalEarnedUSD += rewardUSD; user.surveysDone += level.questions.length;
+  const badge = `Level ${level.level} Complete`; if(!user.badges.includes(badge)) user.badges.push(badge);
+  incrementLevelIndex(); saveLocalState(); updateUIAfterEarnings(); closeLevelRunner(); showToast('🏅 Level ' + level.level + ' complete! +' + formatCurrency(rewardUSD,'USD'));
 }
 
-// ---- Admin key for external generator (keeps built-in free generator if empty) ----
+/* ---------------- Admin key ---------------- */
 let adminGeneratorKey = localStorage.getItem('surveypay_admin_key') || '';
-function setAdminKey(key) {
-  adminGeneratorKey = key;
-  localStorage.setItem('surveypay_admin_key', key);
-  showToast('Admin key saved');
+function setAdminKey(key){ adminGeneratorKey = key; localStorage.setItem('surveypay_admin_key', key); showToast('Admin key saved'); }
+
+/* ---------------- Deposit via PayPal (masked email) ---------------- */
+function openDepositModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-deposit').style.display='block'; document.getElementById('modal-auth').style.display='none'; }
+function closeDepositModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-deposit').style.display='none'; }
+
+async function startDeposit(){
+  const amount = parseFloat(document.getElementById('deposit-amount').value);
+  if(!amount || amount <= 0){ showToast('⚠️ Enter a valid amount'); return; }
+  try{
+    const res = await fetch('/api/pay/paypal/create', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId: user.id, amount }) });
+    const data = await res.json();
+    if(data && data.redirectUrl){
+      window.open(data.redirectUrl, '_blank');
+      showToast('Redirecting to PayPal...');
+      closeDepositModal();
+    } else {
+      showToast('⚠️ Could not create PayPal payment');
+    }
+  }catch(e){ console.error(e); showToast('⚠️ Deposit failed'); }
 }
 
-// ---- Badges & profile updates already handled in updateUIAfterEarnings ----
-
-// ---- Initialization ----
-(async function init() {
-  // determine user currency from region mapping
+/* ---------------- Init ---------------- */
+(async function init(){
   userCurrency = regionToCurrency[userRegion] || userCurrency;
   await fetchRates();
-  // if exchangeRates fetched, persist
-  if(exchangeRates) {
-    localStorage.setItem('surveypay_rates', JSON.stringify(exchangeRates));
-  }
-  // ensure next level index exists
-  if(!localStorage.getItem('surveypay_next_level')) localStorage.setItem('surveypay_next_level', '1');
+  if(exchangeRates) localStorage.setItem('surveypay_rates', JSON.stringify(exchangeRates));
+  if(!localStorage.getItem('surveypay_next_level')) localStorage.setItem('surveypay_next_level','1');
   updateUIAfterEarnings();
-  // set activation display
   document.getElementById('activation-amount').textContent = convertFromKES(ACTIVATION_FEE_KES).formatted + ' (' + ACTIVATION_FEE_KES + ' KES)';
-  // wire start-level button label to show next level number
-  const btn = document.getElementById('start-level-btn');
-  const next = getNextLevelIndex();
-  btn.textContent = 'Start Level ' + next;
-  // update periodically
-  setInterval(()=> {
-    const next = getNextLevelIndex();
-    btn.textContent = 'Start Level ' + next;
-  }, 2000);
-  // ensure displayed username matches user object
+  const btn = document.getElementById('start-level-btn'); const next = getNextLevelIndex(); btn.textContent = 'Start Level ' + next;
+  setInterval(()=>{ const next = getNextLevelIndex(); btn.textContent = 'Start Level ' + next; },2000);
   document.getElementById('user-firstname').textContent = user.name.split(' ')[0] || user.name;
+  // attempt to request push token if user is already logged in (optional)
+  try{ /* no auto permission prompt here */ }catch(e){}
 })();
 
-// Ensure UI currency prefixes updated after rates fetched
-setTimeout(()=> {
-  updateCurrencyDisplay();
-}, 1200);
-
-// Save state periodically
+/* ---------------- Save state periodically ---------------- */
 setInterval(saveLocalState, 5000);
 
-// ---- AUTH: register & login (modified to call FCM token send) ----
-async function doRegister() {
+/* ---------------- Auth register/login (client placeholders) ---------------- */
+async function doRegister(){
   const name = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const pass = document.getElementById('reg-password').value.trim();
-  if(!name || !email || !pass) { showToast('⚠️ Fill all fields'); return; }
-  // Placeholder: store locally. Replace with backend /api/auth/register
+  if(!name || !email || !pass){ showToast('⚠️ Fill all fields'); return; }
   user = { ...user, name, handle: '@' + (name.split(' ')[0] || 'user').toLowerCase(), activated:false };
-  saveLocalState();
-  showToast('✅ Account created');
-  closeAuthModal();
-  updateUIAfterEarnings();
-  // request push token after registration (client-side)
-  try { requestPushPermissionAndSendToken(user.id); } catch(e){ console.warn(e); }
+  saveLocalState(); showToast('✅ Account created'); closeAuthModal(); updateUIAfterEarnings();
+  try{ requestPushPermissionAndSendToken(user.id); }catch(e){ console.warn(e); }
 }
-
-async function doLogin() {
+async function doLogin(){
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-password').value.trim();
-  if(!email || !pass) { showToast('⚠️ Fill all fields'); return; }
-  // Placeholder: accept any credentials. Replace with backend /api/auth/login
-  showToast('✅ Logged in');
-  closeAuthModal();
-  // request push token after login (client-side)
-  try { requestPushPermissionAndSendToken(user.id); } catch(e){ console.warn(e); }
+  if(!email || !pass){ showToast('⚠️ Fill all fields'); return; }
+  showToast('✅ Logged in'); closeAuthModal();
+  try{ requestPushPermissionAndSendToken(user.id); }catch(e){ console.warn(e); }
 }
 </script>
 </body>
