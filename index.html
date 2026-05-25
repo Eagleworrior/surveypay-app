@@ -847,6 +847,10 @@ nav { z-index: 200; }
   <div class="toast" id="toast"></div>
 </div>
 
+<!-- Firebase (compat) for web push -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
 <script>
 // ---- State ----
 let balance = 245.75;
@@ -1151,26 +1155,76 @@ function showLogin() {
   document.getElementById('login-form').style.display = 'block';
   document.getElementById('register-form').style.display = 'none';
 }
-async function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-password').value.trim();
-  if(!name || !email || !pass) { showToast('⚠️ Fill all fields'); return; }
-  // Placeholder: store locally. Replace with backend /api/auth/register
-  user = { ...user, name, handle: '@' + (name.split(' ')[0] || 'user').toLowerCase(), activated:false };
-  saveLocalState();
-  showToast('✅ Account created');
-  closeAuthModal();
-  updateUIAfterEarnings();
+
+// ---- Firebase Messaging client helpers (added) ----
+/* ---------- Firebase client config (filled) ---------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyCJxSae246Rh-8xc7loxOULiOHfSJjJDIU",
+  authDomain: "omnisuite-4f4f7.firebaseapp.com",
+  projectId: "omnisuite-4f4f7",
+  messagingSenderId: "53135596216",
+  appId: "1:53135596216:web:45b90079f9b50a17e8724d",
+  measurementId: "G-1LR7CXY762"
+};
+/* Paste your Web Push VAPID public key here (from Firebase Console -> Cloud Messaging) */
+const VAPID_KEY = "PASTE_YOUR_WEB_PUSH_VAPID_PUBLIC_KEY_HERE";
+
+/* Initialize Firebase (for messaging) */
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch(e) {
+  // ignore if already initialized
 }
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-password').value.trim();
-  if(!email || !pass) { showToast('⚠️ Fill all fields'); return; }
-  // Placeholder: accept any credentials. Replace with backend /api/auth/login
-  showToast('✅ Logged in');
-  closeAuthModal();
+const messaging = firebase.messaging();
+
+// Register service worker and set it for messaging
+async function initFCM() {
+  try {
+    const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    messaging.useServiceWorker(reg);
+    console.log('Service worker registered for FCM');
+  } catch (err) {
+    console.error('SW registration failed', err);
+  }
 }
+
+// Request permission, get token, send to server
+async function requestPushPermissionAndSendToken(userId) {
+  try {
+    if (!('Notification' in window)) {
+      console.warn('Notifications not supported');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      showToast('Push permission denied');
+      return;
+    }
+    const token = await messaging.getToken({ vapidKey: VAPID_KEY });
+    if (!token) { showToast('FCM token not available'); return; }
+    // send token to your server
+    await fetch('/api/user/' + encodeURIComponent(userId) + '/push-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+    showToast('Push notifications enabled');
+  } catch (e) {
+    console.error(e);
+    showToast('Failed to enable push');
+  }
+}
+
+// Handle foreground messages
+messaging.onMessage(payload => {
+  console.log('FCM foreground message', payload);
+  const title = payload.notification?.title || 'Notification';
+  const body = payload.notification?.body || '';
+  showToast(title + ' — ' + body);
+});
+
+// Initialize SW immediately
+initFCM();
 
 // ---- Activation modal & verification ----
 function openActivateModal() {
@@ -1414,7 +1468,33 @@ setTimeout(()=> {
 
 // ---- Save state periodically ----
 setInterval(saveLocalState, 5000);
-</script>
 
+// ---- AUTH: register & login (modified to call FCM token send) ----
+async function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-password').value.trim();
+  if(!name || !email || !pass) { showToast('⚠️ Fill all fields'); return; }
+  // Placeholder: store locally. Replace with backend /api/auth/register
+  user = { ...user, name, handle: '@' + (name.split(' ')[0] || 'user').toLowerCase(), activated:false };
+  saveLocalState();
+  showToast('✅ Account created');
+  closeAuthModal();
+  updateUIAfterEarnings();
+  // request push token after registration (client-side)
+  try { requestPushPermissionAndSendToken(user.id); } catch(e){ console.warn(e); }
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value.trim();
+  if(!email || !pass) { showToast('⚠️ Fill all fields'); return; }
+  // Placeholder: accept any credentials. Replace with backend /api/auth/login
+  showToast('✅ Logged in');
+  closeAuthModal();
+  // request push token after login (client-side)
+  try { requestPushPermissionAndSendToken(user.id); } catch(e){ console.warn(e); }
+}
+</script>
 </body>
 </html>
