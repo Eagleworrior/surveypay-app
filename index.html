@@ -1,144 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>SurveyPay — Dashboard</title>
-  <style>
-    :root {
-      --bg-body: #05010d;
-      --card-bg: #0b1220;
-      --accent-1: #6c5ce7;
-      --accent-2: #00d2ff;
-      --success: #00e676;
-      --text-main: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.6);
-    }
-    * { box-sizing: border-box; }
-    body { height: 100%; margin: 0; background: var(--bg-body); font-family: 'Inter', system-ui, sans-serif; color: var(--text-main); }
-    
-    .app { max-width: 1000px; margin: 0 auto; padding: 20px; }
-    
-    /* Layout */
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 10px 0; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .logo { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(45deg, #ffd166, #ef476f); }
-    
-    .grid-stats { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
-    @media (min-width: 600px) { .grid-stats { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 900px) { .grid-stats { grid-template-columns: repeat(4, 1fr); } }
-
-    .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-    
-    .btn { padding: 12px 20px; border-radius: 10px; background: linear-gradient(90deg, var(--accent-2), var(--accent-1)); color: #fff; text-decoration: none; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
-    .btn:hover { transform: scale(1.02); }
-
-    .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); }
-    .nav a { color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; }
-    
-    .hidden { display: none !important; }
-    .muted { color: var(--text-muted); font-size: 13px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyPay | Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-<div class="app">
-  <header>
-    <div class="brand">
-      <div class="logo"></div>
-      <div>
-        <div id="disp-greet" style="font-size: 18px; font-weight: 700;">Welcome</div>
-        <div class="muted" id="disp-handle">@guest</div>
-      </div>
+    <div class="max-w-md w-full glass p-8 rounded-3xl shadow-2xl border border-slate-700">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">SurveyPay</h1>
+            <p class="text-slate-400 text-sm mt-2">Premium Task Access</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Status</p>
+                <h2 id="status-text" class="text-lg font-black text-red-400">PENDING</h2>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Balance</p>
+                <h2 id="bal-text" class="text-lg font-black text-emerald-400">0.00</h2>
+            </div>
+        </div>
+
+        <button id="pay-btn" onclick="payWithPaystack()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 active:scale-95 transition-all rounded-xl font-bold text-sm uppercase tracking-widest shadow-lg shadow-blue-900/20">
+            Activate Account (180 KES)
+        </button>
+
+        <p class="text-[10px] text-center text-slate-600 mt-6 italic">Secure payments processed via Paystack</p>
     </div>
-    <div style="text-align: right;">
-      <div class="muted">Balance</div>
-      <div id="totalBalance" style="font-size: 24px; font-weight: 800; color: var(--success);">0.00</div>
-    </div>
-  </header>
 
-  <main id="app-content">
-    <section id="view-home">
-      <div class="grid-stats">
-        <div class="card">
-          <div class="muted">Active Surveys</div>
-          <div style="font-size: 20px; font-weight: 700;">12</div>
-        </div>
-        <div class="card">
-          <div class="muted">Account Status</div>
-          <div id="status-tag" style="font-size: 20px; font-weight: 700; color: #ff6b6b;">Inactive</div>
-        </div>
-      </div>
+    <script>
+        // Use your PUBLIC key here. This is the only key the SDK supports.
+        const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
 
-      <div class="card" id="auth-box">
-        <h3 style="margin-top:0">Create Account</h3>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <input id="regName" placeholder="Full Name" style="flex:1; padding: 10px; border-radius: 8px; border: none;">
-          <select id="regCountry" style="padding: 10px; border-radius: 8px;">
-            <option value="KE">Kenya (KES)</option>
-            <option value="NG">Nigeria (NGN)</option>
-            <option value="US">USA (USD)</option>
-          </select>
-          <button class="btn" onclick="register()">Join</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="view-surveys" class="hidden">
-      <h2>Available Surveys</h2>
-      <div id="survey-list" class="card">Loading surveys...</div>
-    </section>
-  </main>
-</div>
-
-<nav class="nav">
-  <a href="#" onclick="showView('home')">Home</a>
-  <a href="#" onclick="showView('surveys')">Surveys</a>
-  <a href="#" onclick="showView('wallet')">Wallet</a>
-</nav>
-
-<script>
-  // Configuration
-  const CURRENCY_RATES = { KE: { sym: 'KSh', rate: 1 }, NG: { sym: '₦', rate: 10 }, US: { sym: '$', rate: 0.007 } };
-  let user = JSON.parse(localStorage.getItem('survey_user')) || null;
-
-  function formatCurrency(amt, countryCode) {
-    const config = CURRENCY_RATES[countryCode] || CURRENCY_RATES.KE;
-    const finalAmt = amt * config.rate;
-    return `${config.sym} ${finalAmt.toLocaleString()}`;
-  }
-
-  function register() {
-    const name = document.getElementById('regName').value;
-    const country = document.getElementById('regCountry').value;
-    if(!name) return alert('Enter a name');
-    
-    user = { name, country, balance: 0, unlocked: false };
-    localStorage.setItem('survey_user', JSON.stringify(user));
-    location.reload();
-  }
-
-  function showView(viewId) {
-    document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-    document.getElementById('view-' + viewId).classList.remove('hidden');
-    
-    if(viewId === 'surveys' && !user?.unlocked) {
-      document.getElementById('survey-list').innerHTML = "Please activate your account to view surveys.";
-    }
-  }
-
-  function init() {
-    if(user) {
-      document.getElementById('disp-greet').innerText = user.name;
-      document.getElementById('disp-handle').innerText = "@" + user.name.toLowerCase().replace(' ', '_');
-      document.getElementById('totalBalance').innerText = formatCurrency(user.balance, user.country);
-      document.getElementById('status-tag').innerText = user.unlocked ? "Active" : "Inactive";
-      document.getElementById('status-tag').style.color = user.unlocked ? "var(--success)" : "#ff6b6b";
-      document.getElementById('auth-box').classList.add('hidden');
-    }
-  }
-
-  init();
-</script>
+        function payWithPaystack() {
+            const handler = PaystackPop.setup({
+                key: PUBLIC_KEY,
+                email: 'user@surveypay.com', 
+                amount: 18000, // 180 KES in kobo
+                currency: 'KES',
+                callback: function(response) {
+                    // Success logic
+                    alert('Success! Transaction ID: ' + response.reference);
+                    document.getElementById('status-text').innerText = "ACTIVE";
+                    document.getElementById('status-text').classList.replace('text-red-400', 'text-emerald-400');
+                    document.getElementById('bal-text').innerText = "180.00";
+                },
+                onClose: function() {
+                    alert('Payment window closed.');
+                }
+            });
+            handler.openIframe();
+        }
+    </script>
 </body>
 </html>
