@@ -7,42 +7,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
-        body { background: #080a0f; color: #fff; font-family: 'Segoe UI', sans-serif; }
-        .glass { background: rgba(20, 25, 35, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .gradient-text { background: linear-gradient(to right, #22d3ee, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { background: #0b0e14; color: #fff; font-family: 'Inter', sans-serif; }
+        .bg-card { background: linear-gradient(145deg, #1a1f2e, #11141c); }
+        .gradient-btn { background: linear-gradient(90deg, #2563eb, #3b82f6); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="flex justify-center items-center min-h-screen p-4">
 
-    <div id="auth-screen" class="max-w-md w-full glass p-8 rounded-3xl">
-        <h1 class="text-3xl font-black text-center gradient-text mb-6">SurveyPay Login</h1>
-        <div class="space-y-4">
-            <input type="text" id="username" placeholder="Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white">
-            <button onclick="login()" class="w-full py-4 bg-blue-600 rounded-xl font-bold hover:bg-blue-500">LOGIN / SIGN UP</button>
-        </div>
+    <div id="login-view" class="max-w-sm w-full bg-card p-8 rounded-3xl shadow-2xl border border-slate-700">
+        <h1 class="text-3xl font-black text-center mb-2">SurveyPay</h1>
+        <p class="text-slate-400 text-center text-sm mb-8">Sign in to start earning</p>
+        <input type="text" id="username" placeholder="Enter Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
+        <button onclick="handleLogin()" class="w-full py-4 gradient-btn rounded-xl font-bold text-white shadow-lg shadow-blue-900/50">JOIN NOW</button>
     </div>
 
-    <div id="dashboard-screen" class="hidden max-w-md w-full space-y-6">
-        <header class="glass p-4 rounded-2xl flex justify-between items-center">
-            <h1 class="font-black gradient-text">SurveyPay</h1>
-            <div id="user-display" class="text-sm font-bold text-cyan-400"></div>
-        </header>
-
-        <div class="glass p-6 rounded-2xl text-center border-t-4 border-cyan-500">
-            <p class="text-slate-400 text-xs">Available Balance</p>
-            <h2 id="balance-amt" class="text-4xl font-black mt-2">$0.00</h2>
-            <button id="activate-btn" onclick="payWithPaystack()" class="mt-4 w-full py-3 bg-emerald-600 rounded-xl font-bold hover:bg-emerald-500">
+    <div id="dash-view" class="hidden max-w-sm w-full space-y-6">
+        <div class="bg-card p-6 rounded-3xl border border-slate-700">
+            <h2 class="text-xs font-bold text-slate-500 uppercase">Available Balance</h2>
+            <p id="balance-disp" class="text-4xl font-black text-emerald-400">$0.00</p>
+            <button id="pay-btn" onclick="payWithPaystack(event)" class="mt-6 w-full py-4 bg-emerald-600 rounded-xl font-bold shadow-lg shadow-emerald-900/20">
                 ACTIVATE ACCOUNT (KES 180)
             </button>
         </div>
 
         <div class="space-y-3">
-            <h3 class="text-sm font-bold text-slate-400 uppercase">Available Surveys</h3>
-            <div class="glass p-4 rounded-xl flex justify-between items-center">
+            <h3 class="text-sm font-bold text-slate-400 uppercase">Surveys</h3>
+            <div class="glass p-4 rounded-2xl flex justify-between items-center">
                 <span>Product Feedback</span>
                 <span class="text-emerald-400 font-bold">+$5.00</span>
             </div>
-            <div class="glass p-4 rounded-xl flex justify-between items-center">
+            <div class="glass p-4 rounded-2xl flex justify-between items-center">
                 <span>Travel Habits</span>
                 <span class="text-emerald-400 font-bold">+$4.50</span>
             </div>
@@ -50,45 +45,50 @@
     </div>
 
     <script>
+        // CONFIG
         const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
 
-        // Auth Logic
-        function login() {
+        // AUTH
+        function handleLogin() {
             const user = document.getElementById('username').value;
-            if(user) {
-                localStorage.setItem('user', user);
-                showDashboard();
+            if (user) {
+                localStorage.setItem('surveypay_user', user);
+                renderApp();
             }
         }
 
-        function showDashboard() {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-            document.getElementById('user-display').innerText = localStorage.getItem('user');
+        function renderApp() {
+            if (localStorage.getItem('surveypay_user')) {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('dash-view').classList.remove('hidden');
+            }
         }
 
-        // Check if logged in
-        if(localStorage.getItem('user')) showDashboard();
-
-        // Paystack Logic (Fixed)
-        function payWithPaystack() {
+        // PAYMENT
+        function payWithPaystack(event) {
+            event.preventDefault(); // Prevents the browser from reloading
+            
             const handler = PaystackPop.setup({
                 key: PUBLIC_KEY,
-                email: 'user@example.com',
-                amount: 18000, // 180 KES in kobo
+                email: 'user@surveypay.com',
+                amount: 180 * 100, // 180 KES
                 currency: 'KES',
                 callback: function(response) {
                     alert('Success! Reference: ' + response.reference);
-                    document.getElementById('activate-btn').innerText = "ACCOUNT ACTIVE";
-                    document.getElementById('activate-btn').classList.replace('bg-emerald-600', 'bg-gray-700');
-                    document.getElementById('balance-amt').innerText = "$180.00";
+                    document.getElementById('balance-disp').innerText = "$180.00";
+                    document.getElementById('pay-btn').innerText = "ACCOUNT ACTIVE";
+                    document.getElementById('pay-btn').classList.replace('bg-emerald-600', 'bg-slate-700');
+                    document.getElementById('pay-btn').onclick = null;
                 },
                 onClose: function() {
-                    console.log("User closed payment window");
+                    console.log("Payment window closed");
                 }
             });
             handler.openIframe();
         }
+
+        // INIT
+        renderApp();
     </script>
 </body>
 </html>
