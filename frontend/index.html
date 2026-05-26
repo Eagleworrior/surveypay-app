@@ -1,568 +1,169 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SurveyPay — Dashboard</title>
-
-  <!-- SurveyJS (community) -->
-  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
-  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-  <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
-
-  <style>
-    :root{
-      --bg1:#0f1724; --accent1:#6c5ce7; --accent2:#00d2ff; --card:#0b1220;
-      --glass: rgba(255,255,255,0.04);
-      --success:#00e676; --danger:#ff6b6b;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--accent1),#2b2d42 60%);}
-    .app{max-width:980px;margin:24px auto;padding:20px;color:#fff;}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(45deg,#ffd166,#ef476f);box-shadow:0 8px 28px rgba(0,0,0,0.45)}
-    .greet{font-size:18px}
-    .balance{font-weight:700;font-size:28px}
-    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.5);backdrop-filter: blur(6px)}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),#7b61ff);color:#fff;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);cursor:pointer;border:none}
-    .survey-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(90deg,#0f1724, rgba(255,255,255,0.02));margin-bottom:10px}
-    .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,0.25);backdrop-filter: blur(6px);display:flex;justify-content:space-around;padding:10px;border-top-left-radius:12px;border-top-right-radius:12px}
-    .nav a{color:#fff;text-decoration:none;font-size:13px}
-    .hidden{display:none}
-    .big-cta{display:flex;gap:12px;align-items:center}
-    .badge{background:linear-gradient(90deg,#ffd166,#ff6b6b);padding:6px 10px;border-radius:999px;color:#000;font-weight:700}
-    .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#00e676,#00d2ff)}
-    .center{display:flex;align-items:center;justify-content:center}
-    .modal{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
-    .modal .box{background:#071022;padding:20px;border-radius:12px;width:420px;max-width:92%}
-    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-top:8px}
-    .muted{color:rgba(255,255,255,0.6);font-size:13px}
-    .small{font-size:13px;padding:6px 10px;border-radius:8px}
-    .table{width:100%;border-collapse:collapse}
-    .table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .leaderboard-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:8px}
-    .notice{padding:10px;border-radius:10px;background:linear-gradient(90deg,#00d2ff,#7b61ff);color:#000;font-weight:700;margin-bottom:12px}
-    @media (max-width:720px){
-      .grid4{grid-template-columns:repeat(2,1fr)}
-      .balance{font-size:20px}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyPay — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
+    <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { background: #05010d; font-family: 'Inter', sans-serif; color: #fff; }
+        .glass { background: rgba(15, 7, 36, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .tab-active { color: #00d2ff !important; border-bottom: 2px solid #00d2ff; }
+    </style>
 </head>
-<body>
-  <div class="app">
+<body class="max-w-md mx-auto min-h-screen flex flex-col relative">
 
-    <!-- Header -->
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div class="greet">Welcome back, <strong id="userName">Create account</strong></div>
-          <div class="muted" id="userHandle">@createaccount</div>
+    <section id="view-auth" class="flex-1 flex flex-col items-center justify-center p-6">
+        <div class="glass w-full p-8 rounded-3xl text-center shadow-2xl">
+            <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">SurveyPay</h1>
+            <p class="text-gray-400 text-xs mb-8 uppercase tracking-widest font-bold">Global Data Ecosystem</p>
+            
+            <div id="reg-form" class="space-y-4 text-left">
+                <input id="in-name" type="text" placeholder="Full Name" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white">
+                <select id="in-country" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-gray-300">
+                    <option value="KE">Kenya (KES)</option>
+                    <option value="NG">Nigeria (NGN)</option>
+                    <option value="US">USA (USD)</option>
+                </select>
+                <button onclick="registerUser()" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-xl font-black text-white">CREATE ACCOUNT</button>
+                <button onclick="toggleAuth()" class="w-full text-xs text-gray-500 font-bold underline">Already have an account? Login</button>
+            </div>
+
+            <div id="login-form" class="hidden space-y-4 text-left">
+                <input id="in-login-name" type="text" placeholder="Enter Full Name" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white">
+                <button onclick="loginUser()" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl font-black text-white">LOGIN</button>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="big-cta">
-        <div style="text-align:right">
-          <div class="muted">Total Balance</div>
-          <div class="balance" id="totalBalance">0.00</div>
-        </div>
-        <div style="width:12px"></div>
-        <div class="badge" id="levelBadge">Level 1</div>
-      </div>
-    </header>
-
-    <div class="notice" id="topNotice">Welcome — create an account to start earning. Your balance will be zero until you complete surveys.</div>
-
-    <!-- Main views container -->
-    <main id="mainViews">
-
-      <!-- Home Dashboard -->
-      <section id="view-home">
-        <div class="grid4" id="quickActions">
-          <div class="card center">
+    <div id="view-main" class="hidden flex-1 flex flex-col">
+        <header class="p-6 flex justify-between items-center bg-black/20">
             <div>
-              <div class="muted">Quick Surveys</div>
-              <div style="font-weight:700">Short Tasks</div>
+                <h2 id="disp-name" class="text-lg font-black text-white"></h2>
+                <p id="disp-currency" class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider"></p>
             </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">High Paying</div>
-              <div style="font-weight:700">Big Rewards</div>
+            <div class="text-right">
+                <p class="text-[9px] text-gray-500 font-black uppercase">Balance</p>
+                <h2 id="disp-balance" class="text-xl font-black text-emerald-400">0.00</h2>
             </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">Product Testing</div>
-              <div style="font-weight:700">Try Products</div>
-            </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">Daily Polls</div>
-              <div style="font-weight:700">New Polls</div>
-            </div>
-          </div>
-        </div>
+        </header>
 
-        <section id="featured">
-          <h3 style="margin:0 0 8px 0">Featured Surveys</h3>
-          <div class="survey-card">
-            <div>
-              <div style="font-weight:700">Tech Trends Survey</div>
-              <div class="muted">10 Minutes • 50 Questions</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:800">Earn $5.00</div>
-              <button class="btn" onclick="startSurvey('tech')">START SURVEY</button>
-            </div>
-          </div>
+        <main class="flex-1 px-6 pb-24 space-y-6 overflow-y-auto">
+            <section id="content-home" class="space-y-4">
+                <div class="glass p-5 rounded-2xl border-l-4 border-purple-500">
+                    <p class="text-[10px] text-purple-400 font-black uppercase">Account Status</p>
+                    <h3 id="status-text" class="text-sm font-bold">Unactivated</h3>
+                    <button id="activate-btn" onclick="openUnlockModal()" class="mt-3 w-full bg-purple-600 py-2 rounded-lg text-xs font-bold">ACTIVATE NOW</button>
+                </div>
+                <h3 class="text-xs font-black text-gray-500 uppercase">Featured Surveys</h3>
+                <div id="survey-list" class="space-y-3"></div>
+            </section>
 
-          <div class="survey-card">
-            <div>
-              <div style="font-weight:700">Shopping Habits Survey</div>
-              <div class="muted">8 Minutes • 35 Questions</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:800">Earn $3.50</div>
-              <button class="btn" onclick="startSurvey('shopping')">START SURVEY</button>
-            </div>
-          </div>
-        </section>
+            <section id="content-wallet" class="hidden space-y-4">
+                <div class="glass p-8 rounded-3xl text-center border-t border-emerald-500">
+                    <p class="text-gray-400 text-xs font-bold uppercase">Total Earned</p>
+                    <h1 id="wallet-balance" class="text-5xl font-black text-emerald-400 my-4">0.00</h1>
+                    <button onclick="withdraw()" class="w-full bg-emerald-600 py-4 rounded-xl font-black">WITHDRAW FUNDS</button>
+                </div>
+            </section>
+        </main>
 
-        <!-- Unlock banner -->
-        <div style="margin-top:14px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#1b2a47,#0b1220);display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-weight:700">Unlock Survey Dashboard</div>
-            <div class="muted">Pay <strong id="unlockAmountText">KES 180</strong> via Paybill <strong id="paybillText">880100</strong> to access surveys</div>
-          </div>
-          <div>
-            <!-- Activate button triggers Paystack init on server -->
-            <button id="activateBtn" class="btn" onclick="openUnlockModal()">Activate Account</button>
-          </div>
-        </div>
-
-        <!-- Earnings card -->
-        <div style="margin-top:18px" class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div class="muted">Available Balance</div>
-              <div id="availableBalance" style="font-weight:800">0.00</div>
-            </div>
-            <div>
-              <button class="btn" onclick="openWithdrawModal()">Withdraw</button>
-            </div>
-          </div>
-          <div style="margin-top:12px" class="muted">Minimum withdrawal depends on your country. Default: KES 18,000</div>
-        </div>
-
-        <!-- Login / Register -->
-        <div style="margin-top:18px" class="card">
-          <h3 style="margin:0 0 8px 0">Account</h3>
-          <div id="authArea">
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input id="regName" placeholder="Full name" />
-              <input id="regUsername" placeholder="Username" />
-              <select id="regCountry">
-                <option value="KE">Kenya (KES)</option>
-                <option value="NG">Nigeria (NGN)</option>
-                <option value="US">United States (USD)</option>
-                <option value="UG">Uganda (UGX)</option>
-                <option value="TZ">Tanzania (TZS)</option>
-                <option value="GB">United Kingdom (GBP)</option>
-                <option value="IN">India (INR)</option>
-                <option value="ZA">South Africa (ZAR)</option>
-                <option value="EU">Eurozone (EUR)</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
-              <button class="btn" onclick="registerUser()">Create Account</button>
-              <button class="small" onclick="showLogin()">Already have account</button>
-            </div>
-          </div>
-
-          <div id="loginArea" class="hidden" style="margin-top:12px">
-            <input id="loginUsername" placeholder="Username" />
-            <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
-              <button class="small" onclick="hideLogin()">Cancel</button>
-              <button class="btn" onclick="loginUser()">Login</button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- Other sections (surveys, profile, withdrawal, etc.) are unchanged and omitted here for brevity -->
-      <!-- Keep the rest of the sections from the previous file (surveys, profile, withdrawal, survey-run, complete, referral, earnings, settings, support, leaderboard) -->
-      <!-- ... -->
-
-    </main>
-  </div>
-
-  <!-- Bottom nav -->
-  <nav class="nav">
-    <a href="#" onclick="showView('home')">Home</a>
-    <a href="#" onclick="showView('surveys')">Surveys</a>
-    <a href="#" onclick="showView('rewards')">Rewards</a>
-    <a href="#" onclick="showView('more')">More</a>
-  </nav>
-
-  <!-- Unlock modal (includes Paystack card option) -->
-  <div id="unlockModal" class="modal hidden" style="display:none">
-    <div class="box">
-      <h3>Activate Account</h3>
-      <p class="muted">Pay <strong id="unlockAmountModal">KES 180</strong> via Paybill <strong id="paybillModal">880100</strong>. After payment, enter your transaction code below.</p>
-      <label>Country</label>
-      <select id="countrySelect">
-        <option value="KE">Kenya (KES)</option>
-        <option value="NG">Nigeria (NGN)</option>
-        <option value="UG">Uganda (UGX)</option>
-        <option value="TZ">Tanzania (TZS)</option>
-        <option value="US">United States (USD)</option>
-        <option value="GB">United Kingdom (GBP)</option>
-        <option value="EU">Eurozone (EUR)</option>
-        <option value="IN">India (INR)</option>
-        <option value="OTHER">Other</option>
-      </select>
-      <label>Transaction Code</label>
-      <input id="txCode" placeholder="Enter Paybill transaction code" />
-      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button class="small" onclick="closeUnlockModal()">Cancel</button>
-        <button class="btn" onclick="verifyUnlock()">Verify & Unlock</button>
-      </div>
-      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
-      <div class="muted">Or pay with card via Paystack</div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <input id="paystackEmail" placeholder="Email for receipt" />
-        <button class="btn" id="paystackActivateBtn" onclick="payWithPaystackPrompt()">Activate with Card</button>
-      </div>
+        <nav class="fixed bottom-0 w-full glass border-t border-white/10 flex justify-around p-4 z-50">
+            <button onclick="setTab('home')" class="text-xs font-black uppercase text-gray-400 flex flex-col items-center"><i class="fa fa-home"></i>Home</button>
+            <button onclick="setTab('wallet')" class="text-xs font-black uppercase text-gray-400 flex flex-col items-center"><i class="fa fa-wallet"></i>Wallet</button>
+        </nav>
     </div>
-  </div>
 
-  <!-- Withdraw modal -->
-  <div id="withdrawModal" class="modal hidden" style="display:none">
-    <div class="box">
-      <h3>Withdraw Funds</h3>
-      <div class="muted">Available: <span id="withdrawAvail">0.00</span></div>
-      <label>Amount</label>
-      <input id="withdrawAmount" placeholder="Enter amount" />
-      <label>Method</label>
-      <select id="withdrawMethod">
-        <option value="mpesa">M-Pesa</option>
-        <option value="paypal">PayPal</option>
-        <option value="bank">Bank Transfer</option>
-      </select>
-      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button class="small" onclick="closeWithdrawModal()">Cancel</button>
-        <button class="btn" onclick="submitWithdraw()">Withdraw Now</button>
-      </div>
+    <div id="modal-unlock" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+        <div class="glass w-full p-6 rounded-3xl text-center">
+            <h2 class="text-xl font-black mb-4">Unlock Premium</h2>
+            <button onclick="payWithPaystack()" class="w-full bg-cyan-600 py-4 rounded-xl font-bold">PAY WITH CARD</button>
+            <button onclick="closeModal()" class="mt-4 text-gray-500 font-bold text-sm">Cancel</button>
+        </div>
     </div>
-  </div>
 
-<script>
-/* -------------------------
-   Client logic and flows
-   ------------------------- */
+    <script>
+        // CONFIG & STATE
+        const currencyMap = { 'KE': { sym: 'KSh', rate: 1 }, 'NG': { sym: '₦', rate: 11.5 }, 'US': { sym: '$', rate: 0.0076 } };
+        let user = JSON.parse(localStorage.getItem('user_data'));
 
-/* Display & currency helpers */
-const DEFAULT_UNLOCK_AMOUNT = { KE: 180, NG: 500, UG: 5000, TZ: 5000, US: 2, GB: 2, EU: 2, IN: 150 };
-const MIN_WITHDRAWAL = { KE: 18000, NG: 5000, US: 200, UG: 50000, TZ: 50000, GB: 50, EU: 50, IN: 15000 };
+        // APP INIT
+        function init() {
+            if (user) {
+                document.getElementById('view-auth').classList.add('hidden');
+                document.getElementById('view-main').classList.remove('hidden');
+                renderDashboard();
+            }
+        }
 
-let CONFIG = { paystackPublicKey: null, paybillNumber: '880100' };
-let currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 0, unlocked: false };
+        // AUTH
+        function registerUser() {
+            const name = document.getElementById('in-name').value;
+            const country = document.getElementById('in-country').value;
+            if(!name) return alert('Enter name');
+            user = { name, country, balance: 0, unlocked: false };
+            localStorage.setItem('user_data', JSON.stringify(user));
+            location.reload();
+        }
 
-/* Init: load config and user */
-async function initApp(){
-  try {
-    const res = await fetch('/api/config');
-    if(res.ok){
-      CONFIG = await res.json();
-      document.getElementById('paybillText').innerText = CONFIG.paybillNumber || '880100';
-      document.getElementById('paybillModal').innerText = CONFIG.paybillNumber || '880100';
-      document.getElementById('unlockAmountText').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
-      document.getElementById('unlockAmountModal').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
-    }
-  } catch(e){
-    console.warn('Could not load config, using defaults');
-  }
+        function loginUser() {
+            const name = document.getElementById('in-login-name').value;
+            if(user && user.name === name) {
+                location.reload();
+            } else { alert('User not found'); }
+        }
 
-  const saved = localStorage.getItem('survey_user');
-  if(saved){
-    currentUser = JSON.parse(saved);
-  } else {
-    currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 0, unlocked: false };
-  }
-  renderUser();
-  loadSurveyList();
-  loadLeaderboard();
-  updateEarningsUI();
-}
+        function toggleAuth() {
+            document.getElementById('reg-form').classList.toggle('hidden');
+            document.getElementById('login-form').classList.toggle('hidden');
+        }
 
-/* Render user info */
-function renderUser(){
-  document.getElementById('userName').innerText = currentUser.name || 'Create account';
-  document.getElementById('userHandle').innerText = '@' + (currentUser.username || 'createaccount');
-  document.getElementById('totalBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('availableBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('withdrawAvail').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('profileName').innerText = currentUser.name || '—';
-  document.getElementById('profileHandle').innerText = '@' + (currentUser.username || '—');
-  document.getElementById('profileSince').innerText = currentUser.name ? new Date().toLocaleDateString() : '—';
-  document.getElementById('profileEarned').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('profileCompleted').innerText = 0;
-  const notice = document.getElementById('topNotice');
-  if(!currentUser.name) notice.innerText = 'Welcome — create an account to start earning. Your balance will be zero until you complete surveys.';
-  else if(!currentUser.unlocked) notice.innerText = `Hello ${currentUser.name} — unlock surveys by paying ${DEFAULT_UNLOCK_AMOUNT[currentUser.country] || DEFAULT_UNLOCK_AMOUNT['KE']} ${currentUser.currency}.`;
-  else notice.innerText = `Welcome back ${currentUser.name} — surveys unlocked. Your balance updates after each completed survey.`;
-}
+        // DASHBOARD LOGIC
+        function renderDashboard() {
+            const cur = currencyMap[user.country];
+            const bal = (user.balance * cur.rate).toLocaleString();
+            document.getElementById('disp-name').innerText = user.name;
+            document.getElementById('disp-currency').innerText = user.country;
+            document.getElementById('disp-balance').innerText = cur.sym + ' ' + bal;
+            document.getElementById('wallet-balance').innerText = cur.sym + ' ' + bal;
+            document.getElementById('status-text').innerText = user.unlocked ? 'Account Active' : 'Account Inactive';
+            if(user.unlocked) document.getElementById('activate-btn').classList.add('hidden');
+        }
 
-/* Format currency using Intl when possible */
-function formatCurrency(amount, currency){
-  try {
-    if(!currency) currency = 'USD';
-    return new Intl.NumberFormat(undefined, { style:'currency', currency }).format(amount);
-  } catch(e){
-    if(currency === 'KES') return 'KES ' + Number(amount).toLocaleString();
-    if(currency === 'NGN') return 'NGN ' + Number(amount).toLocaleString();
-    if(currency === 'USD') return '$' + Number(amount).toFixed(2);
-    return Number(amount).toFixed(2);
-  }
-}
+        function setTab(tab) {
+            document.getElementById('content-home').classList.toggle('hidden', tab !== 'home');
+            document.getElementById('content-wallet').classList.toggle('hidden', tab !== 'wallet');
+        }
 
-/* Navigation */
-function showView(view){
-  const sections = document.querySelectorAll('main section');
-  sections.forEach(s => s.classList.add('hidden'));
-  const el = document.getElementById('view-' + view);
-  if(el) el.classList.remove('hidden');
-  if(view === 'surveys') loadSurveyList();
-}
+        // PAYMENTS
+        function openUnlockModal() { document.getElementById('modal-unlock').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('modal-unlock').classList.add('hidden'); }
 
-/* Registration & login (localStorage-based) */
-function registerUser(){
-  const name = document.getElementById('regName').value.trim();
-  const username = document.getElementById('regUsername').value.trim();
-  const country = document.getElementById('regCountry').value;
-  if(!name || !username){ alert('Enter name and username'); return; }
-  currentUser = { name, username, country, currency: countryToCurrency(country), balance: 0, unlocked: false };
-  localStorage.setItem('survey_user', JSON.stringify(currentUser));
-  document.getElementById('regName').value = '';
-  document.getElementById('regUsername').value = '';
-  renderUser();
-  alert('Account created. Please activate to unlock surveys.');
-}
-function showLogin(){ document.getElementById('authArea').classList.add('hidden'); document.getElementById('loginArea').classList.remove('hidden'); }
-function hideLogin(){ document.getElementById('loginArea').classList.add('hidden'); document.getElementById('authArea').classList.remove('hidden'); }
-function loginUser(){
-  const username = document.getElementById('loginUsername').value.trim();
-  if(!username){ alert('Enter username'); return; }
-  const saved = localStorage.getItem('survey_user');
-  if(!saved){ alert('No account found locally. Create one.'); return; }
-  const u = JSON.parse(saved);
-  if(u.username !== username){ alert('Username not found locally'); return; }
-  currentUser = u;
-  renderUser();
-  hideLogin();
-  alert('Logged in as ' + currentUser.name);
-}
-function countryToCurrency(country){
-  const map = { KE:'KES', NG:'NGN', US:'USD', UG:'UGX', TZ:'TZS', GB:'GBP', EU:'EUR', IN:'INR' };
-  return map[country] || 'USD';
-}
+        function payWithPaystack() {
+            let handler = PaystackPop.setup({
+                key: 'pk_test_YOUR_KEY', // Replace with your Public Key
+                email: 'user@example.com',
+                amount: 18000, 
+                currency: 'KES',
+                callback: function(response) {
+                    user.unlocked = true;
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    location.reload();
+                }
+            });
+            handler.openIframe();
+        }
 
-/* Survey list and SurveyJS integration */
-async function loadSurveyList(){
-  const container = document.getElementById('surveyList');
-  container.innerHTML = '';
-  try {
-    const resTech = await fetch('/api/surveys/tech');
-    const resShop = await fetch('/api/surveys/shopping');
-    const tech = resTech.ok ? await resTech.json() : null;
-    const shop = resShop.ok ? await resShop.json() : null;
-    const surveys = [];
-    if(tech) surveys.push({ id:'tech', title: tech.title || 'Tech Trends Survey', reward: 5.00, time:'10 min' });
-    if(shop) surveys.push({ id:'shopping', title: shop.title || 'Shopping Habits Survey', reward: 3.50, time:'8 min' });
-    if(surveys.length === 0){
-      container.innerHTML = '<div class="muted">No surveys available right now.</div>';
-      return;
-    }
-    surveys.forEach(s => {
-      const card = document.createElement('div');
-      card.className = 'survey-card';
-      card.innerHTML = `<div><div style="font-weight:700">${s.title}</div><div class="muted">${s.time}</div></div>
-                        <div style="text-align:right"><div style="font-weight:800">Earn ${formatCurrency(s.reward, 'USD')}</div>
-                        <button class="btn" onclick="startSurvey('${s.id}')">START SURVEY</button></div>`;
-      container.appendChild(card);
-    });
-  } catch(e){
-    container.innerHTML = '<div class="muted">Failed to load surveys.</div>';
-  }
-}
+        function withdraw() { alert("Withdrawal processed for " + user.name); }
 
-async function startSurvey(id){
-  if(!currentUser.name){ alert('Create an account or login first'); return; }
-  if(!currentUser.unlocked){ alert('You must activate your account first.'); return; }
-  try {
-    const res = await fetch('/api/surveys/' + id);
-    if(!res.ok) { alert('Survey not found'); return; }
-    const surveyJson = await res.json();
-    document.getElementById('surveyTitle').innerText = surveyJson.title || 'Survey';
-    showView('survey-run');
-    renderSurvey(surveyJson);
-  } catch(e){
-    alert('Failed to load survey');
-  }
-}
-
-function renderSurvey(surveyJson){
-  document.getElementById('surveyElement').innerHTML = '';
-  const survey = new Survey.Model(surveyJson);
-  survey.onComplete.add(function(result) {
-    fetch('/api/submit-survey', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, survey: result.data })
-    }).then(r=>r.json()).then(j=>{
-      if(j.success){
-        const reward = j.reward || 3.5;
-        currentUser.balance = (currentUser.balance || 0) + reward;
-        localStorage.setItem('survey_user', JSON.stringify(currentUser));
-        renderUser();
-        document.getElementById('completeEarn').innerText = formatCurrency(reward, currentUser.currency);
-        showView('complete');
-      } else {
-        alert('Submission failed');
-      }
-    }).catch(()=>alert('Network error'));
-  });
-  Survey.SurveyNG.render('surveyElement', { model: survey });
-}
-
-/* Unlock flow (manual Paybill verification + Paystack init option) */
-function openUnlockModal(){ document.getElementById('unlockModal').style.display = 'flex'; }
-function closeUnlockModal(){ document.getElementById('unlockModal').style.display = 'none'; }
-
-async function verifyUnlock(){
-  const tx = document.getElementById('txCode').value.trim();
-  const country = document.getElementById('countrySelect').value;
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(!tx){ alert('Enter transaction code from Paybill payment.'); return; }
-  try {
-    const res = await fetch('/api/unlock', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, txCode: tx, country })
-    });
-    const j = await res.json();
-    if(res.ok && j.success){
-      currentUser.unlocked = true;
-      localStorage.setItem('survey_user', JSON.stringify(currentUser));
-      renderUser();
-      closeUnlockModal();
-      alert('Activated! You can now access surveys.');
-    } else {
-      alert('Verification failed: ' + (j.message || 'unknown'));
-    }
-  } catch(e){
-    alert('Network error');
-  }
-}
-
-/* Paystack card flow (server init -> redirect). Backend must implement /api/paystack-init */
-async function payWithPaystackPrompt(){
-  const email = document.getElementById('paystackEmail').value.trim();
-  const amount = DEFAULT_UNLOCK_AMOUNT[currentUser.country] || DEFAULT_UNLOCK_AMOUNT['KE'];
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(!email){ alert('Enter email for receipt'); return; }
-  try {
-    const res = await fetch('/api/paystack-init', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ amount, email })
-    });
-    const j = await res.json();
-    if(!res.ok || !j.success){
-      alert('Payment init failed: ' + (j.message || ''));
-      return;
-    }
-    // Redirect to Paystack checkout (authorization_url returned by server)
-    window.location.href = j.authorization_url;
-  } catch(e){
-    alert('Payment error');
-  }
-}
-
-/* Withdraw flow */
-function openWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'flex'; }
-function closeWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'none'; }
-
-async function submitWithdraw(){
-  const amt = parseFloat(document.getElementById('withdrawAmount').value);
-  const method = document.getElementById('withdrawMethod').value;
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(isNaN(amt) || amt <= 0){ alert('Enter a valid amount'); return; }
-  const min = MIN_WITHDRAWAL[currentUser.country] || MIN_WITHDRAWAL['KE'];
-  if(amt < min){
-    alert(`Minimum withdrawal for your country is ${min}`);
-    return;
-  }
-  try {
-    const res = await fetch('/api/withdraw', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, amount: amt, country: currentUser.country, method })
-    });
-    const j = await res.json();
-    if(res.ok && j.success){
-      alert('Withdrawal requested');
-      closeWithdrawModal();
-    } else {
-      alert('Error: ' + (j.message || 'unknown'));
-    }
-  } catch(e){
-    alert('Network error');
-  }
-}
-
-/* Referral, leaderboard, settings (placeholders) */
-function copyReferral(){ navigator.clipboard.writeText(document.getElementById('refCode').value); alert('Referral code copied'); }
-function shareReferral(){ alert('Share dialog simulated'); }
-function editProfile(){ alert('Edit profile simulated'); }
-function viewEarnings(){ showView('earnings'); }
-function saveSettings(){ alert('Settings saved'); }
-function openLiveChat(){ alert('Live chat simulated'); }
-function openTicket(){ alert('Ticket submitted (simulated)'); }
-
-/* Leaderboard demo */
-function loadLeaderboard(){
-  const list = document.getElementById('leaderboardList');
-  list.innerHTML = '';
-  const top = [
-    { name:'Alex Johnson', amount:1250.75 },
-    { name:'Sarah Miller', amount:980.50 },
-    { name:'Mike Carter', amount:875.65 },
-    { name: currentUser.name || 'You', amount: currentUser.balance || 0 }
-  ];
-  top.forEach((p, i) => {
-    const row = document.createElement('div');
-    row.className = 'leaderboard-row';
-    row.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(90deg,#ffd166,#ff6b6b)"></div><div><div style="font-weight:700">${p.name}</div><div class="muted">#${i+1}</div></div></div><div style="font-weight:800">${formatCurrency(p.amount, 'USD')}</div>`;
-    list.appendChild(row);
-  });
-}
-
-/* Earnings UI */
-function updateEarningsUI(){
-  document.getElementById('weekEarnings').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('todayEarnings').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('totalEarnings').innerText = formatCurrency(currentUser.balance || 0, currentUser.currency);
-}
-
-/* Utility: load initial data */
-initApp();
-
-/* Expose showView to nav */
-window.showView = showView;
-</script>
+        init();
+    </script>
 </body>
 </html>
