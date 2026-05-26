@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SurveyPay Pro | Ultimate Dashboard</title>
+    <title>SurveyPay Pro | Complete Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
@@ -18,7 +18,7 @@
         <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">SurveyPay</h1>
         <p class="text-slate-400 mb-8">Join the premium network</p>
         <div class="w-full space-y-4">
-            <input type="text" id="reg-user" placeholder="Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl">
+            <input type="text" id="reg-user" placeholder="Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white">
             <select id="reg-currency" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white">
                 <option value="KES">Kenya (KES)</option>
                 <option value="USD">USA (USD)</option>
@@ -57,15 +57,17 @@
     </div>
 
     <script>
-        // KEYS INTEGRATED
+        // CONFIG - KEYS PROVIDED
         const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
         const SECRET_KEY = "sk_live_88e31b65b6c16121f6eea02fec2282cb6ddf067f"; 
         
         const RATES = { KES: 1, USD: 0.0077, EUR: 0.0071 };
         
+        // --- LOGIC ---
         function register() {
             const user = document.getElementById('reg-user').value;
             const curr = document.getElementById('reg-currency').value;
+            if(!user) return alert("Enter a username");
             localStorage.setItem('user', user);
             localStorage.setItem('currency', curr);
             localStorage.setItem('balance', 0);
@@ -104,7 +106,10 @@
 
         function activateAccount() {
             const curr = localStorage.getItem('currency');
-            const amount = Math.round(180 * RATES[curr] * 100); 
+            const rate = RATES[curr];
+            // Fix: Ensure amount is an integer
+            const amount = Math.round(180 * rate * 100); 
+
             PaystackPop.setup({
                 key: PUBLIC_KEY,
                 email: 'user@surveypay.com',
@@ -112,14 +117,14 @@
                 currency: curr,
                 callback: (res) => {
                     localStorage.setItem('activated', 'true');
-                    alert("Account Activated!");
+                    alert("Account Activated! Reference: " + res.reference);
                     location.reload();
                 }
             }).openIframe();
         }
 
         function withdraw() {
-            if(localStorage.getItem('activated') !== 'true') return alert("Activate first!");
+            if(localStorage.getItem('activated') !== 'true') return alert("Activate account first!");
             const curr = localStorage.getItem('currency');
             const bal = parseFloat(localStorage.getItem('balance'));
             const min = 18000 * RATES[curr];
