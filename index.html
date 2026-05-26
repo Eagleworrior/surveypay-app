@@ -1,890 +1,618 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>SurveyPay – Earn Money Taking Surveys</title>
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0a0820;--bg2:#0f0d2a;--bg3:#151236;--card:rgba(255,255,255,0.06);
-  --card-border:rgba(255,255,255,0.12);--accent:#7c5cfc;--accent2:#f7b731;
-  --green:#2ed573;--red:#ff4757;--blue:#1e90ff;--text:#ffffff;--text2:rgba(255,255,255,0.6);
-  --text3:rgba(255,255,255,0.35);--radius:16px;--radius-sm:10px;--nav-h:68px;
-}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SurveyPay — Dashboard</title>
 
-/* Layout & base */
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:auto;-webkit-overflow-scrolling:touch}
-#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg)}
+  <!-- SurveyJS (community) -->
+  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
+  <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
 
-/* Ambient glow */
-#app::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(124,92,252,0.3) 0%,transparent 70%);pointer-events:none;z-index:0}
-
-/* Screens */
-.screen{display:none;flex-direction:column;flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(var(--nav-h)+8px);position:relative;z-index:1;scroll-behavior:smooth}
-.screen.active{display:flex}
-.screen::-webkit-scrollbar{display:none}
-
-/* Nav */
-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;height:var(--nav-h);width:calc(100% - 24px);max-width:430px;background:rgba(10,8,32,0.95);backdrop-filter:blur(20px);border-radius:14px;border:1px solid var(--card-border);display:flex;z-index:400;padding:8px}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:none;border:none;color:var(--text3);font-family:'DM Sans';font-size:11px;font-weight:500;border-radius:10px;padding:6px}
-.nav-btn.active{color:var(--accent2);background:linear-gradient(90deg,rgba(247,183,49,0.06),rgba(124,92,252,0.03))}
-.nav-btn svg{width:20px;height:20px;stroke-width:1.6}
-
-/* Header */
-.page-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
-.page-title{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
-.icon-btn{width:40px;height:40px;background:var(--card);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
-
-/* Home */
-.welcome-banner{margin:16px 20px 0;padding:18px 20px;background:linear-gradient(135deg,#1a1240 0%,#0f0d2a 100%);border:1px solid var(--card-border);border-radius:var(--radius);position:relative;overflow:hidden}
-.welcome-banner::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(124,92,252,0.4) 0%,transparent 70%)}
-.welcome-text{font-size:13px;color:var(--text2);margin-bottom:4px}
-.welcome-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:700}
-
-/* Balance */
-.balance-card{margin:12px 20px 0;padding:24px;background:linear-gradient(135deg,#5c35e8 0%,#7c5cfc 50%,#9b6eff 100%);border-radius:var(--radius);position:relative;overflow:hidden}
-.balance-card::before{content:'';position:absolute;right:-30px;bottom:-30px;width:160px;height:160px;background:rgba(255,255,255,0.08);border-radius:50%}
-.balance-label{font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
-.balance-amount{font-family:'Exo 2',sans-serif;font-size:42px;font-weight:900;line-height:1}
-.balance-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px}
-.today-badge{background:rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;text-align:right}
-.today-label{font-size:11px;color:rgba(255,255,255,0.7)}
-.today-amount{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:700;color:#fff}
-
-/* Category grid */
-.section-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:700;margin:20px 20px 12px;display:flex;align-items:center;justify-content:space-between}
-.section-title span{font-size:12px;color:var(--accent);font-family:'DM Sans';font-weight:500;cursor:pointer}
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px}
-.cat-card{padding:16px;border-radius:var(--radius);border:1px solid var(--card-border);cursor:pointer;display:flex;align-items:center;gap:12px;transition:transform .15s,opacity .15s}
-.cat-card:active{transform:scale(.96);opacity:.8}
-.cat-card.blue{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
-.cat-card.orange{background:linear-gradient(135deg,#9a3412,#ea580c)}
-.cat-card.green{background:linear-gradient(135deg,#14532d,#16a34a)}
-.cat-card.purple{background:linear-gradient(135deg,#4c1d95,#7c3aed)}
-.cat-icon{width:38px;height:38px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.cat-name{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700}
-.cat-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px}
-
-/* Featured */
-.featured-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px}
-.feat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:transform .15s}
-.feat-icon{font-size:28px;margin-bottom:8px}
-.feat-title{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;margin-bottom:4px}
-.feat-earn{font-size:20px;font-weight:700;color:var(--green);font-family:'Exo 2',sans-serif}
-.feat-meta{font-size:10px;color:var(--text3);margin:4px 0}
-.start-btn{width:100%;padding:8px;background:var(--accent);border:none;border-radius:8px;color:white;font-size:11px;font-weight:700;font-family:'Exo 2';cursor:pointer}
-.start-btn:hover{background:#9b6eff}
-
-/* Bonus */
-.bonus-banner{margin:16px 20px;padding:16px 18px;background:linear-gradient(135deg,#1a1040,#0f0d2a);border:1px solid rgba(247,183,49,0.3);border-radius:var(--radius);display:flex;align-items:center;gap:12px}
-.bonus-progress-bar{height:5px;background:rgba(255,255,255,0.1);border-radius:10px;margin-top:6px;overflow:hidden}
-.bonus-progress-fill{height:100%;background:var(--accent2);border-radius:10px;width:33%}
-.view-btn{padding:8px 14px;background:var(--accent2);border:none;border-radius:8px;color:#000;font-size:11px;font-weight:800;cursor:pointer}
-
-/* Surveys list */
-.surveys-header{padding:20px 20px 0}
-.stat-pill{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:6px 14px;font-size:12px}
-.stat-pill .val{color:var(--green);font-weight:600}
-.filter-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-.ftab{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid var(--card-border);background:none;color:var(--text2);cursor:pointer}
-.ftab.active{background:var(--accent);border-color:var(--accent);color:white}
-.survey-list{padding:12px 20px;display:flex;flex-direction:column;gap:10px}
-.survey-item{padding:14px 16px;border-radius:var(--radius);border:1px solid var(--card-border);display:flex;align-items:center;gap:14px;cursor:pointer}
-.s-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
-.s-info{flex:1;min-width:0}
-.s-name{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
-.s-meta{font-size:11px;color:var(--text3)}
-.s-earn{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--green);margin-bottom:4px}
-.s-start-btn{padding:8px 14px;border-radius:8px;border:none;font-size:11px;font-weight:800;cursor:pointer}
-
-/* Rewards */
-.rewards-grid{padding:12px 20px 120px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.reward-card{background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-
-/* Withdraw */
-.withdraw-header{display:flex;align-items:center;gap:12px;padding:16px 20px}
-.back-btn{font-size:18px;cursor:pointer;color:var(--text2)}
-.avail-balance{padding:12px 20px}
-.avail-label{font-size:12px;color:var(--text2)}
-.avail-amount{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;margin-top:6px}
-.method-grid{display:flex;gap:10px;padding:12px 20px}
-.method-card{flex:1;background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;cursor:pointer;text-align:center}
-.method-card.selected{border-color:var(--accent);box-shadow:0 6px 18px rgba(124,92,252,0.12)}
-.amount-section{padding:12px 20px}
-.amt-input-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--card-border);padding:8px;border-radius:10px}
-.amt-prefix{padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--text2)}
-.amt-input{background:transparent;border:none;outline:none;color:var(--text);font-size:16px;width:100%}
-.preset-btns{display:flex;gap:8px;margin-top:8px}
-.preset-btn{padding:8px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:8px;cursor:pointer;color:var(--text2)}
-.fee-row{padding:12px 20px;display:flex;justify-content:space-between;gap:12px}
-.fee-line{display:flex;gap:8px;align-items:center}
-.green{color:var(--green);font-weight:800}
-.withdraw-btn{margin:12px 20px;padding:12px;background:linear-gradient(90deg,#2ed573,#1e90ff);border:none;border-radius:12px;font-weight:900;cursor:pointer}
-
-/* Recent */
-.recent-section{padding:12px 20px 120px}
-.recent-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
-.recent-icon{font-size:20px}
-.recent-info{flex:1}
-.recent-name{font-weight:700}
-.recent-date{font-size:12px;color:var(--text3)}
-.recent-amt{font-weight:800;color:var(--green)}
-
-/* Profile */
-.profile-hero{display:flex;gap:12px;align-items:center;padding:12px 20px}
-.avatar{width:64px;height:64px;border-radius:16px;background:linear-gradient(90deg,#7c5cfc,#5c35e8);display:flex;align-items:center;justify-content:center;font-weight:900;font-family:'Exo 2';font-size:20px}
-.profile-name{font-weight:800;font-family:'Exo 2'}
-.profile-handle{font-size:12px;color:var(--text2)}
-.profile-since{font-size:11px;color:var(--text3);margin-top:6px}
-.stats-row{display:flex;gap:8px;padding:12px 20px}
-.stat-card{flex:1;background:var(--card);border:1px solid var(--card-border);padding:12px;border-radius:12px;text-align:center}
-.stat-label{font-size:12px;color:var(--text2)}
-.stat-val{font-weight:800;margin-top:6px}
-
-/* Level & achievements */
-.level-bar-wrap{padding:12px 20px}
-.lbar{height:10px;background:rgba(255,255,255,0.06);border-radius:10px;margin-top:8px;overflow:hidden}
-.lbar-fill{width:40%;height:100%;background:linear-gradient(90deg,#f7b731,#fff)}
-.achiev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 20px 120px}
-.achiev-item{background:var(--card);border:1px solid var(--card-border);padding:10px;border-radius:12px;display:flex;gap:10px;align-items:center}
-
-/* Interests & profile buttons */
-.interests-wrap{padding:12px 20px 120px}
-.interests-grid{display:flex;gap:8px;flex-wrap:wrap}
-.int-tag{background:var(--card);border:1px solid var(--card-border);padding:8px 10px;border-radius:12px;font-size:13px;display:flex;gap:8px;align-items:center}
-.profile-btns{display:flex;gap:8px;padding:12px 20px 120px}
-.pbtn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--card-border);background:transparent;color:var(--text2);cursor:pointer}
-.pbtn.edit{background:linear-gradient(90deg,#7c5cfc,#5c35e8);color:#fff;border:none}
-
-/* Modal & toast */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1000}
-.modal{width:92%;max-width:420px;background:#0b0a1a;border-radius:14px;padding:16px;border:1px solid var(--card-border)}
-.input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--card-border);background:transparent;color:var(--text);margin-top:8px}
-.small{font-size:12px;color:var(--text2);margin-top:6px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h)+40px);background:rgba(0,0,0,0.8);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;opacity:0;transition:opacity .18s,transform .18s;z-index:9999}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
-
-/* Responsive */
-@media(max-width:420px){.balance-amount{font-size:36px}}
-</style>
+  <style>
+    :root{
+      --bg1:#0f1724; --accent1:#6c5ce7; --accent2:#00d2ff; --card:#0b1220;
+      --glass: rgba(255,255,255,0.04);
+      --success:#00e676; --danger:#ff6b6b;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--accent1),#2b2d42 60%);}
+    .app{max-width:980px;margin:24px auto;padding:20px;color:#fff;}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(45deg,#ffd166,#ef476f);box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+    .greet{font-size:18px}
+    .balance{font-weight:700;font-size:28px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.5);backdrop-filter: blur(6px)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),#7b61ff);color:#fff;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);cursor:pointer;border:none}
+    .survey-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(90deg,#0f1724, rgba(255,255,255,0.02));margin-bottom:10px}
+    .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,0.25);backdrop-filter: blur(6px);display:flex;justify-content:space-around;padding:10px;border-top-left-radius:12px;border-top-right-radius:12px}
+    .nav a{color:#fff;text-decoration:none;font-size:13px}
+    .hidden{display:none}
+    .big-cta{display:flex;gap:12px;align-items:center}
+    .badge{background:linear-gradient(90deg,#ffd166,#ff6b6b);padding:6px 10px;border-radius:999px;color:#000;font-weight:700}
+    .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#00e676,#00d2ff)}
+    .center{display:flex;align-items:center;justify-content:center}
+    .modal{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
+    .modal .box{background:#071022;padding:20px;border-radius:12px;width:420px}
+    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-top:8px}
+    .muted{color:rgba(255,255,255,0.6);font-size:13px}
+    .topbar-actions{display:flex;gap:8px;align-items:center}
+    .small{font-size:13px;padding:6px 10px;border-radius:8px}
+    .table{width:100%;border-collapse:collapse}
+    .table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .leaderboard-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:8px}
+  </style>
 </head>
 <body>
-<div id="app">
+  <div class="app">
 
-  <!-- HOME -->
-  <div class="screen active" id="screen-home">
-    <div class="page-header">
-      <div class="page-title">SurveyPay</div>
-      <div class="icon-btn" onclick="openAuthModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4z"/><path d="M6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1"/></svg>
-      </div>
-    </div>
-
-    <div class="welcome-banner">
-      <div class="welcome-text">Welcome back, <strong id="user-firstname">Alex</strong></div>
-      <div class="welcome-title">Your earnings are waiting</div>
-    </div>
-
-    <div class="balance-card">
-      <div class="balance-label">Total Balance</div>
-      <div class="balance-amount" id="home-balance">$245.75</div>
-      <div class="balance-row">
-        <div class="today-badge">
-          <div class="today-label">Today</div>
-          <div class="today-amount">+$18.50</div>
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="greet">Welcome back, <strong id="userName">Guest</strong></div>
+          <div class="muted" id="userHandle">@guest</div>
         </div>
+      </div>
+
+      <div class="topbar-actions">
         <div style="text-align:right">
-          <div style="font-size:12px;color:rgba(255,255,255,0.8)">Available</div>
-          <div style="font-weight:800;font-size:18px" id="survey-balance">$245.75</div>
+          <div class="muted">Total Balance</div>
+          <div class="balance" id="totalBalance">$0.00</div>
         </div>
+        <div style="width:12px"></div>
+        <div class="badge" id="levelBadge">Level 1</div>
       </div>
-    </div>
+    </header>
 
-    <div class="section-title">Earn</div>
-    <div class="cat-grid" style="padding-bottom:12px">
-      <div class="cat-card blue" onclick="switchTab('surveys')">
-        <div class="cat-icon">📝</div>
-        <div><div class="cat-name">Quick Surveys</div><div class="cat-sub">Short Tasks</div></div>
-      </div>
-      <div class="cat-card orange" onclick="switchTab('surveys')">
-        <div class="cat-icon">💰</div>
-        <div><div class="cat-name">High Paying</div><div class="cat-sub">Big Rewards</div></div>
-      </div>
-      <div class="cat-card green" onclick="switchTab('surveys')">
-        <div class="cat-icon">🧪</div>
-        <div><div class="cat-name">Product Testing</div><div class="cat-sub">Try Products</div></div>
-      </div>
-      <div class="cat-card purple" onclick="switchTab('surveys')">
-        <div class="cat-icon">📊</div>
-        <div><div class="cat-name">Daily Polls</div><div class="cat-sub">New Polls</div></div>
-      </div>
-    </div>
+    <!-- Main views container -->
+    <main id="mainViews">
 
-    <div class="section-title">Featured Surveys <span onclick="switchTab('surveys')">View all</span></div>
-    <div class="featured-row">
-      <div class="feat-card" onclick="startSurvey('Tech Trends Survey',5.00)">
-        <div class="feat-icon">💡</div>
-        <div class="feat-title">Tech Trends Survey</div>
-        <div class="feat-earn">$5.00</div>
-        <div class="feat-meta">10 min · 50 questions</div>
-        <button class="start-btn" onclick="startSurvey('Tech Trends Survey',5.00)">START SURVEY</button>
-      </div>
-      <div class="feat-card" onclick="startSurvey('Shopping Habits Survey',3.50)">
-        <div class="feat-icon">🛍️</div>
-        <div class="feat-title">Shopping Habits Survey</div>
-        <div class="feat-earn">$3.50</div>
-        <div class="feat-meta">8 min · 35 questions</div>
-        <button class="start-btn" onclick="startSurvey('Shopping Habits Survey',3.50)">START SURVEY</button>
-      </div>
-    </div>
-
-    <div class="bonus-banner">
-      <div class="bonus-text">
-        <div class="bonus-title">Complete <strong>3 More Surveys</strong> to Get a $10 Bonus!</div>
-        <div class="bonus-progress-bar"><div class="bonus-progress-fill" id="bonus-fill" style="width:33%"></div></div>
-        <div class="bonus-sub">Progress: <span id="bonus-count">1</span> / 3</div>
-      </div>
-      <button class="view-btn" onclick="showToast('Bonus details')">VIEW BONUS</button>
-    </div>
-
-    <button class="floating-action" id="start-level-btn" onclick="startNextLevel()">Start Level</button>
-  </div>
-
-  <!-- SURVEYS -->
-  <div class="screen" id="screen-surveys">
-    <div class="surveys-header">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="page-title">Surveys</div>
-          <div class="stat-pill"><span class="val" id="stat-available">$58.75</span></div>
+      <!-- Home Dashboard -->
+      <section id="view-home">
+        <div class="grid4" id="quickActions">
+          <div class="card center">
+            <div>
+              <div class="muted">Quick Surveys</div>
+              <div style="font-weight:700">Short Tasks</div>
+            </div>
+          </div>
+          <div class="card center">
+            <div>
+              <div class="muted">High Paying</div>
+              <div style="font-weight:700">Big Rewards</div>
+            </div>
+          </div>
+          <div class="card center">
+            <div>
+              <div class="muted">Product Testing</div>
+              <div style="font-weight:700">Try Products</div>
+            </div>
+          </div>
+          <div class="card center">
+            <div>
+              <div class="muted">Daily Polls</div>
+              <div style="font-weight:700">New Polls</div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button class="ftab active" onclick="filterSurveys('all', this)">All</button>
-          <button class="ftab" onclick="filterSurveys('high', this)">High Paying</button>
-          <button class="ftab" onclick="filterSurveys('quick', this)">Quick</button>
-          <button class="ftab" onclick="filterSurveys('new', this)">New</button>
+
+        <section id="featured">
+          <h3 style="margin:0 0 8px 0">Featured Surveys</h3>
+          <div class="survey-card">
+            <div>
+              <div style="font-weight:700">Tech Trends Survey</div>
+              <div class="muted">10 Minutes • 50 Questions</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:800">Earn $5.00</div>
+              <button class="btn" onclick="startSurvey('tech')">START SURVEY</button>
+            </div>
+          </div>
+
+          <div class="survey-card">
+            <div>
+              <div style="font-weight:700">Shopping Habits Survey</div>
+              <div class="muted">8 Minutes • 35 Questions</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:800">Earn $3.50</div>
+              <button class="btn" onclick="startSurvey('shopping')">START SURVEY</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Unlock banner -->
+        <div style="margin-top:14px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#1b2a47,#0b1220);display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700">Unlock Survey Dashboard</div>
+            <div class="muted">Pay <strong id="unlockAmountText">KES 180</strong> via Paybill <strong id="paybillText">880100</strong> to access surveys</div>
+          </div>
+          <div>
+            <button class="btn" onclick="openUnlockModal()">Pay KES 180</button>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="survey-list" id="survey-list"></div>
+        <!-- Earnings card -->
+        <div style="margin-top:18px" class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="muted">Available Balance</div>
+              <div id="availableBalance" style="font-weight:800">$0.00</div>
+            </div>
+            <div>
+              <button class="btn" onclick="openWithdrawModal()">Withdraw</button>
+            </div>
+          </div>
+          <div style="margin-top:12px" class="muted">Minimum withdrawal depends on your country. Default: KES 18,000</div>
+        </div>
+      </section>
+
+      <!-- Surveys list -->
+      <section id="view-surveys" class="hidden">
+        <h2>Surveys</h2>
+        <div id="surveyList"></div>
+      </section>
+
+      <!-- Profile -->
+      <section id="view-profile" class="hidden">
+        <h2>My Profile</h2>
+        <div class="card">
+          <table class="table">
+            <tr><td><strong>Name</strong></td><td id="profileName">Guest</td></tr>
+            <tr><td><strong>Username</strong></td><td id="profileHandle">@guest</td></tr>
+            <tr><td><strong>Member Since</strong></td><td id="profileSince">—</td></tr>
+            <tr><td><strong>Total Earned</strong></td><td id="profileEarned">$0.00</td></tr>
+            <tr><td><strong>Surveys Completed</strong></td><td id="profileCompleted">0</td></tr>
+          </table>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn" onclick="editProfile()">Edit Profile</button>
+            <button class="btn" onclick="viewEarnings()">Earnings History</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Withdrawal -->
+      <section id="view-withdrawal" class="hidden">
+        <h2>Withdraw</h2>
+        <div class="card">
+          <div class="muted">Available: <strong id="withdrawAvail">$0.00</strong></div>
+          <div style="margin-top:12px">
+            <label>Amount</label>
+            <input id="withdrawAmountInput" placeholder="Enter amount" />
+            <label style="margin-top:8px">Method</label>
+            <select id="withdrawMethodSelect">
+              <option value="mpesa">M-Pesa</option>
+              <option value="paypal">PayPal</option>
+              <option value="bank">Bank Transfer</option>
+            </select>
+            <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+              <button class="small" onclick="showView('home')">Cancel</button>
+              <button class="btn" onclick="submitWithdraw()">Withdraw Now</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Survey container (SurveyJS renders here) -->
+      <section id="view-survey-run" class="hidden">
+        <h2 id="surveyTitle">Survey</h2>
+        <div id="surveyElement"></div>
+      </section>
+
+      <!-- Survey completion -->
+      <section id="view-complete" class="hidden">
+        <div class="card center" style="flex-direction:column;gap:12px">
+          <div style="font-size:28px;font-weight:800">Survey Completed!</div>
+          <div class="muted">You earned <strong id="completeEarn">$0.00</strong></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn" onclick="showView('surveys')">Take Another Survey</button>
+            <button class="btn" onclick="showView('home')">Go Home</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Referral -->
+      <section id="view-referral" class="hidden">
+        <h2>Referrals</h2>
+        <div class="card">
+          <div class="muted">Invite friends & earn bonuses</div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <input id="refCode" value="INVITE123" />
+            <button class="btn" onclick="copyReferral()">COPY CODE</button>
+            <button class="btn" onclick="shareReferral()">SHARE</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Earnings -->
+      <section id="view-earnings" class="hidden">
+        <h2>Earnings</h2>
+        <div class="card">
+          <div style="display:flex;gap:12px">
+            <div style="flex:1">
+              <div class="muted">This Week</div>
+              <div style="font-weight:800" id="weekEarnings">$0.00</div>
+            </div>
+            <div style="flex:1">
+              <div class="muted">Today</div>
+              <div style="font-weight:800" id="todayEarnings">$0.00</div>
+            </div>
+            <div style="flex:1">
+              <div class="muted">Total</div>
+              <div style="font-weight:800" id="totalEarnings">$0.00</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="view-settings" class="hidden">
+        <h2>Settings</h2>
+        <div class="card">
+          <label>Theme</label>
+          <select id="themeSelect">
+            <option value="dark">Dark (selected)</option>
+            <option value="light">Light</option>
+            <option value="vibrant">Vibrant</option>
+          </select>
+          <label style="margin-top:8px">Notifications</label>
+          <select id="notifSelect">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
+          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn" onclick="saveSettings()">Save</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section id="view-support" class="hidden">
+        <h2>Support</h2>
+        <div class="card">
+          <div style="display:flex;gap:8px">
+            <button class="btn" onclick="openLiveChat()">Live Chat</button>
+            <button class="btn" onclick="openTicket()">Submit Ticket</button>
+          </div>
+          <div style="margin-top:12px" class="muted">support@surveyapp.com</div>
+        </div>
+      </section>
+
+      <!-- Leaderboard -->
+      <section id="view-leaderboard" class="hidden">
+        <h2>Leaderboard</h2>
+        <div class="card" id="leaderboardList"></div>
+      </section>
+
+    </main>
   </div>
 
-  <!-- REWARDS -->
-  <div class="screen" id="screen-rewards">
-    <div class="page-header"><div class="page-title">Rewards 🏆</div></div>
-    <div class="rewards-hero">
-      <div class="rewards-title">1,240 Points</div>
-      <div class="rewards-pts">You're 260 points away from Gold status!</div>
-      <div style="margin-top:12px;height:8px;background:rgba(255,255,255,0.2);border-radius:10px;overflow:hidden">
-        <div style="height:100%;width:83%;background:linear-gradient(90deg,#f7b731,#fff);border-radius:10px"></div>
-      </div>
-    </div>
-    <div class="section-title" style="margin-top:16px">Redeem Rewards</div>
-    <div class="rewards-grid">
-      <div class="reward-card"><div class="reward-icon">🎮</div><div class="reward-name">Amazon Gift Card</div><div class="reward-pts">500 points</div><button class="redeem-btn" onclick="showToast('Amazon Gift Card redeemed!')">Redeem</button></div>
-      <div class="reward-card"><div class="reward-icon">☕</div><div class="reward-name">Starbucks Voucher</div><div class="reward-pts">300 points</div><button class="redeem-btn" onclick="showToast('Starbucks Voucher redeemed!')">Redeem</button></div>
-      <div class="reward-card"><div class="reward-icon">📱</div><div class="reward-name">Airtime Top-Up</div><div class="reward-pts">200 points</div><button class="redeem-btn" onclick="showToast('Airtime added to your number!')">Redeem</button></div>
-      <div class="reward-card"><div class="reward-icon">💵</div><div class="reward-name">Cash Bonus $5</div><div class="reward-pts">400 points</div><button class="redeem-btn" onclick="redeemCash()">Redeem</button></div>
-      <div class="reward-card"><div class="reward-icon">🎬</div><div class="reward-name">Netflix Credit</div><div class="reward-pts">600 points</div><button class="redeem-btn" onclick="showToast('Netflix credit applied!')">Redeem</button></div>
-      <div class="reward-card"><div class="reward-icon">✈️</div><div class="reward-name">Travel Miles</div><div class="reward-pts">1000 points</div><button class="redeem-btn" onclick="showToast('1000 travel miles added!')">Redeem</button></div>
-    </div>
-  </div>
+  <!-- Bottom nav -->
+  <nav class="nav">
+    <a href="#" onclick="showView('home')">Home</a>
+    <a href="#" onclick="showView('surveys')">Surveys</a>
+    <a href="#" onclick="showView('rewards')">Rewards</a>
+    <a href="#" onclick="showView('more')">More</a>
+  </nav>
 
-  <!-- WITHDRAW -->
-  <div class="screen" id="screen-withdraw">
-    <div class="withdraw-header">
-      <div class="back-btn" onclick="switchTab('home')">←</div>
-      <div style="flex:1;text-align:center"><div class="page-title">Withdraw Funds</div></div>
-      <div style="font-size:12px;color:var(--accent);cursor:pointer" onclick="openDepositModal()">Deposit</div>
-    </div>
-
-    <div class="avail-balance">
-      <div class="avail-label">Available Balance</div>
-      <div class="avail-amount" id="avail-amount">$58.75</div>
-    </div>
-
-    <div class="section-title" style="margin-top:16px">Withdrawal Method</div>
-    <div class="method-grid">
-      <div class="method-card selected" onclick="selectMethod(this,'mpesa')"><div class="method-icon">📱</div><div class="method-name">M-PESA</div><div class="method-sub">Mobile Money</div></div>
-      <div class="method-card" onclick="selectMethod(this,'paypal')"><div class="method-icon">💳</div><div class="method-name">PayPal</div><div class="method-sub">Transfer Funds</div></div>
-      <div class="method-card" onclick="selectMethod(this,'bank')"><div class="method-icon">🏦</div><div class="method-name">Bank Transfer</div><div class="method-sub">Direct to Account</div></div>
-    </div>
-
-    <div class="amount-section">
-      <div class="amt-label">Withdraw Amount</div>
-      <div class="amt-input-wrap">
-        <div class="amt-prefix" id="currency-prefix">$</div>
-        <input class="amt-input" type="number" id="amt-input" value="50.00" oninput="calcFee()">
-      </div>
-      <div class="preset-btns">
-        <button class="preset-btn" onclick="setAmt(10)">$10</button>
-        <button class="preset-btn" onclick="setAmt(25)">$25</button>
-        <button class="preset-btn" onclick="setAmt(50)">$50</button>
-      </div>
-    </div>
-
-    <div class="fee-row">
-      <div class="fee-line"><span style="color:var(--text2)">Fee</span><span><span id="currency-prefix-2">$</span><span id="fee-amt">2.00</span></span></div>
-      <div class="fee-line"><span>Total Payout</span><span class="green"><span id="currency-prefix-3">$</span><span id="payout-amt">48.00</span></span></div>
-    </div>
-
-    <button class="withdraw-btn" onclick="doWithdraw()">💸  WITHDRAW NOW</button>
-
-    <div class="recent-section">
-      <div class="section-title" style="margin:0 0 8px">Recent Withdrawals</div>
-      <div class="recent-item"><div class="recent-icon">💳</div><div class="recent-info"><div class="recent-name">PayPal Withdrawal</div><div class="recent-date">May 20, 2026</div></div><div class="recent-amt">+$45.00</div></div>
-      <div class="recent-item"><div class="recent-icon">📱</div><div class="recent-info"><div class="recent-name">M-Pesa Withdrawal</div><div class="recent-date">May 14, 2026</div></div><div class="recent-amt">+$30.00</div></div>
-      <div class="recent-item"><div class="recent-icon">🏦</div><div class="recent-info"><div class="recent-name">Bank Transfer</div><div class="recent-date">May 5, 2026</div></div><div class="recent-amt">+$50.00</div></div>
-    </div>
-  </div>
-
-  <!-- PROFILE -->
-  <div class="screen" id="screen-profile">
-    <div class="page-header">
-      <div class="page-title">My Profile</div>
-      <div class="icon-btn" onclick="showToast('Settings coming soon!')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      </div>
-    </div>
-
-    <div class="profile-hero">
-      <div class="avatar" id="profile-avatar">AJ</div>
-      <div>
-        <div class="profile-name" id="profile-name">Alex Johnson</div>
-        <div class="profile-handle" id="profile-handle">@alexj1989</div>
-        <div class="profile-since" id="profile-since">Member since Jan 2020</div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Total Earned</div><div class="stat-val" id="stat-total-earned">$1,280</div></div>
-      <div class="stat-card"><div class="stat-label">Surveys Done</div><div class="stat-val" id="stat-surveys-done">245</div></div>
-      <div class="stat-card"><div class="stat-label">Referral Bonus</div><div class="stat-val" id="stat-referral">$315</div></div>
-    </div>
-
-    <div class="level-bar-wrap">
-      <div class="level-top">
-        <div class="level-name" id="level-name">⭐ Level 7 · Elite Contributor</div>
-        <div class="level-pts" id="level-pts">80 pts to Level Up</div>
-      </div>
-      <div class="lbar"><div class="lbar-fill" id="lbar-fill" style="width:40%"></div></div>
-    </div>
-
-    <div class="section-title" style="margin-top:16px">Achievements</div>
-    <div class="achievements">
-      <div class="achiev-grid" id="achiev-grid">
-        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(37,99,235,0.2)">✅</div><div class="achiev-name">Survey Pro</div></div>
-        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(247,183,49,0.2)">👑</div><div class="achiev-name">Cash Out King</div></div>
-        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(168,85,247,0.2)">📣</div><div class="achiev-name">Top Referrer</div></div>
-        <div class="achiev-item"><div class="achiev-icon" style="background:rgba(234,88,12,0.2)">🔥</div><div class="achiev-name">Daily Streak</div></div>
-      </div>
-    </div>
-
-    <div class="section-title" style="margin-top:16px">Interests</div>
-    <div class="interests-wrap">
-      <div class="interests-grid">
-        <div class="int-tag"><span>💻</span>Technology</div>
-        <div class="int-tag"><span>✈️</span>Travel</div>
-        <div class="int-tag"><span>🛍️</span>Shopping</div>
-        <div class="int-tag"><span>❤️</span>Health & Fitness</div>
-        <div class="int-tag"><span>🎬</span>Entertainment</div>
-      </div>
-    </div>
-
-    <div class="profile-btns">
-      <button class="pbtn edit" onclick="showToast('Profile edit coming soon!')">✏️ Edit Profile</button>
-      <button class="pbtn hist" onclick="showToast('Earnings history coming soon!')">📊 Earnings History</button>
-    </div>
-  </div>
-
-</div>
-
-<!-- NAV (includes Withdraw button) -->
-<nav>
-  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Home
-  </button>
-  <button class="nav-btn" id="nav-surveys" onclick="switchTab('surveys')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    Surveys
-  </button>
-  <button class="nav-btn" id="nav-rewards" onclick="switchTab('rewards')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-    Rewards
-  </button>
-  <button class="nav-btn" id="nav-withdraw" onclick="switchTab('withdraw')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1v22"/><path d="M5 7h14"/></svg>
-    Withdraw
-  </button>
-  <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    Profile
-  </button>
-</nav>
-
-<!-- MODALS -->
-<div class="modal-backdrop" id="modal-backdrop">
-  <div class="modal" id="modal-auth" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-weight:900">Account</div>
-      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeAuthModal()">Close</div>
-    </div>
-    <div id="auth-forms" style="margin-top:12px">
-      <div id="login-form">
-        <input class="input" id="login-email" placeholder="Email or phone">
-        <input class="input" id="login-password" placeholder="Password" type="password">
-        <button class="view-btn" style="width:100%;margin-top:10px" onclick="doLogin()">Login</button>
-        <div class="small" style="margin-top:8px">No account? <span style="color:var(--accent);cursor:pointer" onclick="showRegister()">Register</span></div>
-      </div>
-      <div id="register-form" style="display:none">
-        <input class="input" id="reg-name" placeholder="Full name">
-        <input class="input" id="reg-email" placeholder="Email or phone">
-        <input class="input" id="reg-password" placeholder="Password" type="password">
-        <button class="view-btn" style="width:100%;margin-top:10px" onclick="doRegister()">Create account</button>
-        <div class="small" style="margin-top:8px">Have an account? <span style="color:var(--accent);cursor:pointer" onclick="showLogin()">Login</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="modal-activate" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-weight:900">Activate Surveys</div>
-      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeActivateModal()">Close</div>
-    </div>
-    <div style="margin-top:12px">
-      <div class="small">To activate your account and unlock surveys, please pay the activation fee via Paybill.</div>
-      <div style="margin-top:10px">
-        <div class="small">Paybill: <strong>880100</strong></div>
-        <div class="small">Account: <strong>1004508555</strong></div>
-        <div class="small">Amount: <strong id="activation-amount">180 KES</strong></div>
-      </div>
-      <div style="margin-top:12px">
-        <button class="view-btn" style="width:100%" onclick="verifyActivationPayment()">I have paid (Verify)</button>
-        <div class="small" style="margin-top:8px">Or use Daraja server integration: <span id="daraja-key" class="small" style="color:var(--accent)">(not configured)</span></div>
+  <!-- Unlock modal -->
+  <div id="unlockModal" class="modal hidden" style="display:none">
+    <div class="box">
+      <h3>Unlock Survey Dashboard</h3>
+      <p class="muted">Pay <strong id="unlockAmountModal">KES 180</strong> via Paybill <strong id="paybillModal">880100</strong>. After payment, enter your transaction code below.</p>
+      <label>Country</label>
+      <select id="countrySelect">
+        <option value="KE">Kenya (KES)</option>
+        <option value="NG">Nigeria (NGN)</option>
+        <option value="UG">Uganda (UGX)</option>
+        <option value="TZ">Tanzania (TZS)</option>
+        <option value="US">United States (USD)</option>
+      </select>
+      <label>Transaction Code</label>
+      <input id="txCode" placeholder="Enter Paybill transaction code" />
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+        <button class="small" onclick="closeUnlockModal()">Cancel</button>
+        <button class="btn" onclick="verifyUnlock()">Verify & Unlock</button>
       </div>
     </div>
   </div>
 
-  <div class="modal" id="modal-deposit" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-weight:900">Deposit Funds</div>
-      <div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeDepositModal()">Close</div>
-    </div>
-    <div style="margin-top:12px">
-      <div class="small">Deposit to your account using PayPal. The recipient is hidden for security.</div>
-      <div style="margin-top:10px">
-        <div class="small">Amount</div>
-        <input class="input" id="deposit-amount" placeholder="Enter amount" type="number" />
-      </div>
-      <div style="margin-top:12px">
-        <button class="view-btn" style="width:100%" onclick="startDeposit()">Proceed to PayPal</button>
-        <div class="small" style="margin-top:8px" id="deposit-note">You will be redirected to PayPal to complete payment.</div>
+  <!-- Withdraw modal -->
+  <div id="withdrawModal" class="modal hidden" style="display:none">
+    <div class="box">
+      <h3>Withdraw Funds</h3>
+      <div class="muted">Available: <span id="withdrawAvail">$0.00</span></div>
+      <label>Amount</label>
+      <input id="withdrawAmount" placeholder="Enter amount" />
+      <label>Method</label>
+      <select id="withdrawMethod">
+        <option value="mpesa">M-Pesa</option>
+        <option value="paypal">PayPal</option>
+        <option value="bank">Bank Transfer</option>
+      </select>
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+        <button class="small" onclick="closeWithdrawModal()">Cancel</button>
+        <button class="btn" onclick="submitWithdraw()">Withdraw Now</button>
       </div>
     </div>
   </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- Firebase compat -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
 
 <script>
-/* ---------------- State ---------------- */
-let balance = 245.75;
-let availBalance = 58.75;
-let user = {
-  id: 'user_local_1',
-  name: 'Alex Johnson',
-  handle: '@alexj1989',
-  activated: false,
-  totalEarnedUSD: 1280.50,
-  surveysDone: 245,
-  referralBonusUSD: 315,
-  level: 7,
-  levelPoints: 80,
-  badges: ['Survey Pro','Cash Out King']
-};
+/* -------------------------
+   Client logic and flows
+   ------------------------- */
 
-let userRegion = (navigator.language || 'en-US').split('-')[1] || 'US';
-const regionToCurrency = {'US':'USD','GB':'GBP','KE':'KES','NG':'NGN','UG':'UGX','TZ':'TZS','EU':'EUR','CA':'CAD','AU':'AUD','IN':'INR','ZA':'ZAR'};
-let userCurrency = regionToCurrency[userRegion] || 'USD';
-let exchangeRates = null;
-let currencySymbol = '$';
-const MIN_WITHDRAWAL_KES = 18000;
-const ACTIVATION_FEE_KES = 180;
-const LEVEL_MIN_REWARD_USD = 0.50;
+const DEFAULT_UNLOCK_AMOUNT = { KE: 180, NG: 500, UG: 5000, TZ: 5000, US: 2 }; // display amounts
+const MIN_WITHDRAWAL = { KE: 18000, NG: 5000, US: 200, UG: 50000, TZ: 50000 };
 
-/* ---------------- Utilities ---------------- */
-async function fetchRates(){
-  try{
-    const res = await fetch('https://api.exchangerate.host/latest?base=USD');
-    const data = await res.json();
-    if(data && data.rates){ exchangeRates = data.rates; updateCurrencyDisplay(); return; }
-  }catch(e){ console.warn('Rate fetch failed', e); }
-  exchangeRates = null; updateCurrencyDisplay();
-}
-const currencySymbols = { USD:'$', KES:'KSh', GBP:'£', EUR:'€', NGN:'₦', UGX:'USh', TZS:'TSh', CAD:'CA$', AUD:'A$', INR:'₹', ZAR:'R' };
-function getSymbol(code){ return currencySymbols[code] || code + ' '; }
-function formatCurrency(amount, code){
-  try{ return new Intl.NumberFormat(navigator.language || 'en-US',{style:'currency',currency:code}).format(amount); }
-  catch(e){ return (getSymbol(code) + amount.toFixed(2)); }
-}
-function convertFromKES(amountKES){
-  if(!exchangeRates) return { value: amountKES, formatted: formatCurrency(amountKES,'KES'), code:'KES' };
-  const rateKES = exchangeRates['KES'] || 1;
-  const amountUSD = amountKES / rateKES;
-  const rateTarget = exchangeRates[userCurrency] || 1;
-  const val = +(amountUSD * rateTarget).toFixed(2);
-  return { value: val, formatted: formatCurrency(val, userCurrency), code: userCurrency };
-}
-function convertFromUSD(amountUSD){
-  if(!exchangeRates) return { value: amountUSD, formatted: formatCurrency(amountUSD,'USD'), code:'USD' };
-  const rate = exchangeRates[userCurrency] || 1;
-  const val = +(amountUSD * rate).toFixed(2);
-  return { value: val, formatted: formatCurrency(val, userCurrency), code: userCurrency };
-}
-function updateCurrencyDisplay(){
-  currencySymbol = getSymbol(userCurrency);
-  document.querySelectorAll('#currency-prefix,#currency-prefix-2,#currency-prefix-3').forEach(el=>el.textContent = currencySymbol);
-  document.getElementById('stat-available').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('avail-amount').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('home-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('survey-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('stat-total-earned').textContent = formatCurrency(user.totalEarnedUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('stat-referral').textContent = formatCurrency(user.referralBonusUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  const act = convertFromKES(ACTIVATION_FEE_KES);
-  document.getElementById('activation-amount').textContent = act.formatted + ' (' + ACTIVATION_FEE_KES + ' KES)';
-  window._minWithdrawalLocal = convertFromKES(MIN_WITHDRAWAL_KES).value;
+let CONFIG = { paystackPublicKey: null, paybillNumber: '880100' };
+let currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 245.75, unlocked: false };
+
+// Initialize UI and load config from backend
+async function initApp(){
+  // Load config (public key, paybill)
+  try {
+    const res = await fetch('/api/config');
+    if(res.ok){
+      CONFIG = await res.json();
+      document.getElementById('paybillText').innerText = CONFIG.paybillNumber || '880100';
+      document.getElementById('paybillModal').innerText = CONFIG.paybillNumber || '880100';
+      document.getElementById('unlockAmountText').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
+      document.getElementById('unlockAmountModal').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
+    }
+  } catch(e){
+    console.warn('Could not load config, using defaults');
+  }
+
+  // Load user from localStorage (simulate account creation)
+  const saved = localStorage.getItem('survey_user');
+  if(saved){
+    currentUser = JSON.parse(saved);
+  } else {
+    // create a demo user; in production use registration flow
+    currentUser = { name: 'Norman', username: 'norman1989', country: 'KE', currency: 'KES', balance: 245.75, unlocked: false };
+    localStorage.setItem('survey_user', JSON.stringify(currentUser));
+  }
+  renderUser();
+  loadSurveyList();
+  loadLeaderboard();
+  updateEarningsUI();
 }
 
-/* ---------------- Persist ---------------- */
-function saveLocalState(){ const state={balance,availBalance,user,exchangeRates,userCurrency}; localStorage.setItem('surveypay_state_v1',JSON.stringify(state)); }
-function loadLocalState(){ try{ const s=JSON.parse(localStorage.getItem('surveypay_state_v1')||'{}'); if(s.balance) balance=s.balance; if(s.availBalance) availBalance=s.availBalance; if(s.user) user=s.user; if(s.exchangeRates) exchangeRates=s.exchangeRates; if(s.userCurrency) userCurrency=s.userCurrency; }catch(e){} }
-loadLocalState();
-
-/* ---------------- Surveys list (unchanged text) ---------------- */
-const surveys = [
-  { id:1, name:'Product Feedback Survey', time:12, slots:200, earn:5.00, icon:'🛒', color:'#16a34a', cat:['all','high'] },
-  { id:2, name:'Travel Habits Survey', time:15, slots:150, earn:4.50, icon:'✈️', color:'#ea580c', cat:['all','high'] },
-  { id:3, name:'Tech & Gadgets Survey', time:10, slots:180, earn:3.75, icon:'📱', color:'#2563eb', cat:['all','quick'] },
-  { id:4, name:'Health & Lifestyle Survey', time:18, slots:120, earn:6.00, icon:'❤️', color:'#7c3aed', cat:['all','high'] },
-  { id:5, name:'Opinion Poll Survey', time:8, slots:250, earn:2.50, icon:'💬', color:'#d97706', cat:['all','quick','new'] },
-  { id:6, name:'Food & Beverage Survey', time:6, slots:300, earn:2.00, icon:'🍕', color:'#dc2626', cat:['all','quick','new'] },
-];
-
-function renderSurveys(filter='all'){
-  const list = document.getElementById('survey-list');
-  const filtered = surveys.filter(s => s.cat.includes(filter));
-  list.innerHTML = filtered.map(s => `
-    <div class="survey-item" style="border-color:${s.color}33;background:linear-gradient(135deg,${s.color}15,transparent)">
-      <div class="s-icon" style="background:${s.color}30">${s.icon}</div>
-      <div class="s-info">
-        <div class="s-name">${s.name}</div>
-        <div class="s-meta">${s.time} min · ${s.slots} slots left</div>
-        <div class="s-earn">${formatCurrency(s.earn, userCurrency === 'USD' ? 'USD' : userCurrency)}</div>
-      </div>
-      <button class="s-start-btn" style="background:${s.color};color:white" onclick="startSurvey('${s.name}',${s.earn})">START</button>
-    </div>
-  `).join('');
-}
-renderSurveys();
-function filterSurveys(cat, btn){ document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderSurveys(cat); }
-
-/* ---------------- Navigation ---------------- */
-function switchTab(tab){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const screenMap = { home:'screen-home', surveys:'screen-surveys', rewards:'screen-rewards', withdraw:'screen-withdraw', profile:'screen-profile' };
-  const navMap = { home:'nav-home', surveys:'nav-surveys', rewards:'nav-rewards', withdraw:'nav-withdraw', profile:'nav-profile' };
-  const screenId = screenMap[tab] || 'screen-home';
-  document.getElementById(screenId).classList.add('active');
-  const navEl = document.getElementById(navMap[tab]);
-  if(navEl) navEl.classList.add('active');
+function renderUser(){
+  document.getElementById('userName').innerText = currentUser.name || 'Guest';
+  document.getElementById('userHandle').innerText = '@' + (currentUser.username || 'guest');
+  document.getElementById('totalBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
+  document.getElementById('availableBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
+  document.getElementById('withdrawAvail').innerText = formatCurrency(currentUser.balance, currentUser.currency);
+  document.getElementById('profileName').innerText = currentUser.name;
+  document.getElementById('profileHandle').innerText = '@' + (currentUser.username || 'guest');
+  document.getElementById('profileSince').innerText = 'Jan 2020';
+  document.getElementById('profileEarned').innerText = formatCurrency(3520.80, 'USD');
+  document.getElementById('profileCompleted').innerText = 245;
 }
 
-/* ---------------- Survey action (requires activation) ---------------- */
-function startSurvey(name, earn){
-  if(!user.activated){ showToast('🔒 Activate account to start surveys'); openActivateModal(); return; }
-  balance += earn; availBalance += earn; user.totalEarnedUSD += earn; user.surveysDone += 1;
-  updateUIAfterEarnings(); showToast('🎉 +' + formatCurrency(earn,'USD') + ' earned from ' + name + '!'); saveLocalState();
+function formatCurrency(amount, currency){
+  // Simple formatting; adapt per currency if needed
+  if(currency === 'KES') return 'KES ' + Number(amount).toLocaleString();
+  if(currency === 'NGN') return 'NGN ' + Number(amount).toLocaleString();
+  if(currency === 'USD') return '$' + Number(amount).toFixed(2);
+  return '$' + Number(amount).toFixed(2);
 }
 
-/* ---------------- Withdraw logic ---------------- */
-let selectedMethod = 'mpesa';
-function selectMethod(el, method){
-  document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected'); selectedMethod = method; calcFee();
-}
-function calcFee(){
-  const amtRaw = parseFloat(document.getElementById('amt-input').value) || 0;
-  let amtUSD = amtRaw;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]){ const rate = exchangeRates[userCurrency]; amtUSD = +(amtRaw / rate).toFixed(2); }
-  const feeRate = selectedMethod === 'bank' ? 0.05 : 0.04;
-  let feeUSD = Math.max(1, +(amtUSD * feeRate).toFixed(2));
-  let feeLocal = feeUSD;
-  if(exchangeRates && exchangeRates[userCurrency]) feeLocal = +(feeUSD * exchangeRates[userCurrency]).toFixed(2);
-  const payoutLocal = Math.max(0, +(amtRaw - feeLocal).toFixed(2));
-  document.getElementById('fee-amt').textContent = feeLocal.toFixed(2);
-  document.getElementById('payout-amt').textContent = payoutLocal.toFixed(2);
-}
-function setAmt(val){
-  let displayVal = val;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) displayVal = +(val * exchangeRates[userCurrency]).toFixed(2);
-  document.getElementById('amt-input').value = displayVal; calcFee();
-}
-function doWithdraw(){
-  const amtLocal = parseFloat(document.getElementById('amt-input').value) || 0;
-  if(amtLocal <= 0){ showToast('⚠️ Enter a valid amount'); return; }
-  const minLocal = convertFromKES(MIN_WITHDRAWAL_KES).value;
-  if(amtLocal < minLocal){ showToast('⚠️ Minimum withdrawal is ' + formatCurrency(minLocal, userCurrency)); return; }
-  let amtUSD = amtLocal;
-  if(userCurrency !== 'USD' && exchangeRates && exchangeRates[userCurrency]) amtUSD = +(amtLocal / exchangeRates[userCurrency]).toFixed(2);
-  if(amtUSD > availBalance){ showToast('⚠️ Insufficient balance'); return; }
-  availBalance -= amtUSD; balance -= amtUSD; updateUIAfterEarnings();
-  const methods = { mpesa:'M-Pesa', paypal:'PayPal', bank:'Bank Transfer' };
-  showToast('✅ ' + formatCurrency(amtLocal, userCurrency) + ' sent via ' + methods[selectedMethod]);
-  saveLocalState();
+/* Navigation */
+function showView(view){
+  const sections = document.querySelectorAll('main section');
+  sections.forEach(s => s.classList.add('hidden'));
+  const el = document.getElementById('view-' + view);
+  if(el) el.classList.remove('hidden');
+  // special: if view is 'surveys' ensure list loaded
+  if(view === 'surveys') loadSurveyList();
 }
 
-/* ---------------- Redeem ---------------- */
-function redeemCash(){ balance += 5; availBalance += 5; user.totalEarnedUSD += 5; updateUIAfterEarnings(); showToast('💵 $5.00 cash bonus added to balance!'); saveLocalState(); }
-
-/* ---------------- Toast ---------------- */
-let toastTimer;
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800); }
-
-/* ---------------- UI updates ---------------- */
-function updateUIAfterEarnings(){
-  document.getElementById('home-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('survey-balance').textContent = formatCurrency(balance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('avail-amount').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('stat-available').textContent = formatCurrency(availBalance, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('stat-total-earned').textContent = formatCurrency(user.totalEarnedUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('stat-surveys-done').textContent = user.surveysDone;
-  document.getElementById('stat-referral').textContent = formatCurrency(user.referralBonusUSD, userCurrency === 'USD' ? 'USD' : userCurrency);
-  document.getElementById('profile-name').textContent = user.name;
-  document.getElementById('profile-handle').textContent = user.handle;
-  document.getElementById('profile-avatar').textContent = user.name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
-  document.getElementById('level-name').textContent = '⭐ Level ' + user.level + ' · Contributor';
-  document.getElementById('level-pts').textContent = user.levelPoints + ' pts to Level Up';
-  const fill = Math.min(100, (user.levelPoints / 200) * 100);
-  document.getElementById('lbar-fill').style.width = fill + '%';
-  const grid = document.getElementById('achiev-grid'); grid.innerHTML = '';
-  user.badges.forEach(b => { const div=document.createElement('div'); div.className='achiev-item'; div.innerHTML=`<div class="achiev-icon" style="background:rgba(124,92,252,0.12)">🏅</div><div class="achiev-name">${b}</div>`; grid.appendChild(div); });
-}
-
-/* ---------------- Auth UI handlers ---------------- */
-function openAuthModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-auth').style.display='block'; document.getElementById('modal-activate').style.display='none'; }
-function closeAuthModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-auth').style.display='none'; }
-function showRegister(){ document.getElementById('login-form').style.display='none'; document.getElementById('register-form').style.display='block'; }
-function showLogin(){ document.getElementById('login-form').style.display='block'; document.getElementById('register-form').style.display='none'; }
-
-/* ---------------- Firebase Messaging (client) ---------------- */
-/* Firebase config (public) */
-const firebaseConfig = {
-  apiKey: "AIzaSyCJxSae246Rh-8xc7loxOULiOHfSJjJDIU",
-  authDomain: "omnisuite-4f4f7.firebaseapp.com",
-  projectId: "omnisuite-4f4f7",
-  messagingSenderId: "53135596216",
-  appId: "1:53135596216:web:45b90079f9b50a17e8724d",
-  measurementId: "G-1LR7CXY762"
-};
-/* VAPID public key (from Firebase console) */
-const VAPID_KEY = "BE5cvN2FA86TsCciAK5RwhIbnma4fXHfqp7zCJA_3oqJJmeqPjTwhbY3hH8BFqbC9Glcw-NdVUuahmX_DhN_zeQ";
-
-/* Initialize Firebase (messaging) */
-try{ firebase.initializeApp(firebaseConfig); }catch(e){}
-const messaging = firebase.messaging();
-
-/* Register service worker for FCM */
-async function initFCM(){
-  try{
-    const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-    messaging.useServiceWorker(reg);
-    console.log('Service worker registered for FCM');
-  }catch(err){ console.error('SW registration failed', err); }
-}
-initFCM();
-
-/* Request permission and send token to server */
-async function requestPushPermissionAndSendToken(userId){
-  try{
-    if(!('Notification' in window)){ console.warn('Notifications not supported'); return; }
-    const permission = await Notification.requestPermission();
-    if(permission !== 'granted'){ showToast('Push permission denied'); return; }
-    const token = await messaging.getToken({ vapidKey: VAPID_KEY });
-    if(!token){ showToast('FCM token not available'); return; }
-    await fetch('/api/user/' + encodeURIComponent(userId) + '/push-token', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token })
+/* Survey list and SurveyJS integration */
+async function loadSurveyList(){
+  const container = document.getElementById('surveyList');
+  container.innerHTML = '';
+  // Fetch surveys from backend
+  try {
+    const resTech = await fetch('/api/surveys/tech');
+    const resShop = await fetch('/api/surveys/shopping');
+    const tech = resTech.ok ? await resTech.json() : null;
+    const shop = resShop.ok ? await resShop.json() : null;
+    const surveys = [];
+    if(tech) surveys.push({ id:'tech', title: tech.title || 'Tech Trends Survey', reward: 5.00, time:'10 min' });
+    if(shop) surveys.push({ id:'shopping', title: shop.title || 'Shopping Habits Survey', reward: 3.50, time:'8 min' });
+    if(surveys.length === 0){
+      container.innerHTML = '<div class="muted">No surveys available right now.</div>';
+      return;
+    }
+    surveys.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'survey-card';
+      card.innerHTML = `<div><div style="font-weight:700">${s.title}</div><div class="muted">${s.time}</div></div>
+                        <div style="text-align:right"><div style="font-weight:800">Earn $${s.reward.toFixed(2)}</div>
+                        <button class="btn" onclick="startSurvey('${s.id}')">START SURVEY</button></div>`;
+      container.appendChild(card);
     });
-    showToast('Push notifications enabled');
-  }catch(e){ console.error(e); showToast('Failed to enable push'); }
+  } catch(e){
+    container.innerHTML = '<div class="muted">Failed to load surveys.</div>';
+  }
 }
 
-/* Foreground messages */
-messaging.onMessage(payload => {
-  console.log('FCM foreground message', payload);
-  const title = payload.notification?.title || 'Notification';
-  const body = payload.notification?.body || '';
-  showToast(title + ' — ' + body);
-});
+async function startSurvey(id){
+  if(!currentUser.unlocked){
+    alert('You must unlock the survey dashboard first.');
+    return;
+  }
+  // Load survey JSON from backend and render with SurveyJS
+  try {
+    const res = await fetch('/api/surveys/' + id);
+    if(!res.ok) { alert('Survey not found'); return; }
+    const surveyJson = await res.json();
+    document.getElementById('surveyTitle').innerText = surveyJson.title || 'Survey';
+    showView('survey-run');
+    renderSurvey(surveyJson);
+  } catch(e){
+    alert('Failed to load survey');
+  }
+}
 
-/* ---------------- Activation verification (server required) ---------------- */
-async function openActivateModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-activate').style.display='block'; document.getElementById('modal-auth').style.display='none'; }
-function closeActivateModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-activate').style.display='none'; }
+function renderSurvey(surveyJson){
+  document.getElementById('surveyElement').innerHTML = '';
+  const survey = new Survey.Model(surveyJson);
+  survey.onComplete.add(function(result) {
+    // Submit to backend
+    fetch('/api/submit-survey', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ user: currentUser.username, survey: result.data })
+    }).then(r=>r.json()).then(j=>{
+      if(j.success){
+        // credit user (demo)
+        const reward = j.reward || 3.5;
+        currentUser.balance += reward;
+        localStorage.setItem('survey_user', JSON.stringify(currentUser));
+        renderUser();
+        document.getElementById('completeEarn').innerText = formatCurrency(reward, currentUser.currency);
+        showView('complete');
+      } else {
+        alert('Submission failed');
+      }
+    }).catch(()=>alert('Network error'));
+  });
+  Survey.SurveyNG.render('surveyElement', { model: survey });
+}
 
-/* This function now calls your server endpoint /api/pay/activate and only marks activated when server returns verified:true */
-async function verifyActivationPayment(){
-  try{
-    const btn = document.querySelector('#modal-activate .view-btn');
-    if(btn){ btn.disabled = true; btn.textContent = 'Verifying...'; }
-    const payload = { userId: user.id, paybill: '880100', account: '1004508555', amountKES: ACTIVATION_FEE_KES };
-    const res = await fetch('/api/pay/activate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    const data = await res.json();
-    if(data && data.verified){
-      user.activated = true; saveLocalState(); updateUIAfterEarnings(); closeActivateModal(); showToast('✅ Account activated. Surveys unlocked!');
+/* Unlock flow (Paybill manual verification + Paystack init option) */
+function openUnlockModal(){ document.getElementById('unlockModal').style.display = 'flex'; }
+function closeUnlockModal(){ document.getElementById('unlockModal').style.display = 'none'; }
+
+async function verifyUnlock(){
+  const tx = document.getElementById('txCode').value.trim();
+  const country = document.getElementById('countrySelect').value;
+  if(!tx){ alert('Enter transaction code from Paybill payment.'); return; }
+  try {
+    const res = await fetch('/api/unlock', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ user: currentUser.username, txCode: tx, country })
+    });
+    const j = await res.json();
+    if(res.ok && j.success){
+      currentUser.unlocked = true;
+      localStorage.setItem('survey_user', JSON.stringify(currentUser));
+      renderUser();
+      closeUnlockModal();
+      alert('Unlocked! You can now access surveys.');
     } else {
-      showToast('⚠️ Payment not verified. Please confirm payment and try again.');
+      alert('Verification failed: ' + (j.message || 'unknown'));
     }
-  }catch(e){
-    console.error('Activation verify error', e);
-    showToast('⚠️ Activation verification failed. Try again later.');
-  }finally{
-    const btn = document.querySelector('#modal-activate .view-btn');
-    if(btn){ btn.disabled = false; btn.textContent = 'I have paid (Verify)'; }
+  } catch(e){
+    alert('Network error');
   }
 }
 
-/* ---------------- Auto survey generator & level runner (unchanged content) ---------------- */
-const SURVEY_TEMPLATES = [
-  { q: 'How often do you use {product}?', type:'single', choices:['Daily','Weekly','Monthly','Rarely','Never'] },
-  { q: 'Rate your satisfaction with {product} on a scale of 1-5.', type:'scale', scale:5 },
-  { q: 'Which features of {product} do you use most? (select all that apply)', type:'multi', choices:['Feature A','Feature B','Feature C','Feature D'] },
-  { q: 'How likely are you to recommend {product} to a friend?', type:'single', choices:['Very likely','Somewhat likely','Neutral','Unlikely','Very unlikely'] },
-  { q: 'What is your primary reason for using {product}?', type:'open' },
-  { q: 'Which brands do you prefer for {category}?', type:'multi', choices:['Brand X','Brand Y','Brand Z','Other'] },
-  { q: 'How much would you pay monthly for {service}?', type:'single', choices:['<$5','$5-$10','$10-$20','$20+'] },
-  { q: 'Select the age range that best describes you.', type:'single', choices:['18-24','25-34','35-44','45-54','55+'] },
-  { q: 'Which device do you primarily use to access the internet?', type:'single', choices:['Smartphone','Tablet','Laptop','Desktop'] },
-  { q: 'How satisfied are you with customer support for {product}?', type:'scale', scale:5 }
-];
+/* Withdraw flow */
+function openWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'flex'; }
+function closeWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'none'; }
 
-function generateLevel(levelIndex){
-  const questions=[];
-  for(let i=0;i<50;i++){
-    const t = SURVEY_TEMPLATES[Math.floor(Math.random()*SURVEY_TEMPLATES.length)];
-    const product = ['our app','this product','the service','the website'][Math.floor(Math.random()*4)];
-    const category = ['electronics','travel','shopping','health'][Math.floor(Math.random()*4)];
-    const qText = t.q.replace('{product}', product).replace('{category}', category);
-    const q = { id: `L${levelIndex}-Q${i+1}`, text: qText, type: t.type, choices: t.choices ? shuffleArray(t.choices).slice(0, Math.max(2, Math.floor(Math.random()*t.choices.length)+1)) : undefined };
-    questions.push(q);
+async function submitWithdraw(){
+  const amt = parseFloat(document.getElementById('withdrawAmount').value);
+  const method = document.getElementById('withdrawMethod').value;
+  if(isNaN(amt) || amt <= 0){ alert('Enter a valid amount'); return; }
+  const min = MIN_WITHDRAWAL[currentUser.country] || MIN_WITHDRAWAL['KE'];
+  if(amt < min){
+    alert(`Minimum withdrawal for your country is ${min}`);
+    return;
   }
-  return { level: levelIndex, questions, rewardUSD: LEVEL_MIN_REWARD_USD };
-}
-function shuffleArray(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
-function getNextLevelIndex(){ return parseInt(localStorage.getItem('surveypay_next_level')||'1',10); }
-function incrementLevelIndex(){ const next=getNextLevelIndex()+1; localStorage.setItem('surveypay_next_level',String(next)); return next; }
-function startNextLevel(){
-  if(!user.activated){ showToast('🔒 Activate account to start levels'); openActivateModal(); return; }
-  const idx = getNextLevelIndex(); const level = generateLevel(idx);
-  localStorage.setItem('surveypay_current_level', JSON.stringify(level));
-  openLevelRunner(level);
-}
-function openLevelRunner(level){
-  const backdrop = document.getElementById('modal-backdrop'); backdrop.style.display='flex';
-  const runner = document.createElement('div'); runner.className='modal'; runner.id='level-runner'; runner.style.display='flex'; runner.style.flexDirection='column'; runner.style.maxHeight='80vh'; runner.style.overflow='auto';
-  runner.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:900">Level ${level.level} · ${level.questions.length} Questions</div><div style="font-size:12px;color:var(--text2);cursor:pointer" onclick="closeLevelRunner()">Close</div></div><div id="level-questions" style="margin-top:12px"></div><div style="margin-top:12px;display:flex;gap:8px"><button class="view-btn" style="flex:1" onclick="submitLevelAnswers()">Submit Level</button><button class="pbtn" style="flex:1" onclick="skipLevel()">Skip</button></div>`;
-  backdrop.appendChild(runner); renderLevelQuestions(level,0);
-}
-function renderLevelQuestions(level,page=0){
-  const perPage=10; const start=page*perPage; const end=Math.min(level.questions.length,start+perPage);
-  const container=document.getElementById('level-questions'); container.innerHTML='';
-  for(let i=start;i<end;i++){
-    const q=level.questions[i]; const div=document.createElement('div'); div.style.marginBottom='10px';
-    div.innerHTML = `<div style="font-weight:700;margin-bottom:6px">${i+1}. ${q.text}</div>`;
-    if(q.type==='single' || q.type==='multi'){ q.choices.forEach((c,idx)=>{ const id=`q_${q.id}_c${idx}`; div.innerHTML += `<label style="display:block;margin-bottom:6px"><input type="${q.type==='multi'?'checkbox':'radio'}" name="${q.id}" id="${id}" value="${c}"> ${c}</label>`; }); }
-    else if(q.type==='scale'){ for(let s=1;s<= (q.scale||5); s++){ div.innerHTML += `<label style="margin-right:8px"><input type="radio" name="${q.id}" value="${s}"> ${s}</label>`; } }
-    else { div.innerHTML += `<textarea class="input" id="open_${q.id}" placeholder="Your answer"></textarea>`; }
-    container.appendChild(div);
-  }
-  const pages=Math.ceil(level.questions.length/perPage); const pager=document.createElement('div'); pager.style.display='flex'; pager.style.justifyContent='center'; pager.style.gap='8px'; pager.style.marginTop='8px';
-  for(let p=0;p<pages;p++){ const btn=document.createElement('button'); btn.className='preset-btn'; btn.textContent=(p+1); btn.onclick=()=>renderLevelQuestions(level,p); pager.appendChild(btn); }
-  container.appendChild(pager);
-}
-function closeLevelRunner(){ const runner=document.getElementById('level-runner'); if(runner) runner.remove(); document.getElementById('modal-backdrop').style.display='none'; }
-function skipLevel(){ closeLevelRunner(); showToast('Level skipped'); }
-function submitLevelAnswers(){
-  const level = JSON.parse(localStorage.getItem('surveypay_current_level')||'{}'); if(!level || !level.level){ showToast('No active level'); return; }
-  const rewardUSD = Math.max(LEVEL_MIN_REWARD_USD, level.rewardUSD || LEVEL_MIN_REWARD_USD);
-  balance += rewardUSD; availBalance += rewardUSD; user.totalEarnedUSD += rewardUSD; user.surveysDone += level.questions.length;
-  const badge = `Level ${level.level} Complete`; if(!user.badges.includes(badge)) user.badges.push(badge);
-  incrementLevelIndex(); saveLocalState(); updateUIAfterEarnings(); closeLevelRunner(); showToast('🏅 Level ' + level.level + ' complete! +' + formatCurrency(rewardUSD,'USD'));
-}
-
-/* ---------------- Admin key ---------------- */
-let adminGeneratorKey = localStorage.getItem('surveypay_admin_key') || '';
-function setAdminKey(key){ adminGeneratorKey = key; localStorage.setItem('surveypay_admin_key', key); showToast('Admin key saved'); }
-
-/* ---------------- Deposit via PayPal (masked email) ---------------- */
-function openDepositModal(){ document.getElementById('modal-backdrop').style.display='flex'; document.getElementById('modal-deposit').style.display='block'; document.getElementById('modal-auth').style.display='none'; }
-function closeDepositModal(){ document.getElementById('modal-backdrop').style.display='none'; document.getElementById('modal-deposit').style.display='none'; }
-
-async function startDeposit(){
-  const amount = parseFloat(document.getElementById('deposit-amount').value);
-  if(!amount || amount <= 0){ showToast('⚠️ Enter a valid amount'); return; }
-  try{
-    const res = await fetch('/api/pay/paypal/create', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId: user.id, amount }) });
-    const data = await res.json();
-    if(data && data.redirectUrl){
-      window.open(data.redirectUrl, '_blank');
-      showToast('Redirecting to PayPal...');
-      closeDepositModal();
+  try {
+    const res = await fetch('/api/withdraw', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ user: currentUser.username, amount: amt, country: currentUser.country, method })
+    });
+    const j = await res.json();
+    if(res.ok && j.success){
+      alert('Withdrawal requested');
+      closeWithdrawModal();
     } else {
-      showToast('⚠️ Could not create PayPal payment');
+      alert('Error: ' + (j.message || 'unknown'));
     }
-  }catch(e){ console.error(e); showToast('⚠️ Deposit failed'); }
+  } catch(e){
+    alert('Network error');
+  }
 }
 
-/* ---------------- Init ---------------- */
-(async function init(){
-  userCurrency = regionToCurrency[userRegion] || userCurrency;
-  await fetchRates();
-  if(exchangeRates) localStorage.setItem('surveypay_rates', JSON.stringify(exchangeRates));
-  if(!localStorage.getItem('surveypay_next_level')) localStorage.setItem('surveypay_next_level','1');
-  updateUIAfterEarnings();
-  document.getElementById('activation-amount').textContent = convertFromKES(ACTIVATION_FEE_KES).formatted + ' (' + ACTIVATION_FEE_KES + ' KES)';
-  const btn = document.getElementById('start-level-btn'); const next = getNextLevelIndex(); btn.textContent = 'Start Level ' + next;
-  setInterval(()=>{ const next = getNextLevelIndex(); btn.textContent = 'Start Level ' + next; },2000);
-  document.getElementById('user-firstname').textContent = user.name.split(' ')[0] || user.name;
-  // attempt to request push token if user is already logged in (optional)
-  try{ /* no auto permission prompt here */ }catch(e){}
-})();
+/* Referral, leaderboard, settings (simple placeholders) */
+function copyReferral(){ navigator.clipboard.writeText(document.getElementById('refCode').value); alert('Referral code copied'); }
+function shareReferral(){ alert('Share dialog simulated'); }
+function editProfile(){ alert('Edit profile simulated'); }
+function viewEarnings(){ showView('earnings'); }
+function saveSettings(){ alert('Settings saved'); }
+function openLiveChat(){ alert('Live chat simulated'); }
+function openTicket(){ alert('Ticket submitted (simulated)'); }
 
-/* ---------------- Save state periodically ---------------- */
-setInterval(saveLocalState, 5000);
-
-/* ---------------- Auth register/login (client placeholders) ---------------- */
-async function doRegister(){
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-password').value.trim();
-  if(!name || !email || !pass){ showToast('⚠️ Fill all fields'); return; }
-  user = { ...user, name, handle: '@' + (name.split(' ')[0] || 'user').toLowerCase(), activated:false };
-  saveLocalState(); showToast('✅ Account created'); closeAuthModal(); updateUIAfterEarnings();
-  try{ requestPushPermissionAndSendToken(user.id); }catch(e){ console.warn(e); }
+/* Leaderboard demo */
+function loadLeaderboard(){
+  const list = document.getElementById('leaderboardList');
+  list.innerHTML = '';
+  const top = [
+    { name:'Alex Johnson', amount:1250.75 },
+    { name:'Sarah Miller', amount:980.50 },
+    { name:'Mike Carter', amount:875.65 },
+    { name: currentUser.name || 'You', amount: currentUser.balance }
+  ];
+  top.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'leaderboard-row';
+    row.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(90deg,#ffd166,#ff6b6b)"></div><div><div style="font-weight:700">${p.name}</div><div class="muted">#${i+1}</div></div></div><div style="font-weight:800">${formatCurrency(p.amount, 'USD')}</div>`;
+    list.appendChild(row);
+  });
 }
-async function doLogin(){
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-password').value.trim();
-  if(!email || !pass){ showToast('⚠️ Fill all fields'); return; }
-  showToast('✅ Logged in'); closeAuthModal();
-  try{ requestPushPermissionAndSendToken(user.id); }catch(e){ console.warn(e); }
+
+/* Earnings UI */
+function updateEarningsUI(){
+  document.getElementById('weekEarnings').innerText = formatCurrency(72.80, 'USD');
+  document.getElementById('todayEarnings').innerText = formatCurrency(18.50, 'USD');
+  document.getElementById('totalEarnings').innerText = formatCurrency(3520.80, 'USD');
+}
+
+/* Utility: load initial data */
+initApp();
+
+/* Expose showView to nav */
+window.showView = showView;
+
+/* Optional: Paystack client-side inline checkout (uses server init) */
+async function payWithPaystack(amount, email){
+  // Call backend to initialize transaction
+  try {
+    const res = await fetch('/api/paystack-init', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ amount, email })
+    });
+    const j = await res.json();
+    if(!res.ok || !j.success){
+      alert('Payment init failed: ' + (j.message || ''));
+      return;
+    }
+    // Redirect to authorization_url returned by server
+    window.location.href = j.authorization_url;
+  } catch(e){
+    alert('Payment error');
+  }
+}
+
+/* Simple registration helper (for demo) */
+async function registerDemoUser(name, username, country='KE'){
+  currentUser = { name, username, country, currency: country === 'KE' ? 'KES' : 'USD', balance: 0, unlocked:false };
+  localStorage.setItem('survey_user', JSON.stringify(currentUser));
+  renderUser();
 }
 </script>
 </body>
