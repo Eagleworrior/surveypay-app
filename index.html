@@ -3,44 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SurveyPay Pro</title>
+    <title>SurveyPay | Earn Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
-        body { background: #0b0e14; color: #fff; font-family: 'Inter', sans-serif; }
-        .bg-card { background: linear-gradient(145deg, #1a1f2e, #11141c); }
-        .gradient-btn { background: linear-gradient(90deg, #2563eb, #3b82f6); }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { background: #080a0f; color: #fff; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(20, 25, 35, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+        .nav-item.active { color: #22d3ee; }
     </style>
 </head>
-<body class="flex justify-center items-center min-h-screen p-4">
+<body class="max-w-md mx-auto min-h-screen pb-20">
 
-    <div id="login-view" class="max-w-sm w-full bg-card p-8 rounded-3xl shadow-2xl border border-slate-700">
-        <h1 class="text-3xl font-black text-center mb-2">SurveyPay</h1>
-        <p class="text-slate-400 text-center text-sm mb-8">Sign in to start earning</p>
-        <input type="text" id="username" placeholder="Enter Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
-        <button onclick="handleLogin()" class="w-full py-4 gradient-btn rounded-xl font-bold text-white shadow-lg shadow-blue-900/50">JOIN NOW</button>
+    <div id="view-login" class="flex flex-col items-center justify-center min-h-screen p-6">
+        <h1 class="text-4xl font-black mb-2 text-cyan-400">SurveyPay</h1>
+        <p class="mb-8 text-slate-400">Join the elite contributors.</p>
+        <input type="text" id="username" placeholder="Enter Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4">
+        <button onclick="login()" class="w-full py-4 bg-blue-600 rounded-xl font-bold">JOIN NOW</button>
     </div>
 
-    <div id="dash-view" class="hidden max-w-sm w-full space-y-6">
-        <div class="bg-card p-6 rounded-3xl border border-slate-700">
-            <h2 class="text-xs font-bold text-slate-500 uppercase">Available Balance</h2>
-            <p id="balance-disp" class="text-4xl font-black text-emerald-400">$0.00</p>
-            <button id="pay-btn" onclick="payWithPaystack(event)" class="mt-6 w-full py-4 bg-emerald-600 rounded-xl font-bold shadow-lg shadow-emerald-900/20">
-                ACTIVATE ACCOUNT (KES 180)
-            </button>
+    <div id="app-content" class="hidden">
+        
+        <div id="view-home" class="p-6">
+            <div class="glass p-6 rounded-3xl text-center mb-6">
+                <p class="text-slate-400 text-sm">Available Balance</p>
+                <h2 id="balance-disp" class="text-5xl font-black mt-2 text-emerald-400">$45.75</h2>
+                <button onclick="payWithPaystack()" class="mt-4 w-full py-3 bg-blue-600 rounded-xl font-bold text-sm">ACTIVATE ACCOUNT</button>
+            </div>
+            <h3 class="font-bold mb-4">Trending Surveys</h3>
+            <div class="glass p-4 rounded-2xl flex justify-between items-center mb-3">
+                <div><p class="font-bold">Product Feedback</p><p class="text-xs text-slate-400">12 Mins | +$5.00</p></div>
+                <button class="bg-cyan-900 px-4 py-2 rounded-lg text-xs font-bold text-cyan-400">START</button>
+            </div>
         </div>
 
-        <div class="space-y-3">
-            <h3 class="text-sm font-bold text-slate-400 uppercase">Surveys</h3>
-            <div class="glass p-4 rounded-2xl flex justify-between items-center">
-                <span>Product Feedback</span>
-                <span class="text-emerald-400 font-bold">+$5.00</span>
+        <div id="view-profile" class="hidden p-6 text-center">
+            <img src="https://ui-avatars.com/api/?name=User&background=080a0f&color=22d3ee" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-cyan-500">
+            <h2 id="profile-name" class="text-2xl font-black">Alex Johnson</h2>
+            <div class="grid grid-cols-2 gap-4 mt-8">
+                <div class="glass p-4 rounded-2xl"><p class="text-slate-500 text-xs">Completed</p><p class="font-bold">245</p></div>
+                <div class="glass p-4 rounded-2xl"><p class="text-slate-500 text-xs">Referral</p><p class="font-bold">$315.00</p></div>
             </div>
-            <div class="glass p-4 rounded-2xl flex justify-between items-center">
-                <span>Travel Habits</span>
-                <span class="text-emerald-400 font-bold">+$4.50</span>
-            </div>
+        </div>
+
+        <div class="fixed bottom-0 w-full max-w-md bg-slate-900 p-4 flex justify-between border-t border-slate-800">
+            <button onclick="showView('home')" class="nav-item">🏠</button>
+            <button onclick="showView('home')" class="nav-item">📋</button>
+            <button onclick="showView('profile')" class="nav-item">👤</button>
         </div>
     </div>
 
@@ -48,47 +56,43 @@
         // CONFIG
         const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
 
-        // AUTH
-        function handleLogin() {
+        // APP LOGIC
+        function login() {
             const user = document.getElementById('username').value;
-            if (user) {
-                localStorage.setItem('surveypay_user', user);
-                renderApp();
-            }
+            if(!user) return;
+            localStorage.setItem('user', user);
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('profile-name').innerText = user;
         }
 
-        function renderApp() {
-            if (localStorage.getItem('surveypay_user')) {
-                document.getElementById('login-view').classList.add('hidden');
-                document.getElementById('dash-view').classList.remove('hidden');
-            }
+        function showView(view) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-profile').classList.add('hidden');
+            document.getElementById(`view-${view}`).classList.remove('hidden');
         }
 
         // PAYMENT
-        function payWithPaystack(event) {
-            event.preventDefault(); // Prevents the browser from reloading
-            
+        function payWithPaystack() {
             const handler = PaystackPop.setup({
                 key: PUBLIC_KEY,
                 email: 'user@surveypay.com',
-                amount: 180 * 100, // 180 KES
+                amount: 180 * 100,
                 currency: 'KES',
-                callback: function(response) {
-                    alert('Success! Reference: ' + response.reference);
-                    document.getElementById('balance-disp').innerText = "$180.00";
-                    document.getElementById('pay-btn').innerText = "ACCOUNT ACTIVE";
-                    document.getElementById('pay-btn').classList.replace('bg-emerald-600', 'bg-slate-700');
-                    document.getElementById('pay-btn').onclick = null;
-                },
-                onClose: function() {
-                    console.log("Payment window closed");
+                callback: (res) => {
+                    alert('Success! Reference: ' + res.reference);
+                    document.getElementById('balance-disp').innerText = "$225.75";
                 }
             });
             handler.openIframe();
         }
 
         // INIT
-        renderApp();
+        if(localStorage.getItem('user')) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('profile-name').innerText = localStorage.getItem('user');
+        }
     </script>
 </body>
 </html>
