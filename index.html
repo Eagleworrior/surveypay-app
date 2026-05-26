@@ -2,704 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>SurveyPay — Dashboard</title>
-
-  <!-- SurveyJS (community) -->
-  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
-  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-  <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
-
   <style>
-    :root{
-      --bg1:#0f1724; --accent1:#6c5ce7; --accent2:#00d2ff; --card:#0b1220;
-      --glass: rgba(255,255,255,0.04);
-      --success:#00e676; --danger:#ff6b6b;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    :root {
+      --bg-body: #05010d;
+      --card-bg: #0b1220;
+      --accent-1: #6c5ce7;
+      --accent-2: #00d2ff;
+      --success: #00e676;
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.6);
     }
-    html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--accent1),#2b2d42 60%);}
-    .app{max-width:980px;margin:24px auto;padding:20px;color:#fff;}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(45deg,#ffd166,#ef476f);box-shadow:0 8px 28px rgba(0,0,0,0.45)}
-    .greet{font-size:18px}
-    .balance{font-weight:700;font-size:28px}
-    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.5);backdrop-filter: blur(6px)}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),#7b61ff);color:#fff;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);cursor:pointer;border:none}
-    .survey-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(90deg,#0f1724, rgba(255,255,255,0.02));margin-bottom:10px}
-    .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,0.25);backdrop-filter: blur(6px);display:flex;justify-content:space-around;padding:10px;border-top-left-radius:12px;border-top-right-radius:12px}
-    .nav a{color:#fff;text-decoration:none;font-size:13px}
-    .hidden{display:none}
-    .big-cta{display:flex;gap:12px;align-items:center}
-    .badge{background:linear-gradient(90deg,#ffd166,#ff6b6b);padding:6px 10px;border-radius:999px;color:#000;font-weight:700}
-    .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#00e676,#00d2ff)}
-    .center{display:flex;align-items:center;justify-content:center}
-    .modal{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
-    .modal .box{background:#071022;padding:20px;border-radius:12px;width:420px;max-width:92%}
-    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-top:8px}
-    .muted{color:rgba(255,255,255,0.6);font-size:13px}
-    .small{font-size:13px;padding:6px 10px;border-radius:8px}
-    .table{width:100%;border-collapse:collapse}
-    .table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .leaderboard-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:8px}
-    .notice{padding:10px;border-radius:10px;background:linear-gradient(90deg,#00d2ff,#7b61ff);color:#000;font-weight:700;margin-bottom:12px}
-    @media (max-width:720px){
-      .grid4{grid-template-columns:repeat(2,1fr)}
-      .balance{font-size:20px}
-    }
+    * { box-sizing: border-box; }
+    body { height: 100%; margin: 0; background: var(--bg-body); font-family: 'Inter', system-ui, sans-serif; color: var(--text-main); }
+    
+    .app { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    
+    /* Layout */
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 10px 0; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(45deg, #ffd166, #ef476f); }
+    
+    .grid-stats { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+    @media (min-width: 600px) { .grid-stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .grid-stats { grid-template-columns: repeat(4, 1fr); } }
+
+    .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .btn { padding: 12px 20px; border-radius: 10px; background: linear-gradient(90deg, var(--accent-2), var(--accent-1)); color: #fff; text-decoration: none; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
+    .btn:hover { transform: scale(1.02); }
+
+    .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .nav a { color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+    
+    .hidden { display: none !important; }
+    .muted { color: var(--text-muted); font-size: 13px; }
   </style>
 </head>
 <body>
-  <div class="app">
 
-    <!-- Header -->
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div class="greet">Welcome back, <strong id="userName">Create account</strong></div>
-          <div class="muted" id="userHandle">@createaccount</div>
-        </div>
-      </div>
-
-      <div class="big-cta">
-        <div style="text-align:right">
-          <div class="muted">Total Balance</div>
-          <div class="balance" id="totalBalance">0.00</div>
-        </div>
-        <div style="width:12px"></div>
-        <div class="badge" id="levelBadge">Level 1</div>
-      </div>
-    </header>
-
-    <div class="notice" id="topNotice">Welcome — create an account to start earning. Your balance will be zero until you complete surveys.</div>
-
-    <!-- Main views container -->
-    <main id="mainViews">
-
-      <!-- Home Dashboard -->
-      <section id="view-home">
-        <div class="grid4" id="quickActions">
-          <div class="card center">
-            <div>
-              <div class="muted">Quick Surveys</div>
-              <div style="font-weight:700">Short Tasks</div>
-            </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">High Paying</div>
-              <div style="font-weight:700">Big Rewards</div>
-            </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">Product Testing</div>
-              <div style="font-weight:700">Try Products</div>
-            </div>
-          </div>
-          <div class="card center">
-            <div>
-              <div class="muted">Daily Polls</div>
-              <div style="font-weight:700">New Polls</div>
-            </div>
-          </div>
-        </div>
-
-        <section id="featured">
-          <h3 style="margin:0 0 8px 0">Featured Surveys</h3>
-          <div class="survey-card">
-            <div>
-              <div style="font-weight:700">Tech Trends Survey</div>
-              <div class="muted">10 Minutes • 50 Questions</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:800">Earn $5.00</div>
-              <button class="btn" onclick="startSurvey('tech')">START SURVEY</button>
-            </div>
-          </div>
-
-          <div class="survey-card">
-            <div>
-              <div style="font-weight:700">Shopping Habits Survey</div>
-              <div class="muted">8 Minutes • 35 Questions</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:800">Earn $3.50</div>
-              <button class="btn" onclick="startSurvey('shopping')">START SURVEY</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- Unlock banner -->
-        <div style="margin-top:14px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#1b2a47,#0b1220);display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-weight:700">Unlock Survey Dashboard</div>
-            <div class="muted">Pay <strong id="unlockAmountText">KES 180</strong> via Paybill <strong id="paybillText">880100</strong> to access surveys</div>
-          </div>
-          <div>
-            <button class="btn" onclick="openUnlockModal()">Pay KES 180</button>
-          </div>
-        </div>
-
-        <!-- Earnings card -->
-        <div style="margin-top:18px" class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div class="muted">Available Balance</div>
-              <div id="availableBalance" style="font-weight:800">0.00</div>
-            </div>
-            <div>
-              <button class="btn" onclick="openWithdrawModal()">Withdraw</button>
-            </div>
-          </div>
-          <div style="margin-top:12px" class="muted">Minimum withdrawal depends on your country. Default: KES 18,000</div>
-        </div>
-
-        <!-- Login / Register -->
-        <div style="margin-top:18px" class="card">
-          <h3 style="margin:0 0 8px 0">Account</h3>
-          <div id="authArea">
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input id="regName" placeholder="Full name" />
-              <input id="regUsername" placeholder="Username" />
-              <select id="regCountry">
-                <option value="KE">Kenya (KES)</option>
-                <option value="NG">Nigeria (NGN)</option>
-                <option value="US">United States (USD)</option>
-                <option value="UG">Uganda (UGX)</option>
-                <option value="TZ">Tanzania (TZS)</option>
-                <option value="GB">United Kingdom (GBP)</option>
-                <option value="IN">India (INR)</option>
-                <option value="ZA">South Africa (ZAR)</option>
-                <option value="EU">Eurozone (EUR)</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
-              <button class="btn" onclick="registerUser()">Create Account</button>
-              <button class="small" onclick="showLogin()">Already have account</button>
-            </div>
-          </div>
-
-          <div id="loginArea" class="hidden" style="margin-top:12px">
-            <input id="loginUsername" placeholder="Username" />
-            <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
-              <button class="small" onclick="hideLogin()">Cancel</button>
-              <button class="btn" onclick="loginUser()">Login</button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- Surveys list -->
-      <section id="view-surveys" class="hidden">
-        <h2>Surveys</h2>
-        <div id="surveyList"></div>
-      </section>
-
-      <!-- Profile -->
-      <section id="view-profile" class="hidden">
-        <h2>My Profile</h2>
-        <div class="card">
-          <table class="table">
-            <tr><td><strong>Name</strong></td><td id="profileName">—</td></tr>
-            <tr><td><strong>Username</strong></td><td id="profileHandle">@—</td></tr>
-            <tr><td><strong>Member Since</strong></td><td id="profileSince">—</td></tr>
-            <tr><td><strong>Total Earned</strong></td><td id="profileEarned">0.00</td></tr>
-            <tr><td><strong>Surveys Completed</strong></td><td id="profileCompleted">0</td></tr>
-          </table>
-          <div style="margin-top:12px;display:flex;gap:8px">
-            <button class="btn" onclick="editProfile()">Edit Profile</button>
-            <button class="btn" onclick="viewEarnings()">Earnings History</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Withdrawal -->
-      <section id="view-withdrawal" class="hidden">
-        <h2>Withdraw</h2>
-        <div class="card">
-          <div class="muted">Available: <strong id="withdrawAvail">$0.00</strong></div>
-          <div style="margin-top:12px">
-            <label>Amount</label>
-            <input id="withdrawAmountInput" placeholder="Enter amount" />
-            <label style="margin-top:8px">Method</label>
-            <select id="withdrawMethodSelect">
-              <option value="mpesa">M-Pesa</option>
-              <option value="paypal">PayPal</option>
-              <option value="bank">Bank Transfer</option>
-            </select>
-            <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-              <button class="small" onclick="showView('home')">Cancel</button>
-              <button class="btn" onclick="submitWithdraw()">Withdraw Now</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Survey run -->
-      <section id="view-survey-run" class="hidden">
-        <h2 id="surveyTitle">Survey</h2>
-        <div id="surveyElement"></div>
-      </section>
-
-      <!-- Survey completion -->
-      <section id="view-complete" class="hidden">
-        <div class="card center" style="flex-direction:column;gap:12px">
-          <div style="font-size:28px;font-weight:800">Survey Completed!</div>
-          <div class="muted">You earned <strong id="completeEarn">$0.00</strong></div>
-          <div style="display:flex;gap:8px">
-            <button class="btn" onclick="showView('surveys')">Take Another Survey</button>
-            <button class="btn" onclick="showView('home')">Go Home</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Referral -->
-      <section id="view-referral" class="hidden">
-        <h2>Referrals</h2>
-        <div class="card">
-          <div class="muted">Invite friends & earn bonuses</div>
-          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-            <input id="refCode" value="INVITE123" />
-            <button class="btn" onclick="copyReferral()">COPY CODE</button>
-            <button class="btn" onclick="shareReferral()">SHARE</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Earnings -->
-      <section id="view-earnings" class="hidden">
-        <h2>Earnings</h2>
-        <div class="card">
-          <div style="display:flex;gap:12px">
-            <div style="flex:1">
-              <div class="muted">This Week</div>
-              <div style="font-weight:800" id="weekEarnings">0.00</div>
-            </div>
-            <div style="flex:1">
-              <div class="muted">Today</div>
-              <div style="font-weight:800" id="todayEarnings">0.00</div>
-            </div>
-            <div style="flex:1">
-              <div class="muted">Total</div>
-              <div style="font-weight:800" id="totalEarnings">0.00</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings -->
-      <section id="view-settings" class="hidden">
-        <h2>Settings</h2>
-        <div class="card">
-          <label>Theme</label>
-          <select id="themeSelect">
-            <option value="dark">Dark (selected)</option>
-            <option value="light">Light</option>
-            <option value="vibrant">Vibrant</option>
-          </select>
-          <label style="margin-top:8px">Notifications</label>
-          <select id="notifSelect">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
-          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-            <button class="btn" onclick="saveSettings()">Save</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Support -->
-      <section id="view-support" class="hidden">
-        <h2>Support</h2>
-        <div class="card">
-          <div style="display:flex;gap:8px">
-            <button class="btn" onclick="openLiveChat()">Live Chat</button>
-            <button class="btn" onclick="openTicket()">Submit Ticket</button>
-          </div>
-          <div style="margin-top:12px" class="muted">support@surveyapp.com</div>
-        </div>
-      </section>
-
-      <!-- Leaderboard -->
-      <section id="view-leaderboard" class="hidden">
-        <h2>Leaderboard</h2>
-        <div class="card" id="leaderboardList"></div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- Bottom nav -->
-  <nav class="nav">
-    <a href="#" onclick="showView('home')">Home</a>
-    <a href="#" onclick="showView('surveys')">Surveys</a>
-    <a href="#" onclick="showView('rewards')">Rewards</a>
-    <a href="#" onclick="showView('more')">More</a>
-  </nav>
-
-  <!-- Unlock modal -->
-  <div id="unlockModal" class="modal hidden" style="display:none">
-    <div class="box">
-      <h3>Unlock Survey Dashboard</h3>
-      <p class="muted">Pay <strong id="unlockAmountModal">KES 180</strong> via Paybill <strong id="paybillModal">880100</strong>. After payment, enter your transaction code below.</p>
-      <label>Country</label>
-      <select id="countrySelect">
-        <option value="KE">Kenya (KES)</option>
-        <option value="NG">Nigeria (NGN)</option>
-        <option value="UG">Uganda (UGX)</option>
-        <option value="TZ">Tanzania (TZS)</option>
-        <option value="US">United States (USD)</option>
-        <option value="GB">United Kingdom (GBP)</option>
-        <option value="EU">Eurozone (EUR)</option>
-        <option value="IN">India (INR)</option>
-        <option value="OTHER">Other</option>
-      </select>
-      <label>Transaction Code</label>
-      <input id="txCode" placeholder="Enter Paybill transaction code" />
-      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button class="small" onclick="closeUnlockModal()">Cancel</button>
-        <button class="btn" onclick="verifyUnlock()">Verify & Unlock</button>
-      </div>
-      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
-      <div class="muted">Or pay with card via Paystack</div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <input id="paystackEmail" placeholder="Email for receipt" />
-        <button class="btn" onclick="payWithPaystackPrompt()">Pay with Paystack</button>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <div id="disp-greet" style="font-size: 18px; font-weight: 700;">Welcome</div>
+        <div class="muted" id="disp-handle">@guest</div>
       </div>
     </div>
-  </div>
-
-  <!-- Withdraw modal -->
-  <div id="withdrawModal" class="modal hidden" style="display:none">
-    <div class="box">
-      <h3>Withdraw Funds</h3>
-      <div class="muted">Available: <span id="withdrawAvail">$0.00</span></div>
-      <label>Amount</label>
-      <input id="withdrawAmount" placeholder="Enter amount" />
-      <label>Method</label>
-      <select id="withdrawMethod">
-        <option value="mpesa">M-Pesa</option>
-        <option value="paypal">PayPal</option>
-        <option value="bank">Bank Transfer</option>
-      </select>
-      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button class="small" onclick="closeWithdrawModal()">Cancel</button>
-        <button class="btn" onclick="submitWithdraw()">Withdraw Now</button>
-      </div>
+    <div style="text-align: right;">
+      <div class="muted">Balance</div>
+      <div id="totalBalance" style="font-size: 24px; font-weight: 800; color: var(--success);">0.00</div>
     </div>
-  </div>
+  </header>
+
+  <main id="app-content">
+    <section id="view-home">
+      <div class="grid-stats">
+        <div class="card">
+          <div class="muted">Active Surveys</div>
+          <div style="font-size: 20px; font-weight: 700;">12</div>
+        </div>
+        <div class="card">
+          <div class="muted">Account Status</div>
+          <div id="status-tag" style="font-size: 20px; font-weight: 700; color: #ff6b6b;">Inactive</div>
+        </div>
+      </div>
+
+      <div class="card" id="auth-box">
+        <h3 style="margin-top:0">Create Account</h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <input id="regName" placeholder="Full Name" style="flex:1; padding: 10px; border-radius: 8px; border: none;">
+          <select id="regCountry" style="padding: 10px; border-radius: 8px;">
+            <option value="KE">Kenya (KES)</option>
+            <option value="NG">Nigeria (NGN)</option>
+            <option value="US">USA (USD)</option>
+          </select>
+          <button class="btn" onclick="register()">Join</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-surveys" class="hidden">
+      <h2>Available Surveys</h2>
+      <div id="survey-list" class="card">Loading surveys...</div>
+    </section>
+  </main>
+</div>
+
+<nav class="nav">
+  <a href="#" onclick="showView('home')">Home</a>
+  <a href="#" onclick="showView('surveys')">Surveys</a>
+  <a href="#" onclick="showView('wallet')">Wallet</a>
+</nav>
 
 <script>
-/* -------------------------
-   Client logic and flows
-   ------------------------- */
+  // Configuration
+  const CURRENCY_RATES = { KE: { sym: 'KSh', rate: 1 }, NG: { sym: '₦', rate: 10 }, US: { sym: '$', rate: 0.007 } };
+  let user = JSON.parse(localStorage.getItem('survey_user')) || null;
 
-/* Display & currency helpers */
-const DEFAULT_UNLOCK_AMOUNT = { KE: 180, NG: 500, UG: 5000, TZ: 5000, US: 2, GB: 2, EU: 2, IN: 150 };
-const MIN_WITHDRAWAL = { KE: 18000, NG: 5000, US: 200, UG: 50000, TZ: 50000, GB: 50, EU: 50, IN: 15000 };
+  function formatCurrency(amt, countryCode) {
+    const config = CURRENCY_RATES[countryCode] || CURRENCY_RATES.KE;
+    const finalAmt = amt * config.rate;
+    return `${config.sym} ${finalAmt.toLocaleString()}`;
+  }
 
-let CONFIG = { paystackPublicKey: null, paybillNumber: '880100' };
-let currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 0, unlocked: false };
+  function register() {
+    const name = document.getElementById('regName').value;
+    const country = document.getElementById('regCountry').value;
+    if(!name) return alert('Enter a name');
+    
+    user = { name, country, balance: 0, unlocked: false };
+    localStorage.setItem('survey_user', JSON.stringify(user));
+    location.reload();
+  }
 
-/* Init: load config and user */
-async function initApp(){
-  // Load public config from backend (backend must expose /api/config)
-  try {
-    const res = await fetch('/api/config');
-    if(res.ok){
-      CONFIG = await res.json();
-      document.getElementById('paybillText').innerText = CONFIG.paybillNumber || '880100';
-      document.getElementById('paybillModal').innerText = CONFIG.paybillNumber || '880100';
-      document.getElementById('unlockAmountText').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
-      document.getElementById('unlockAmountModal').innerText = `KES ${DEFAULT_UNLOCK_AMOUNT['KE']}`;
+  function showView(viewId) {
+    document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+    document.getElementById('view-' + viewId).classList.remove('hidden');
+    
+    if(viewId === 'surveys' && !user?.unlocked) {
+      document.getElementById('survey-list').innerHTML = "Please activate your account to view surveys.";
     }
-  } catch(e){
-    console.warn('Could not load config, using defaults');
   }
 
-  // Load user from localStorage (simulate account creation/login)
-  const saved = localStorage.getItem('survey_user');
-  if(saved){
-    currentUser = JSON.parse(saved);
-  } else {
-    // No default user; require creation
-    currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 0, unlocked: false };
-  }
-  renderUser();
-  loadSurveyList();
-  loadLeaderboard();
-  updateEarningsUI();
-}
-
-/* Render user info */
-function renderUser(){
-  document.getElementById('userName').innerText = currentUser.name || 'Create account';
-  document.getElementById('userHandle').innerText = '@' + (currentUser.username || 'createaccount');
-  document.getElementById('totalBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('availableBalance').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('withdrawAvail').innerText = formatCurrency(currentUser.balance, currentUser.currency);
-  document.getElementById('profileName').innerText = currentUser.name || '—';
-  document.getElementById('profileHandle').innerText = '@' + (currentUser.username || '—');
-  document.getElementById('profileSince').innerText = currentUser.name ? new Date().toLocaleDateString() : '—';
-  document.getElementById('profileEarned').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('profileCompleted').innerText = 0;
-  // top notice
-  const notice = document.getElementById('topNotice');
-  if(!currentUser.name) notice.innerText = 'Welcome — create an account to start earning. Your balance will be zero until you complete surveys.';
-  else if(!currentUser.unlocked) notice.innerText = `Hello ${currentUser.name} — unlock surveys by paying ${DEFAULT_UNLOCK_AMOUNT[currentUser.country] || DEFAULT_UNLOCK_AMOUNT['KE']} ${currentUser.currency}.`;
-  else notice.innerText = `Welcome back ${currentUser.name} — surveys unlocked. Your balance updates after each completed survey.`;
-}
-
-/* Format currency using Intl when possible */
-function formatCurrency(amount, currency){
-  try {
-    if(!currency) currency = 'USD';
-    return new Intl.NumberFormat(undefined, { style:'currency', currency }).format(amount);
-  } catch(e){
-    if(currency === 'KES') return 'KES ' + Number(amount).toLocaleString();
-    if(currency === 'NGN') return 'NGN ' + Number(amount).toLocaleString();
-    if(currency === 'USD') return '$' + Number(amount).toFixed(2);
-    return Number(amount).toFixed(2);
-  }
-}
-
-/* Navigation */
-function showView(view){
-  const sections = document.querySelectorAll('main section');
-  sections.forEach(s => s.classList.add('hidden'));
-  const el = document.getElementById('view-' + view);
-  if(el) el.classList.remove('hidden');
-  if(view === 'surveys') loadSurveyList();
-}
-
-/* Registration & login (simple localStorage-based) */
-function registerUser(){
-  const name = document.getElementById('regName').value.trim();
-  const username = document.getElementById('regUsername').value.trim();
-  const country = document.getElementById('regCountry').value;
-  if(!name || !username){ alert('Enter name and username'); return; }
-  currentUser = { name, username, country, currency: countryToCurrency(country), balance: 0, unlocked: false };
-  localStorage.setItem('survey_user', JSON.stringify(currentUser));
-  document.getElementById('regName').value = '';
-  document.getElementById('regUsername').value = '';
-  renderUser();
-  alert('Account created. Please unlock surveys to start.');
-}
-function showLogin(){ document.getElementById('authArea').classList.add('hidden'); document.getElementById('loginArea').classList.remove('hidden'); }
-function hideLogin(){ document.getElementById('loginArea').classList.add('hidden'); document.getElementById('authArea').classList.remove('hidden'); }
-function loginUser(){
-  const username = document.getElementById('loginUsername').value.trim();
-  if(!username){ alert('Enter username'); return; }
-  const saved = localStorage.getItem('survey_user');
-  if(!saved){ alert('No account found locally. Create one.'); return; }
-  const u = JSON.parse(saved);
-  if(u.username !== username){ alert('Username not found locally'); return; }
-  currentUser = u;
-  renderUser();
-  hideLogin();
-  alert('Logged in as ' + currentUser.name);
-}
-
-/* Map country to currency code (basic) */
-function countryToCurrency(country){
-  const map = { KE:'KES', NG:'NGN', US:'USD', UG:'UGX', TZ:'TZS', GB:'GBP', EU:'EUR', IN:'INR' };
-  return map[country] || 'USD';
-}
-
-/* Survey list and SurveyJS integration */
-async function loadSurveyList(){
-  const container = document.getElementById('surveyList');
-  container.innerHTML = '';
-  try {
-    const resTech = await fetch('/api/surveys/tech');
-    const resShop = await fetch('/api/surveys/shopping');
-    const tech = resTech.ok ? await resTech.json() : null;
-    const shop = resShop.ok ? await resShop.json() : null;
-    const surveys = [];
-    if(tech) surveys.push({ id:'tech', title: tech.title || 'Tech Trends Survey', reward: 5.00, time:'10 min' });
-    if(shop) surveys.push({ id:'shopping', title: shop.title || 'Shopping Habits Survey', reward: 3.50, time:'8 min' });
-    if(surveys.length === 0){
-      container.innerHTML = '<div class="muted">No surveys available right now.</div>';
-      return;
+  function init() {
+    if(user) {
+      document.getElementById('disp-greet').innerText = user.name;
+      document.getElementById('disp-handle').innerText = "@" + user.name.toLowerCase().replace(' ', '_');
+      document.getElementById('totalBalance').innerText = formatCurrency(user.balance, user.country);
+      document.getElementById('status-tag').innerText = user.unlocked ? "Active" : "Inactive";
+      document.getElementById('status-tag').style.color = user.unlocked ? "var(--success)" : "#ff6b6b";
+      document.getElementById('auth-box').classList.add('hidden');
     }
-    surveys.forEach(s => {
-      const card = document.createElement('div');
-      card.className = 'survey-card';
-      card.innerHTML = `<div><div style="font-weight:700">${s.title}</div><div class="muted">${s.time}</div></div>
-                        <div style="text-align:right"><div style="font-weight:800">Earn ${formatCurrency(s.reward, 'USD')}</div>
-                        <button class="btn" onclick="startSurvey('${s.id}')">START SURVEY</button></div>`;
-      container.appendChild(card);
-    });
-  } catch(e){
-    container.innerHTML = '<div class="muted">Failed to load surveys.</div>';
   }
-}
 
-async function startSurvey(id){
-  if(!currentUser.name){ alert('Create an account or login first'); return; }
-  if(!currentUser.unlocked){ alert('You must unlock the survey dashboard first.'); return; }
-  try {
-    const res = await fetch('/api/surveys/' + id);
-    if(!res.ok) { alert('Survey not found'); return; }
-    const surveyJson = await res.json();
-    document.getElementById('surveyTitle').innerText = surveyJson.title || 'Survey';
-    showView('survey-run');
-    renderSurvey(surveyJson);
-  } catch(e){
-    alert('Failed to load survey');
-  }
-}
-
-function renderSurvey(surveyJson){
-  document.getElementById('surveyElement').innerHTML = '';
-  const survey = new Survey.Model(surveyJson);
-  survey.onComplete.add(function(result) {
-    fetch('/api/submit-survey', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, survey: result.data })
-    }).then(r=>r.json()).then(j=>{
-      if(j.success){
-        const reward = j.reward || 3.5;
-        currentUser.balance = (currentUser.balance || 0) + reward;
-        localStorage.setItem('survey_user', JSON.stringify(currentUser));
-        renderUser();
-        document.getElementById('completeEarn').innerText = formatCurrency(reward, currentUser.currency);
-        showView('complete');
-      } else {
-        alert('Submission failed');
-      }
-    }).catch(()=>alert('Network error'));
-  });
-  Survey.SurveyNG.render('surveyElement', { model: survey });
-}
-
-/* Unlock flow (manual Paybill verification + Paystack init option) */
-function openUnlockModal(){ document.getElementById('unlockModal').style.display = 'flex'; }
-function closeUnlockModal(){ document.getElementById('unlockModal').style.display = 'none'; }
-
-async function verifyUnlock(){
-  const tx = document.getElementById('txCode').value.trim();
-  const country = document.getElementById('countrySelect').value;
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(!tx){ alert('Enter transaction code from Paybill payment.'); return; }
-  try {
-    const res = await fetch('/api/unlock', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, txCode: tx, country })
-    });
-    const j = await res.json();
-    if(res.ok && j.success){
-      currentUser.unlocked = true;
-      localStorage.setItem('survey_user', JSON.stringify(currentUser));
-      renderUser();
-      closeUnlockModal();
-      alert('Unlocked! You can now access surveys.');
-    } else {
-      alert('Verification failed: ' + (j.message || 'unknown'));
-    }
-  } catch(e){
-    alert('Network error');
-  }
-}
-
-/* Paystack card flow (server init -> redirect). Backend must implement /api/paystack-init */
-async function payWithPaystackPrompt(){
-  const email = document.getElementById('paystackEmail').value.trim();
-  const amount = DEFAULT_UNLOCK_AMOUNT[currentUser.country] || DEFAULT_UNLOCK_AMOUNT['KE'];
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(!email){ alert('Enter email for receipt'); return; }
-  try {
-    const res = await fetch('/api/paystack-init', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ amount, email })
-    });
-    const j = await res.json();
-    if(!res.ok || !j.success){
-      alert('Payment init failed: ' + (j.message || ''));
-      return;
-    }
-    window.location.href = j.authorization_url;
-  } catch(e){
-    alert('Payment error');
-  }
-}
-
-/* Withdraw flow */
-function openWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'flex'; }
-function closeWithdrawModal(){ document.getElementById('withdrawModal').style.display = 'none'; }
-
-async function submitWithdraw(){
-  const amt = parseFloat(document.getElementById('withdrawAmount').value);
-  const method = document.getElementById('withdrawMethod').value;
-  if(!currentUser.name){ alert('Create an account first'); return; }
-  if(isNaN(amt) || amt <= 0){ alert('Enter a valid amount'); return; }
-  const min = MIN_WITHDRAWAL[currentUser.country] || MIN_WITHDRAWAL['KE'];
-  if(amt < min){
-    alert(`Minimum withdrawal for your country is ${min}`);
-    return;
-  }
-  try {
-    const res = await fetch('/api/withdraw', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ user: currentUser.username, amount: amt, country: currentUser.country, method })
-    });
-    const j = await res.json();
-    if(res.ok && j.success){
-      alert('Withdrawal requested');
-      closeWithdrawModal();
-    } else {
-      alert('Error: ' + (j.message || 'unknown'));
-    }
-  } catch(e){
-    alert('Network error');
-  }
-}
-
-/* Referral, leaderboard, settings (placeholders) */
-function copyReferral(){ navigator.clipboard.writeText(document.getElementById('refCode').value); alert('Referral code copied'); }
-function shareReferral(){ alert('Share dialog simulated'); }
-function editProfile(){ alert('Edit profile simulated'); }
-function viewEarnings(){ showView('earnings'); }
-function saveSettings(){ alert('Settings saved'); }
-function openLiveChat(){ alert('Live chat simulated'); }
-function openTicket(){ alert('Ticket submitted (simulated)'); }
-
-/* Leaderboard demo */
-function loadLeaderboard(){
-  const list = document.getElementById('leaderboardList');
-  list.innerHTML = '';
-  const top = [
-    { name:'Alex Johnson', amount:1250.75 },
-    { name:'Sarah Miller', amount:980.50 },
-    { name:'Mike Carter', amount:875.65 },
-    { name: currentUser.name || 'You', amount: currentUser.balance || 0 }
-  ];
-  top.forEach((p, i) => {
-    const row = document.createElement('div');
-    row.className = 'leaderboard-row';
-    row.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(90deg,#ffd166,#ff6b6b)"></div><div><div style="font-weight:700">${p.name}</div><div class="muted">#${i+1}</div></div></div><div style="font-weight:800">${formatCurrency(p.amount, 'USD')}</div>`;
-    list.appendChild(row);
-  });
-}
-
-/* Earnings UI */
-function updateEarningsUI(){
-  document.getElementById('weekEarnings').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('todayEarnings').innerText = formatCurrency(0, currentUser.currency);
-  document.getElementById('totalEarnings').innerText = formatCurrency(currentUser.balance || 0, currentUser.currency);
-}
-
-/* Utility: load initial data */
-initApp();
-
-/* Expose showView to nav */
-window.showView = showView;
+  init();
 </script>
 </body>
 </html>
