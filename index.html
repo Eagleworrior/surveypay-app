@@ -38,7 +38,7 @@
             <p class="text-yellow-400 text-sm font-bold uppercase tracking-widest">Current Balance</p>
             <h1 id="bal-disp" class="text-5xl font-black gradient-gold mt-2">0.00</h1>
             <p id="min-withdraw" class="text-xs text-slate-500 mt-2">Min. Withdrawal: 18,000 KES</p>
-            <button id="btn-activate" onclick="activateAccount()" class="mt-4 w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl font-bold">ACTIVATE (180 KES)</button>
+            <button id="btn-activate" onclick="activateAccount()" class="mt-4 w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl font-bold">ACTIVATE ACCOUNT</button>
         </div>
 
         <h3 class="text-purple-400 font-bold uppercase text-sm">Available Tasks</h3>
@@ -57,7 +57,10 @@
     </div>
 
     <script>
+        // CONFIG - Replace these with your actual keys
         const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
+        const SECRET_KEY = "sk_live_88e31b65b6c16121f6eea02fec2282cb6ddf067f"; // NOTE: Ensure this is kept secure if deploying publicly
+        
         const RATES = { KES: 1, USD: 0.0077, EUR: 0.0071 };
         
         // Initial setup
