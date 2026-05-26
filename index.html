@@ -21,10 +21,9 @@
     .app{max-width:980px;margin:24px auto;padding:20px;color:#fff;}
     header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(45deg,#ffd166,#ef476f);box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(45deg,#ffd166,#ef476f);box-shadow:0 8px 28px rgba(0,0,0,0.45)}
     .greet{font-size:18px}
     .balance{font-weight:700;font-size:28px}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
     .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
     .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.5);backdrop-filter: blur(6px)}
     .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),#7b61ff);color:#fff;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);cursor:pointer;border:none}
@@ -38,14 +37,18 @@
     .progress > i{display:block;height:100%;background:linear-gradient(90deg,#00e676,#00d2ff)}
     .center{display:flex;align-items:center;justify-content:center}
     .modal{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
-    .modal .box{background:#071022;padding:20px;border-radius:12px;width:420px}
+    .modal .box{background:#071022;padding:20px;border-radius:12px;width:420px;max-width:92%}
     input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-top:8px}
     .muted{color:rgba(255,255,255,0.6);font-size:13px}
-    .topbar-actions{display:flex;gap:8px;align-items:center}
     .small{font-size:13px;padding:6px 10px;border-radius:8px}
     .table{width:100%;border-collapse:collapse}
     .table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)}
     .leaderboard-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:8px}
+    /* responsive */
+    @media (max-width:720px){
+      .grid4{grid-template-columns:repeat(2,1fr)}
+      .balance{font-size:20px}
+    }
   </style>
 </head>
 <body>
@@ -61,7 +64,7 @@
         </div>
       </div>
 
-      <div class="topbar-actions">
+      <div class="big-cta">
         <div style="text-align:right">
           <div class="muted">Total Balance</div>
           <div class="balance" id="totalBalance">$0.00</div>
@@ -200,7 +203,7 @@
         </div>
       </section>
 
-      <!-- Survey container (SurveyJS renders here) -->
+      <!-- Survey run -->
       <section id="view-survey-run" class="hidden">
         <h2 id="surveyTitle">Survey</h2>
         <div id="surveyElement"></div>
@@ -321,6 +324,12 @@
         <button class="small" onclick="closeUnlockModal()">Cancel</button>
         <button class="btn" onclick="verifyUnlock()">Verify & Unlock</button>
       </div>
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
+      <div class="muted">Or pay with card via Paystack</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="paystackEmail" placeholder="Email for receipt" />
+        <button class="btn" onclick="payWithPaystackPrompt()">Pay with Paystack</button>
+      </div>
     </div>
   </div>
 
@@ -355,9 +364,8 @@ const MIN_WITHDRAWAL = { KE: 18000, NG: 5000, US: 200, UG: 50000, TZ: 50000 };
 let CONFIG = { paystackPublicKey: null, paybillNumber: '880100' };
 let currentUser = { name: null, username: null, country: 'KE', currency: 'KES', balance: 245.75, unlocked: false };
 
-// Initialize UI and load config from backend
+/* Initialize app: load config and user */
 async function initApp(){
-  // Load config (public key, paybill)
   try {
     const res = await fetch('/api/config');
     if(res.ok){
@@ -371,12 +379,10 @@ async function initApp(){
     console.warn('Could not load config, using defaults');
   }
 
-  // Load user from localStorage (simulate account creation)
   const saved = localStorage.getItem('survey_user');
   if(saved){
     currentUser = JSON.parse(saved);
   } else {
-    // create a demo user; in production use registration flow
     currentUser = { name: 'Norman', username: 'norman1989', country: 'KE', currency: 'KES', balance: 245.75, unlocked: false };
     localStorage.setItem('survey_user', JSON.stringify(currentUser));
   }
@@ -386,6 +392,7 @@ async function initApp(){
   updateEarningsUI();
 }
 
+/* Render user info */
 function renderUser(){
   document.getElementById('userName').innerText = currentUser.name || 'Guest';
   document.getElementById('userHandle').innerText = '@' + (currentUser.username || 'guest');
@@ -399,8 +406,8 @@ function renderUser(){
   document.getElementById('profileCompleted').innerText = 245;
 }
 
+/* Format currency */
 function formatCurrency(amount, currency){
-  // Simple formatting; adapt per currency if needed
   if(currency === 'KES') return 'KES ' + Number(amount).toLocaleString();
   if(currency === 'NGN') return 'NGN ' + Number(amount).toLocaleString();
   if(currency === 'USD') return '$' + Number(amount).toFixed(2);
@@ -413,7 +420,6 @@ function showView(view){
   sections.forEach(s => s.classList.add('hidden'));
   const el = document.getElementById('view-' + view);
   if(el) el.classList.remove('hidden');
-  // special: if view is 'surveys' ensure list loaded
   if(view === 'surveys') loadSurveyList();
 }
 
@@ -421,7 +427,6 @@ function showView(view){
 async function loadSurveyList(){
   const container = document.getElementById('surveyList');
   container.innerHTML = '';
-  // Fetch surveys from backend
   try {
     const resTech = await fetch('/api/surveys/tech');
     const resShop = await fetch('/api/surveys/shopping');
@@ -452,7 +457,6 @@ async function startSurvey(id){
     alert('You must unlock the survey dashboard first.');
     return;
   }
-  // Load survey JSON from backend and render with SurveyJS
   try {
     const res = await fetch('/api/surveys/' + id);
     if(!res.ok) { alert('Survey not found'); return; }
@@ -469,13 +473,11 @@ function renderSurvey(surveyJson){
   document.getElementById('surveyElement').innerHTML = '';
   const survey = new Survey.Model(surveyJson);
   survey.onComplete.add(function(result) {
-    // Submit to backend
     fetch('/api/submit-survey', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ user: currentUser.username, survey: result.data })
     }).then(r=>r.json()).then(j=>{
       if(j.success){
-        // credit user (demo)
         const reward = j.reward || 3.5;
         currentUser.balance += reward;
         localStorage.setItem('survey_user', JSON.stringify(currentUser));
@@ -490,7 +492,7 @@ function renderSurvey(surveyJson){
   Survey.SurveyNG.render('surveyElement', { model: survey });
 }
 
-/* Unlock flow (Paybill manual verification + Paystack init option) */
+/* Unlock flow */
 function openUnlockModal(){ document.getElementById('unlockModal').style.display = 'flex'; }
 function closeUnlockModal(){ document.getElementById('unlockModal').style.display = 'none'; }
 
@@ -515,6 +517,28 @@ async function verifyUnlock(){
     }
   } catch(e){
     alert('Network error');
+  }
+}
+
+/* Paystack card flow (server init -> redirect) */
+async function payWithPaystackPrompt(){
+  const email = document.getElementById('paystackEmail').value.trim();
+  const amount = DEFAULT_UNLOCK_AMOUNT[currentUser.country] || DEFAULT_UNLOCK_AMOUNT['KE'];
+  if(!email){ alert('Enter email for receipt'); return; }
+  try {
+    const res = await fetch('/api/paystack-init', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ amount, email })
+    });
+    const j = await res.json();
+    if(!res.ok || !j.success){
+      alert('Payment init failed: ' + (j.message || ''));
+      return;
+    }
+    // Redirect user to Paystack authorization URL returned by server
+    window.location.href = j.authorization_url;
+  } catch(e){
+    alert('Payment error');
   }
 }
 
@@ -548,7 +572,7 @@ async function submitWithdraw(){
   }
 }
 
-/* Referral, leaderboard, settings (simple placeholders) */
+/* Referral, leaderboard, settings (placeholders) */
 function copyReferral(){ navigator.clipboard.writeText(document.getElementById('refCode').value); alert('Referral code copied'); }
 function shareReferral(){ alert('Share dialog simulated'); }
 function editProfile(){ alert('Edit profile simulated'); }
@@ -587,33 +611,6 @@ initApp();
 
 /* Expose showView to nav */
 window.showView = showView;
-
-/* Optional: Paystack client-side inline checkout (uses server init) */
-async function payWithPaystack(amount, email){
-  // Call backend to initialize transaction
-  try {
-    const res = await fetch('/api/paystack-init', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ amount, email })
-    });
-    const j = await res.json();
-    if(!res.ok || !j.success){
-      alert('Payment init failed: ' + (j.message || ''));
-      return;
-    }
-    // Redirect to authorization_url returned by server
-    window.location.href = j.authorization_url;
-  } catch(e){
-    alert('Payment error');
-  }
-}
-
-/* Simple registration helper (for demo) */
-async function registerDemoUser(name, username, country='KE'){
-  currentUser = { name, username, country, currency: country === 'KE' ? 'KES' : 'USD', balance: 0, unlocked:false };
-  localStorage.setItem('survey_user', JSON.stringify(currentUser));
-  renderUser();
-}
 </script>
 </body>
 </html>
