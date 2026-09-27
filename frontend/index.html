@@ -3,167 +3,1083 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SurveyPay — Dashboard</title>
+    <title>SurveyPay Pro — Global Earning Network</title>
+    <!-- App Favicon -->
+    <link rel="icon" type="image/png" href="app-icon.png">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
-    <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-    <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Paystack Inline JS -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
     <style>
-        body { background: #05010d; font-family: 'Inter', sans-serif; color: #fff; }
-        .glass { background: rgba(15, 7, 36, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .tab-active { color: #00d2ff !important; border-bottom: 2px solid #00d2ff; }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #070913; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
+
+        /* Custom Colorful Glowing Cards */
+        .glass-card {
+            background: rgba(15, 20, 38, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card-glow-cyan {
+            border-color: rgba(6, 182, 212, 0.35);
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.18);
+        }
+
+        .glass-card-glow-purple {
+            border-color: rgba(168, 85, 247, 0.35);
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.18);
+        }
+
+        .glass-card-glow-emerald {
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.18);
+        }
+
+        /* Colorful Typed Inputs styling */
+        .input-name {
+            color: #38bdf8 !important; /* Bright Cyan */
+            caret-color: #38bdf8;
+        }
+        .input-email {
+            color: #34d399 !important; /* Bright Emerald */
+            caret-color: #34d399;
+        }
+        .input-country {
+            color: #fbbf24 !important; /* Amber / Gold */
+        }
+        .input-phone {
+            color: #fb923c !important; /* Bright Orange */
+            caret-color: #fb923c;
+        }
+        .input-password {
+            color: #c084fc !important; /* Bright Purple */
+            caret-color: #c084fc;
+        }
+        .input-confirm-password {
+            color: #f472b6 !important; /* Bright Pink */
+            caret-color: #f472b6;
+        }
+
+        /* Gradient Texts */
+        .gradient-gold {
+            background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-brand {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-emerald {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Active Navigation Tab */
+        .nav-tab-active {
+            color: #38bdf8 !important;
+            position: relative;
+        }
+        .nav-tab-active::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            border-radius: 9999px;
+            box-shadow: 0 0 10px #38bdf8;
+        }
     </style>
 </head>
-<body class="max-w-md mx-auto min-h-screen flex flex-col relative">
+<body class="max-w-md mx-auto min-h-screen flex flex-col relative pb-20 selection:bg-cyan-500 selection:text-white">
 
-    <section id="view-auth" class="flex-1 flex flex-col items-center justify-center p-6">
-        <div class="glass w-full p-8 rounded-3xl text-center shadow-2xl">
-            <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">SurveyPay</h1>
-            <p class="text-gray-400 text-xs mb-8 uppercase tracking-widest font-bold">Global Data Ecosystem</p>
-            
-            <div id="reg-form" class="space-y-4 text-left">
-                <input id="in-name" type="text" placeholder="Full Name" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white">
-                <select id="in-country" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-gray-300">
-                    <option value="KE">Kenya (KES)</option>
-                    <option value="NG">Nigeria (NGN)</option>
-                    <option value="US">USA (USD)</option>
-                </select>
-                <button onclick="registerUser()" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-xl font-black text-white">CREATE ACCOUNT</button>
-                <button onclick="toggleAuth()" class="w-full text-xs text-gray-500 font-bold underline">Already have an account? Login</button>
-            </div>
+    <!-- BACKGROUND GLOW DECORATIONS -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed bottom-20 left-10 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed top-1/3 right-5 w-72 h-72 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
-            <div id="login-form" class="hidden space-y-4 text-left">
-                <input id="in-login-name" type="text" placeholder="Enter Full Name" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white">
-                <button onclick="loginUser()" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl font-black text-white">LOGIN</button>
+    <!-- ================= AUTH SCREEN ================= -->
+    <section id="screen-auth" class="min-h-screen flex flex-col justify-center px-5 py-8">
+
+        <!-- HEADER / BRANDING WITH APP ICON -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[3px] shadow-xl shadow-cyan-500/25 mb-3 animate-pulse">
+                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[21px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
+            <h1 class="text-4xl font-black tracking-tight gradient-brand">SurveyPay Pro</h1>
+            <p class="text-xs font-bold text-cyan-400 mt-1 uppercase tracking-widest flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-check text-emerald-400"></i> Verified Monetization Ecosystem
+            </p>
         </div>
+
+        <!-- AUTH CARD CONTAINER -->
+        <div class="glass-card glass-card-glow-cyan p-6 rounded-3xl relative overflow-hidden">
+
+            <!-- TOGGLE BUTTONS (REGISTER / LOGIN) -->
+            <div class="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 mb-6">
+                <button id="btn-tab-reg" onclick="switchAuthMode('register')" class="flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-user-plus"></i> REGISTER
+                </button>
+                <button id="btn-tab-login" onclick="switchAuthMode('login')" class="flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-right-to-bracket"></i> LOGIN
+                </button>
+            </div>
+
+            <!-- REGISTER FORM WITH DECORATED SYMBOLS / ICONS -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4">
+
+                <!-- Full Name Field -->
+                <div>
+                    <label class="block text-[11px] font-bold text-cyan-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-id-card text-cyan-400 text-xs"></i> Full Name
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-cyan-400 text-sm">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <input type="text" id="reg-fullname" required placeholder="e.g. John Doe"
+                            class="w-full bg-slate-900/90 border border-cyan-500/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-name placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-envelope-open-text text-emerald-400 text-xs"></i> Email Address
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-emerald-400 text-sm">
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                        <input type="email" id="reg-email" required placeholder="john@example.com"
+                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Country Selection Field -->
+                <div>
+                    <label class="block text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-earth-americas text-amber-400 text-xs"></i> Select Country
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-amber-400 text-sm pointer-events-none">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <select id="reg-country" onchange="onCountryChange()" required
+                            class="w-full bg-slate-900/90 border border-amber-500/40 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-black input-country outline-none transition-all cursor-pointer">
+                            <!-- Options populated via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Phone Number with Auto-populated Country Prefix -->
+                <div>
+                    <label class="block text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-mobile-screen-button text-orange-400 text-xs"></i> Phone Number
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <!-- Country Prefix Badge -->
+                        <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-3.5 py-3.5 rounded-xl border border-orange-500/50 min-w-[70px] text-center shadow-inner flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-phone text-[10px]"></i> +254
+                        </div>
+                        <div class="relative flex-1 flex items-center">
+                            <div class="absolute left-3.5 text-orange-400 text-sm">
+                                <i class="fa-solid fa-phone-flip"></i>
+                            </div>
+                            <input type="tel" id="reg-phone" required placeholder="712345678"
+                                class="w-full bg-slate-900/90 border border-orange-500/40 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-phone placeholder:text-slate-600 outline-none transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Field with Key Icon -->
+                <div>
+                    <label class="block text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key text-purple-400 text-xs"></i> Account Password
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-purple-400 text-sm">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <input type="password" id="reg-password" required placeholder="••••••••"
+                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field with Shield/Key Icon -->
+                <div>
+                    <label class="block text-[11px] font-bold text-pink-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-pink-400 text-xs"></i> Confirm Password
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-pink-400 text-sm">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <input type="password" id="reg-confirm-password" required placeholder="••••••••"
+                            class="w-full bg-slate-900/90 border border-pink-500/40 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-confirm-password placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-4 mt-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 rounded-xl font-black text-sm text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2">
+                    <span>CREATE MY ACCOUNT</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- LOGIN FORM WITH DECORATED ICONS -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="hidden space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-envelope text-emerald-400 text-xs"></i> Registered Email
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-emerald-400 text-sm">
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                        <input type="email" id="login-email" required placeholder="john@example.com"
+                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key text-purple-400 text-xs"></i> Account Password
+                    </label>
+                    <div class="relative flex items-center">
+                        <div class="absolute left-3.5 text-purple-400 text-sm">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <input type="password" id="login-password" required placeholder="••••••••"
+                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-10 pr-4 py-3.5 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-xl font-black text-sm text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all duration-300 flex items-center justify-center gap-2">
+                    <span>LOG IN TO DASHBOARD</span>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+
+        </div>
+
     </section>
 
-    <div id="view-main" class="hidden flex-1 flex flex-col">
-        <header class="p-6 flex justify-between items-center bg-black/20">
-            <div>
-                <h2 id="disp-name" class="text-lg font-black text-white"></h2>
-                <p id="disp-currency" class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider"></p>
+    <!-- ================= MAIN APP SCREEN ================= -->
+    <div id="screen-app" class="hidden flex-1 flex flex-col min-h-screen">
+
+        <!-- TOP BAR / HEADER WITH APP LOGO ICON -->
+        <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80 px-5 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-md">
+                    <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                </div>
+                <div>
+                    <h2 id="disp-user-name" class="font-extrabold text-sm text-cyan-300 flex items-center gap-1.5">
+                        <!-- User Full Name -->
+                    </h2>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span id="disp-country-badge" class="bg-slate-800 border border-slate-700 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-[9px]"></i> Kenya (+254)
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="text-right">
-                <p class="text-[9px] text-gray-500 font-black uppercase">Balance</p>
-                <h2 id="disp-balance" class="text-xl font-black text-emerald-400">0.00</h2>
-            </div>
+
+            <!-- LOGOUT BUTTON -->
+            <button onclick="handleLogout()" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-pink-400 hover:text-pink-300 text-xs font-bold transition-all flex items-center gap-1" title="Logout">
+                <i class="fa-solid fa-power-off text-sm"></i>
+            </button>
         </header>
 
-        <main class="flex-1 px-6 pb-24 space-y-6 overflow-y-auto">
-            <section id="content-home" class="space-y-4">
-                <div class="glass p-5 rounded-2xl border-l-4 border-purple-500">
-                    <p class="text-[10px] text-purple-400 font-black uppercase">Account Status</p>
-                    <h3 id="status-text" class="text-sm font-bold">Unactivated</h3>
-                    <button id="activate-btn" onclick="openUnlockModal()" class="mt-3 w-full bg-purple-600 py-2 rounded-lg text-xs font-bold">ACTIVATE NOW</button>
-                </div>
-                <h3 class="text-xs font-black text-gray-500 uppercase">Featured Surveys</h3>
-                <div id="survey-list" class="space-y-3"></div>
-            </section>
+        <!-- MAIN TAB CONTENTS CONTAINER -->
+        <main class="flex-1 px-5 pt-5 pb-24 space-y-6">
 
-            <section id="content-wallet" class="hidden space-y-4">
-                <div class="glass p-8 rounded-3xl text-center border-t border-emerald-500">
-                    <p class="text-gray-400 text-xs font-bold uppercase">Total Earned</p>
-                    <h1 id="wallet-balance" class="text-5xl font-black text-emerald-400 my-4">0.00</h1>
-                    <button onclick="withdraw()" class="w-full bg-emerald-600 py-4 rounded-xl font-black">WITHDRAW FUNDS</button>
+            <!-- TAB 1: SURVEYS & DASHBOARD -->
+            <div id="tab-content-surveys" class="space-y-5">
+
+                <!-- BALANCE & ACCOUNT STATUS HERO CARD -->
+                <div class="glass-card glass-card-glow-cyan p-6 rounded-3xl relative overflow-hidden text-center">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center gap-1">
+                            <i class="fa-solid fa-wallet"></i> Current Earnings
+                        </span>
+                        <!-- STATUS BADGE -->
+                        <span id="account-status-badge" class="px-3 py-1 bg-rose-500/20 border border-rose-500/40 text-rose-400 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-lock"></i> ACTIVATION NEEDED
+                        </span>
+                    </div>
+
+                    <h1 id="disp-balance" class="text-4xl font-black gradient-gold my-2 tracking-tight">
+                        0.00 KES
+                    </h1>
+
+                    <p id="disp-min-withdrawal-hint" class="text-[11px] font-semibold text-slate-400">
+                        Minimum Withdrawal: 18,000 KES
+                    </p>
+
+                    <!-- ACTIVATION PROMPT BANNER -->
+                    <div id="activation-card-banner" class="mt-4 p-4 rounded-2xl bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border border-purple-500/40 text-left">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-xs font-extrabold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lock-open text-yellow-300"></i> Account Activation Required
+                                </h3>
+                                <p id="activation-price-desc" class="text-[11px] text-slate-300 mt-1">
+                                    Pay <strong class="text-amber-300 font-bold">500 KES</strong> to unlock high-paying surveys & enable instant withdrawals.
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="openActivationModal()" class="mt-3 w-full py-3.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt text-yellow-300"></i>
+                            <span>ACTIVATE ACCOUNT NOW</span>
+                        </button>
+                    </div>
                 </div>
-            </section>
+
+                <!-- SURVEYS LIST HEADER -->
+                <div class="flex justify-between items-center pt-2">
+                    <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check"></i> Available Premium Surveys
+                    </h3>
+                    <span id="surveys-lock-indicator" class="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-full border border-rose-500/30">
+                        <i class="fa-solid fa-lock text-[9px] mr-1"></i> Locked
+                    </span>
+                </div>
+
+                <!-- SURVEY CARDS -->
+                <div id="surveys-container" class="space-y-3.5">
+                    <!-- Dynamic Surveys Inserted Here -->
+                </div>
+
+            </div>
+
+            <!-- TAB 2: WALLET & WITHDRAWALS -->
+            <div id="tab-content-wallet" class="hidden space-y-5">
+
+                <div class="glass-card glass-card-glow-emerald p-6 rounded-3xl text-center relative">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mb-3">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <p class="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">Withdrawable Balance</p>
+                    <h1 id="wallet-balance-disp" class="text-4xl font-black gradient-emerald my-3">0.00</h1>
+
+                    <button onclick="handleWithdrawRequest()" class="w-full py-4 mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-sm rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span>WITHDRAW FUNDS</span>
+                    </button>
+                </div>
+
+                <!-- PAYMENT METHODS SUPPORTED -->
+                <div class="glass-card p-5 rounded-2xl space-y-3">
+                    <h4 class="text-xs font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-purple-400"></i> Supported Payout Channels
+                    </h4>
+                    <div id="wallet-payout-methods" class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-300">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- RECENT TRANSACTIONS / HISTORY -->
+                <div class="glass-card p-5 rounded-2xl space-y-3">
+                    <h4 class="text-xs font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Transaction History
+                    </h4>
+                    <div id="wallet-tx-history" class="text-xs text-slate-400 text-center py-4">
+                        No transactions yet. Complete surveys to earn!
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TAB 3: USER PROFILE WITH BEAUTIFUL COLORFUL DECORATIONS -->
+            <div id="tab-content-profile" class="hidden space-y-5">
+
+                <!-- MAIN PROFILE HEADER CARD WITH APP ICON -->
+                <div class="glass-card glass-card-glow-purple p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center gap-4 pb-4 border-b border-slate-800">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[2px] shadow-lg relative">
+                            <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-cover rounded-[14px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                            <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 shadow">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <h3 id="profile-name" class="font-black text-xl text-cyan-300 flex items-center gap-1.5">John Doe</h3>
+                            <p id="profile-email" class="text-xs font-bold text-emerald-400">john@example.com</p>
+                            <span id="profile-status-tag" class="inline-block mt-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40">
+                                Unactivated Account
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- RECORDED USER DETAILS CARDS -->
+                    <div class="space-y-2.5">
+                        <h4 class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-id-card-clip text-cyan-400"></i> Registered Account Records
+                        </h4>
+
+                        <!-- Name Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-cyan-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-user-gear text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Full Name</p>
+                                    <p id="rec-name" class="text-xs font-black text-cyan-300">John Doe</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-check-double text-cyan-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Email Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                                    <i class="fa-solid fa-envelope-open-text text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Email Address</p>
+                                    <p id="rec-email" class="text-xs font-black text-emerald-300">john@example.com</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-at text-emerald-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Phone Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-orange-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400">
+                                    <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Phone Number</p>
+                                    <p id="rec-phone" class="text-xs font-black text-orange-300">+254 712345678</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-phone text-orange-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Country Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-amber-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                                    <i class="fa-solid fa-earth-americas text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Registered Country</p>
+                                    <p id="rec-country" class="text-xs font-black text-amber-300">Kenya (+254)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-flag text-amber-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Currency Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-yellow-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400">
+                                    <i class="fa-solid fa-coins text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">Account Currency</p>
+                                    <p id="rec-currency" class="text-xs font-black text-yellow-300">KES (Kenya Shillings)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-money-bill-wave text-yellow-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Registration Date -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                                    <i class="fa-solid fa-calendar-check text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Registration Timestamp</p>
+                                    <p id="rec-date" class="text-xs font-black text-purple-300">2026-09-27</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-clock text-purple-500/60 text-xs"></i>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl space-y-3">
+                    <h4 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider">Account Actions</h4>
+                    <button onclick="openActivationModal()" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 rounded-xl text-xs font-black text-cyan-300 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-shield-check text-cyan-400"></i>
+                        <span>Re-Verify / Activate Account</span>
+                    </button>
+                    <button onclick="handleLogout()" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 border border-rose-500/40 rounded-xl text-xs font-black text-rose-400 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-power-off"></i>
+                        <span>Log Out of Account</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- TAB 4: HELP & FAQ -->
+            <div id="tab-content-faq" class="hidden space-y-4">
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h3 class="text-sm font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question text-cyan-400"></i> Frequently Asked Questions
+                    </h3>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3.5 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-amber-300 mb-1">Why is Account Activation required?</p>
+                            <p class="text-slate-300 leading-relaxed">Activation prevents spam bots and ensures authentic data responses for market research sponsors. Once activated, all payout channels and high-paying surveys unlock immediately.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-emerald-300 mb-1">How much is the activation fee?</p>
+                            <p class="text-slate-300 leading-relaxed">For Kenyan accounts, activation is <strong>500 KES</strong> via M-Pesa or Card. For accounts outside Kenya, activation is <strong>$4.00 USD</strong> (or local currency equivalent) payable via Debit/Credit Card.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-purple-300 mb-1">How fast are withdrawals processed?</p>
+                            <p class="text-slate-300 leading-relaxed">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
-        <nav class="fixed bottom-0 w-full glass border-t border-white/10 flex justify-around p-4 z-50">
-            <button onclick="setTab('home')" class="text-xs font-black uppercase text-gray-400 flex flex-col items-center"><i class="fa fa-home"></i>Home</button>
-            <button onclick="setTab('wallet')" class="text-xs font-black uppercase text-gray-400 flex flex-col items-center"><i class="fa fa-wallet"></i>Wallet</button>
+        <!-- FIXED BOTTOM NAVIGATION BAR -->
+        <nav class="fixed bottom-0 max-w-md w-full bg-slate-950/90 backdrop-blur-2xl border-t border-slate-800/80 px-6 py-3.5 flex justify-between items-center z-50">
+            <button id="nav-btn-surveys" onclick="switchMainTab('surveys')" class="nav-tab-active flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
+                <i class="fa-solid fa-list-check text-lg"></i>
+                <span>Surveys</span>
+            </button>
+
+            <button id="nav-btn-wallet" onclick="switchMainTab('wallet')" class="flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span>Wallet</span>
+            </button>
+
+            <button id="nav-btn-profile" onclick="switchMainTab('profile')" class="flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span>Profile</span>
+            </button>
+
+            <button id="nav-btn-faq" onclick="switchMainTab('faq')" class="flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
+                <i class="fa-solid fa-circle-question text-lg"></i>
+                <span>FAQ</span>
+            </button>
         </nav>
+
     </div>
 
-    <div id="modal-unlock" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
-        <div class="glass w-full p-6 rounded-3xl text-center">
-            <h2 class="text-xl font-black mb-4">Unlock Premium</h2>
-            <button onclick="payWithPaystack()" class="w-full bg-cyan-600 py-4 rounded-xl font-bold">PAY WITH CARD</button>
-            <button onclick="closeModal()" class="mt-4 text-gray-500 font-bold text-sm">Cancel</button>
+    <!-- ================= MODAL: PAYSTACK ACCOUNT ACTIVATION ================= -->
+    <div id="modal-activation" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] flex items-center justify-center p-5">
+        <div class="glass-card glass-card-glow-purple w-full max-w-sm p-6 rounded-3xl text-center relative animate-in fade-in zoom-in duration-200">
+
+            <button onclick="closeActivationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-lg mb-3">
+                <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[14px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            </div>
+
+            <h2 class="text-xl font-black text-white">Activate Your Account</h2>
+            <p id="modal-pay-subtitle" class="text-xs text-slate-300 mt-1">
+                Unlock unlimited paid surveys & withdrawal permissions.
+            </p>
+
+            <div class="my-5 p-4 bg-slate-900/90 rounded-2xl border border-purple-500/30 text-left space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-400 font-semibold">Account User:</span>
+                    <span id="modal-user-email" class="font-bold text-cyan-300">user@example.com</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-400 font-semibold">Country:</span>
+                    <span id="modal-user-country" class="font-bold text-amber-300">Kenya</span>
+                </div>
+                <div class="flex justify-between items-center text-xs pt-1 border-t border-slate-800">
+                    <span class="text-slate-400 font-semibold">Activation Fee:</span>
+                    <span id="modal-pay-amount" class="font-black text-emerald-400 text-sm">500 KES</span>
+                </div>
+                <div id="modal-channel-note" class="text-[10px] text-amber-300/90 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20 mt-2">
+                    <!-- Dynamic payment channels note -->
+                </div>
+            </div>
+
+            <button id="btn-paystack-action" onclick="triggerPaystackPayment()" class="w-full py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all">
+                <i class="fa-solid fa-lock"></i>
+                <span>PAY & ACTIVATE NOW</span>
+            </button>
+
+            <p class="text-[10px] text-slate-500 mt-3 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-shield-cat text-cyan-400"></i> Secured by Paystack Live Checkout
+            </p>
         </div>
     </div>
 
+    <!-- ================= JAVASCRIPT APP LOGIC ================= -->
     <script>
-        // CONFIG & STATE
-        const currencyMap = { 'KE': { sym: 'KSh', rate: 1 }, 'NG': { sym: '₦', rate: 11.5 }, 'US': { sym: '$', rate: 0.0076 } };
-        let user = JSON.parse(localStorage.getItem('user_data'));
+        // CONFIG & CONSTANTS
+        const PAYSTACK_LIVE_PUBLIC_KEY = "pk_live_d3ad28a96d0faa12c3c25a14389d29980a707d3b";
 
-        // APP INIT
-        function init() {
-            if (user) {
-                document.getElementById('view-auth').classList.add('hidden');
-                document.getElementById('view-main').classList.remove('hidden');
-                renderDashboard();
+        // Country Dictionary with phone codes, currency symbols, and activation pricing rules
+        const COUNTRIES_MAP = {
+            "KE": { name: "Kenya", code: "+254", currency: "KES", symbol: "KSh", rateVsKES: 1, feeKES: 500, isKenya: true },
+            "US": { name: "United States", code: "+1", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
+            "GB": { name: "United Kingdom", code: "+44", currency: "GBP", symbol: "£", rateVsKES: 0.0061, feeUSD: 4, isKenya: false },
+            "NG": { name: "Nigeria", code: "+234", currency: "NGN", symbol: "₦", rateVsKES: 12.2, feeUSD: 4, isKenya: false },
+            "GH": { name: "Ghana", code: "+233", currency: "GHS", symbol: "GH₵", rateVsKES: 0.12, feeUSD: 4, isKenya: false },
+            "ZA": { name: "South Africa", code: "+27", currency: "ZAR", symbol: "R", rateVsKES: 0.14, feeUSD: 4, isKenya: false },
+            "UG": { name: "Uganda", code: "+256", currency: "UGX", symbol: "USh", rateVsKES: 28.5, feeUSD: 4, isKenya: false },
+            "TZ": { name: "Tanzania", code: "+255", currency: "TZS", symbol: "TSh", rateVsKES: 20.1, feeUSD: 4, isKenya: false },
+            "RW": { name: "Rwanda", code: "+250", currency: "RWF", symbol: "FRw", rateVsKES: 10.4, feeUSD: 4, isKenya: false },
+            "CA": { name: "Canada", code: "+1", currency: "CAD", symbol: "CA$", rateVsKES: 0.0105, feeUSD: 4, isKenya: false },
+            "AU": { name: "Australia", code: "+61", currency: "AUD", symbol: "A$", rateVsKES: 0.0118, feeUSD: 4, isKenya: false },
+            "EU": { name: "Europe (Eurozone)", code: "+49", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "IN": { name: "India", code: "+91", currency: "INR", symbol: "₹", rateVsKES: 0.65, feeUSD: 4, isKenya: false },
+            "OTHER": { name: "Other International", code: "+", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false }
+        };
+
+        // Standard Surveys Definition
+        const DEFAULT_SURVEYS = [
+            { id: 1, title: "Global Consumer Tech Trends 2026", sponsor: "TechInsights", baseRewardKES: 650, timeMin: 5, icon: "fa-laptop" },
+            { id: 2, title: "E-Commerce & Digital Payments Study", sponsor: "FinResearch", baseRewardKES: 950, timeMin: 8, icon: "fa-credit-card" },
+            { id: 3, title: "Mobile Apps & Gaming Experience", sponsor: "AppPulse", baseRewardKES: 1200, timeMin: 12, icon: "fa-gamepad" },
+            { id: 4, title: "Media Streaming Habits & Preferences", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-film" }
+        ];
+
+        // APP STATE
+        let currentUser = null;
+
+        // INIT APP
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCountryOptions();
+            loadUserFromStorage();
+        });
+
+        // POPULATE COUNTRY SELECT DROPDOWN
+        function populateCountryOptions() {
+            const select = document.getElementById('reg-country');
+            select.innerHTML = '';
+            for (const [key, country] of Object.entries(COUNTRIES_MAP)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = `${country.name} (${country.code})`;
+                select.appendChild(opt);
+            }
+            // Default select Kenya
+            select.value = 'KE';
+            onCountryChange();
+        }
+
+        // HANDLE COUNTRY CHANGE
+        function onCountryChange() {
+            const cKey = document.getElementById('reg-country').value;
+            const country = COUNTRIES_MAP[cKey] || COUNTRIES_MAP['OTHER'];
+            document.getElementById('phone-prefix-badge').innerHTML = `<i class="fa-solid fa-phone text-[10px]"></i> ${country.code}`;
+        }
+
+        // AUTH TAB SWITCHING
+        function switchAuthMode(mode) {
+            const formReg = document.getElementById('form-register');
+            const formLogin = document.getElementById('form-login');
+            const btnReg = document.getElementById('btn-tab-reg');
+            const btnLogin = document.getElementById('btn-tab-login');
+
+            if (mode === 'register') {
+                formReg.classList.remove('hidden');
+                formLogin.classList.add('hidden');
+                btnReg.className = "flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5";
+                btnLogin.className = "flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
+            } else {
+                formReg.classList.add('hidden');
+                formLogin.classList.remove('hidden');
+                btnLogin.className = "flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md flex items-center justify-center gap-1.5";
+                btnReg.className = "flex-1 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
             }
         }
 
-        // AUTH
-        function registerUser() {
-            const name = document.getElementById('in-name').value;
-            const country = document.getElementById('in-country').value;
-            if(!name) return alert('Enter name');
-            user = { name, country, balance: 0, unlocked: false };
-            localStorage.setItem('user_data', JSON.stringify(user));
-            location.reload();
+        // HANDLE USER REGISTRATION & RECORD USER DETAILS
+        function handleRegister(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('reg-fullname').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const cKey = document.getElementById('reg-country').value;
+            const phoneNum = document.getElementById('reg-phone').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match! Please verify your password.");
+                return;
+            }
+
+            const country = COUNTRIES_MAP[cKey] || COUNTRIES_MAP['OTHER'];
+            const fullPhoneNumber = `${country.code} ${phoneNum}`;
+            const regDateStr = new Date().toISOString().split('T')[0];
+
+            const newUser = {
+                fullName: fullName,
+                email: email,
+                countryKey: cKey,
+                countryName: country.name,
+                countryCode: country.code,
+                phone: fullPhoneNumber,
+                password: password,
+                balanceKES: 0,
+                isActivated: false,
+                registeredAt: regDateStr
+            };
+
+            // Store user details in localStorage
+            localStorage.setItem('surveypay_user', JSON.stringify(newUser));
+            currentUser = newUser;
+            renderAppDashboard();
         }
 
-        function loginUser() {
-            const name = document.getElementById('in-login-name').value;
-            if(user && user.name === name) {
-                location.reload();
-            } else { alert('User not found'); }
+        // HANDLE USER LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            const stored = localStorage.getItem('surveypay_user');
+            if (!stored) {
+                alert("No account found with this email. Please create an account first!");
+                return;
+            }
+
+            const user = JSON.parse(stored);
+            if (user.email === email && user.password === password) {
+                currentUser = user;
+                renderAppDashboard();
+            } else {
+                alert("Invalid email or password!");
+            }
         }
 
-        function toggleAuth() {
-            document.getElementById('reg-form').classList.toggle('hidden');
-            document.getElementById('login-form').classList.toggle('hidden');
+        // LOAD USER FROM STORAGE
+        function loadUserFromStorage() {
+            const stored = localStorage.getItem('surveypay_user');
+            if (stored) {
+                currentUser = JSON.parse(stored);
+                renderAppDashboard();
+            } else {
+                document.getElementById('screen-auth').classList.remove('hidden');
+                document.getElementById('screen-app').classList.add('hidden');
+            }
         }
 
-        // DASHBOARD LOGIC
-        function renderDashboard() {
-            const cur = currencyMap[user.country];
-            const bal = (user.balance * cur.rate).toLocaleString();
-            document.getElementById('disp-name').innerText = user.name;
-            document.getElementById('disp-currency').innerText = user.country;
-            document.getElementById('disp-balance').innerText = cur.sym + ' ' + bal;
-            document.getElementById('wallet-balance').innerText = cur.sym + ' ' + bal;
-            document.getElementById('status-text').innerText = user.unlocked ? 'Account Active' : 'Account Inactive';
-            if(user.unlocked) document.getElementById('activate-btn').classList.add('hidden');
+        // LOGOUT
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                currentUser = null;
+                document.getElementById('screen-auth').classList.remove('hidden');
+                document.getElementById('screen-app').classList.add('hidden');
+            }
         }
 
-        function setTab(tab) {
-            document.getElementById('content-home').classList.toggle('hidden', tab !== 'home');
-            document.getElementById('content-wallet').classList.toggle('hidden', tab !== 'wallet');
+        // RENDER APP DASHBOARD
+        function renderAppDashboard() {
+            if (!currentUser) return;
+
+            document.getElementById('screen-auth').classList.add('hidden');
+            document.getElementById('screen-app').classList.remove('hidden');
+
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+
+            // Display Header Info
+            document.getElementById('disp-user-name').innerHTML = `${currentUser.fullName} ${currentUser.isActivated ? '<i class="fa-solid fa-circle-check text-emerald-400 text-xs" title="Activated"></i>' : ''}`;
+            document.getElementById('disp-country-badge').innerHTML = `<i class="fa-solid fa-location-dot text-[9px]"></i> ${country.name} (${country.code})`;
+
+            // Status Badge & Banner
+            const statusBadge = document.getElementById('account-status-badge');
+            const activationBanner = document.getElementById('activation-card-banner');
+            const profileStatusTag = document.getElementById('profile-status-tag');
+            const surveysLockIndicator = document.getElementById('surveys-lock-indicator');
+
+            if (currentUser.isActivated) {
+                statusBadge.className = "px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1";
+                statusBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ACCOUNT ACTIVE`;
+                activationBanner.classList.add('hidden');
+
+                profileStatusTag.className = "inline-block mt-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+                profileStatusTag.textContent = "Active Account";
+
+                surveysLockIndicator.className = "text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30";
+                surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock-open text-[9px] mr-1"></i> Unlocked`;
+            } else {
+                statusBadge.className = "px-3 py-1 bg-rose-500/20 border border-rose-500/40 text-rose-400 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1";
+                statusBadge.innerHTML = `<i class="fa-solid fa-lock"></i> ACTIVATION NEEDED`;
+                activationBanner.classList.remove('hidden');
+
+                profileStatusTag.className = "inline-block mt-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40";
+                profileStatusTag.textContent = "Unactivated Account";
+
+                surveysLockIndicator.className = "text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-full border border-rose-500/30";
+                surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock text-[9px] mr-1"></i> Locked`;
+            }
+
+            // Pricing description on banner
+            const priceDesc = document.getElementById('activation-price-desc');
+            if (country.isKenya) {
+                priceDesc.innerHTML = `Pay <strong class="text-amber-300 font-bold">500 KES</strong> to unlock high-paying surveys & enable instant payouts.`;
+            } else {
+                const localApprox = (4 / 0.0077 * country.rateVsKES).toFixed(2);
+                priceDesc.innerHTML = `Pay <strong class="text-amber-300 font-bold">$4.00 USD</strong> (~${localApprox} ${country.currency}) via Card to unlock surveys & payouts.`;
+            }
+
+            // Balances
+            const formattedBal = formatCurrency(currentUser.balanceKES, country);
+            document.getElementById('disp-balance').textContent = formattedBal;
+            document.getElementById('wallet-balance-disp').textContent = formattedBal;
+
+            // Min Withdrawal
+            const minWithdrawKES = 18000;
+            const formattedMin = formatCurrency(minWithdrawKES, country);
+            document.getElementById('disp-min-withdrawal-hint').textContent = `Minimum Withdrawal: ${formattedMin}`;
+
+            // RECORDED DETAILS IN PROFILE TAB
+            document.getElementById('profile-name').textContent = currentUser.fullName;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('rec-name').textContent = currentUser.fullName;
+            document.getElementById('rec-email').textContent = currentUser.email;
+            document.getElementById('rec-phone').textContent = currentUser.phone;
+            document.getElementById('rec-country').textContent = `${country.name} (${country.code})`;
+            document.getElementById('rec-currency').textContent = `${country.currency} (${country.symbol})`;
+            document.getElementById('rec-date').textContent = currentUser.registeredAt || new Date().toISOString().split('T')[0];
+
+            // Payout channels in Wallet
+            const walletPayouts = document.getElementById('wallet-payout-methods');
+            if (country.isKenya) {
+                walletPayouts.innerHTML = `
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-emerald-400"></i> M-Pesa Express</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-building-columns text-cyan-400"></i> Bank Transfer</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-brands fa-paypal text-blue-400"></i> PayPal</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-400"></i> Crypto USDT</div>
+                `;
+            } else {
+                walletPayouts.innerHTML = `
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-brands fa-paypal text-blue-400"></i> PayPal International</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-credit-card text-purple-400"></i> Card Payout</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-building-columns text-cyan-400"></i> SWIFT Wire</div>
+                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-400"></i> USDT Crypto</div>
+                `;
+            }
+
+            // Render Surveys List
+            renderSurveysList(country);
         }
 
-        // PAYMENTS
-        function openUnlockModal() { document.getElementById('modal-unlock').classList.remove('hidden'); }
-        function closeModal() { document.getElementById('modal-unlock').classList.add('hidden'); }
+        // CURRENCY FORMATTER
+        function formatCurrency(amountKES, country) {
+            if (country.isKenya) {
+                return `${amountKES.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} KES`;
+            } else {
+                const converted = (amountKES * country.rateVsKES);
+                return `${country.symbol}${converted.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${country.currency}`;
+            }
+        }
 
-        function payWithPaystack() {
-            let handler = PaystackPop.setup({
-                key: 'pk_test_YOUR_KEY', // Replace with your Public Key
-                email: 'user@example.com',
-                amount: 18000, 
-                currency: 'KES',
-                callback: function(response) {
-                    user.unlocked = true;
-                    localStorage.setItem('user_data', JSON.stringify(user));
-                    location.reload();
+        // RENDER SURVEYS
+        function renderSurveysList(country) {
+            const container = document.getElementById('surveys-container');
+            container.innerHTML = '';
+
+            DEFAULT_SURVEYS.forEach(survey => {
+                const rewardFormatted = formatCurrency(survey.baseRewardKES, country);
+
+                const card = document.createElement('div');
+                card.className = "glass-card p-4 rounded-2xl flex items-center justify-between transition-all hover:border-cyan-500/50";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-cyan-400 text-lg">
+                            <i class="fa-solid ${survey.icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xs text-slate-200">${survey.title}</h4>
+                            <div class="flex items-center gap-2 mt-1 text-[10px] text-slate-400 font-semibold">
+                                <span><i class="fa-solid fa-building text-slate-500"></i> ${survey.sponsor}</span>
+                                <span>•</span>
+                                <span><i class="fa-solid fa-clock text-slate-500"></i> ${survey.timeMin} mins</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-black text-sm text-emerald-400">+${rewardFormatted}</span>
+                        <button onclick="takeSurvey(${survey.id}, ${survey.baseRewardKES})" class="mt-1 px-3 py-1.5 ${currentUser.isActivated ? 'bg-cyan-600 text-white hover:bg-cyan-500' : 'bg-slate-900 text-rose-400 border border-rose-500/40 hover:bg-rose-500/20'} rounded-lg text-[10px] font-black transition-all flex items-center gap-1">
+                            ${currentUser.isActivated ? '<i class="fa-solid fa-play text-[9px]"></i> START' : '<i class="fa-solid fa-lock text-[9px]"></i> LOCKED'}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // TAKE SURVEY HANDLER (REQUIRES ACCOUNT ACTIVATION)
+        function takeSurvey(id, rewardKES) {
+            if (!currentUser.isActivated) {
+                const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+                const feeText = country.isKenya ? "500 KES" : "$4.00 USD";
+                alert(`Account Activation Required!\n\nYour account is currently inactive. You must activate your account (${feeText}) to unlock paid surveys and start earning.`);
+                openActivationModal();
+                return;
+            }
+
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+            const rewardFormatted = formatCurrency(rewardKES, country);
+
+            if (confirm(`Start survey task? Upon completion, +${rewardFormatted} will be credited to your account balance.`)) {
+                currentUser.balanceKES += rewardKES;
+                localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
+                alert(`Task Completed Successfully! You earned +${rewardFormatted}`);
+                renderAppDashboard();
+            }
+        }
+
+        // TAB SWITCHING IN MAIN DASHBOARD
+        function switchMainTab(tab) {
+            const tabs = ['surveys', 'wallet', 'profile', 'faq'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`tab-content-${t}`);
+                const btn = document.getElementById(`nav-btn-${t}`);
+                if (t === tab) {
+                    content.classList.remove('hidden');
+                    btn.className = "nav-tab-active flex flex-col items-center gap-1 text-[11px] font-extrabold transition-all";
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = "flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all";
                 }
             });
+        }
+
+        // ACTIVATION MODAL LOGIC
+        function openActivationModal() {
+            if (!currentUser) return;
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+
+            document.getElementById('modal-user-email').textContent = currentUser.email;
+            document.getElementById('modal-user-country').textContent = country.name;
+
+            const modalAmount = document.getElementById('modal-pay-amount');
+            const modalNote = document.getElementById('modal-channel-note');
+
+            if (country.isKenya) {
+                modalAmount.textContent = "500 KES";
+                modalNote.innerHTML = `<i class="fa-solid fa-mobile-screen mr-1"></i> Kenyan accounts pay 500 KES via M-Pesa or Card.`;
+            } else {
+                const localApprox = (4 / 0.0077 * country.rateVsKES).toFixed(2);
+                modalAmount.textContent = `$4.00 USD (~${localApprox} ${country.currency})`;
+                modalNote.innerHTML = `<i class="fa-solid fa-credit-card mr-1"></i> International accounts outside Kenya pay $4.00 USD strictly via Debit/Credit Card.`;
+            }
+
+            document.getElementById('modal-activation').classList.remove('hidden');
+        }
+
+        function closeActivationModal() {
+            document.getElementById('modal-activation').classList.add('hidden');
+        }
+
+        // TRIGGER PAYSTACK PAYMENT
+        function triggerPaystackPayment() {
+            if (!currentUser) return;
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+
+            let paymentAmountInSubunits = 0;
+            let paymentCurrency = 'KES';
+            let allowedChannels = [];
+
+            if (country.isKenya) {
+                // 500 KES = 50,000 cents
+                paymentAmountInSubunits = 500 * 100;
+                paymentCurrency = 'KES';
+                // All payment methods allowed for Kenya
+                allowedChannels = ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'];
+            } else {
+                // 4 USD = 400 cents
+                paymentAmountInSubunits = 4 * 100;
+                paymentCurrency = 'USD';
+                // ONLY Card allowed for international non-Kenyan accounts
+                allowedChannels = ['card'];
+            }
+
+            const handler = PaystackPop.setup({
+                key: PAYSTACK_LIVE_PUBLIC_KEY,
+                email: currentUser.email,
+                amount: paymentAmountInSubunits,
+                currency: paymentCurrency,
+                channels: allowedChannels,
+                ref: 'SP_' + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    custom_fields: [
+                        { display_name: "Full Name", variable_name: "full_name", value: currentUser.fullName },
+                        { display_name: "Country", variable_name: "country", value: country.name },
+                        { display_name: "Phone Number", variable_name: "phone_number", value: currentUser.phone }
+                    ]
+                },
+                callback: function(response) {
+                    currentUser.isActivated = true;
+                    localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
+                    alert("Account Activated Successfully! Surveys are now unlocked.\nPaystack Reference: " + response.reference);
+                    closeActivationModal();
+                    renderAppDashboard();
+                },
+                onClose: function() {
+                    alert("Payment window closed. Please complete activation payment to unlock surveys.");
+                }
+            });
+
             handler.openIframe();
         }
 
-        function withdraw() { alert("Withdrawal processed for " + user.name); }
+        // HANDLE WITHDRAWAL REQUEST
+        function handleWithdrawRequest() {
+            if (!currentUser.isActivated) {
+                alert("Account Activation Required before withdrawing funds!");
+                openActivationModal();
+                return;
+            }
 
-        init();
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+            const minWithdrawKES = 18000;
+
+            if (currentUser.balanceKES < minWithdrawKES) {
+                const formattedMin = formatCurrency(minWithdrawKES, country);
+                const formattedCurrent = formatCurrency(currentUser.balanceKES, country);
+                alert(`Insufficient Balance!\nYour current balance: ${formattedCurrent}\nMinimum required for withdrawal: ${formattedMin}`);
+                return;
+            }
+
+            let methodPrompt = "Select Withdrawal Channel:\n1. M-Pesa Mobile Money\n2. PayPal\n3. Bank Transfer\n4. USDT Crypto";
+            if (!country.isKenya) {
+                methodPrompt = "Select International Withdrawal Channel:\n1. PayPal\n2. Bank Wire / SWIFT\n3. USDT Crypto";
+            }
+
+            const choice = prompt(methodPrompt);
+            if (choice) {
+                const formattedBal = formatCurrency(currentUser.balanceKES, country);
+                alert(`Withdrawal Request Submitted!\nAmount: ${formattedBal}\nAccount: ${currentUser.email}\nStatus: Processing to payout queue.`);
+            }
+        }
     </script>
 </body>
 </html>
