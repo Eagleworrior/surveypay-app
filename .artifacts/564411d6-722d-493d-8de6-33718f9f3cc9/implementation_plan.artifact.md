@@ -1,39 +1,56 @@
-# Signed APK Generation Plan for SurveyPay Pro
+# SurveyPay Pro - Comprehensive App Redesign & Enhancements Plan
 
-Create a native Android WebView wrapper project for SurveyPay Pro, configure Android Gradle build settings, compile and sign the release APK, and place the final signed APK named `survy pay.apk` directly into `C:\Users\EAGLE\Downloads\survy pay.apk`.
+Refactor SurveyPay Pro into a structured multi-screen application featuring a circular loading splash screen, required 2-checkbox Terms & Conditions agreement modal, persistent session memory, expanded survey catalog, bottom navigation menu, updated app icon from `Copilot_20260927_184420.png`, and re-compiled signed release Android APK.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Target Output**: `C:\Users\EAGLE\Downloads\survy pay.apk`
-> - **App Name**: `SurveyPay Pro` (Output file: `survy pay.apk`)
-> - **App Icon**: `app-icon.png` (Integrated into Android app launch icons)
-> - **WebView Features**: JavaScript enabled, DOM Storage enabled, Mixed Content Allowed, Fullscreen/Responsive web view loading local web assets.
-> - **Environment Tools**: Java JDK (`C:\Program Files\Android\Android Studio\jbr`) & Android SDK (`C:\Users\EAGLE\AppData\Local\Android\Sdk`).
+> - **App Icon**: Updated using `Copilot_20260927_184420.png` from Downloads.
+> - **Startup Loading Screen**: Spinning progress loader with **SurveyPay Pro** logo header on app open.
+> - **Terms & Policy Onboarding Modal**: Mandatory agreement screen with **two required checkboxes** before account registration/login can proceed.
+> - **Clean Layout Structure (No Long Single Page Scrolling)**: Structured views with fixed bottom navigation menu tabs (Surveys, Wallet, Profile, Settings/FAQ).
+> - **Persistent App Brain / Memory**: Persistent session storage (`localStorage`) so the app never forgets registered user details, balance, activation state, and terms agreement.
+> - **Expanded Survey Catalog**: Multiple high-paying surveys unlocked upon account activation (500 KES Kenya / $4.00 USD Card international).
+> - **Android Signed APK**: Recompiled and signed release APK saved as `C:\Users\EAGLE\Downloads\survy pay.apk`.
 
 ## Proposed Changes
 
-### Android Project Setup (`android/` or wrapper structure)
+### Web Application (`index.html` & `frontend/index.html`)
 
-#### [NEW] [AndroidManifest.xml](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/AndroidManifest.xml)
-- Configure Internet permissions (`android.permission.INTERNET`, `android.permission.ACCESS_NETWORK_STATE`).
-- Set MainActivity with Fullscreen theme and launcher icon.
+#### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
+- **App Icon Integration**: Copy `Copilot_20260927_184420.png` as main icon (`app-icon.png`).
+- **Loading Screen (Splash)**:
+  - Spinning loader circle with glowing cyan gradient and **SurveyPay Pro** branding.
+  - Auto-hides after initialization.
+- **Terms & Privacy Modal**:
+  - Comprehensive document covering survey rules, activation fees (500 KES / $4 USD), payouts, and privacy.
+  - Checkbox 1: `I agree to the SurveyPay Pro Terms & Conditions`
+  - Checkbox 2: `I agree to the Privacy Policy and Data Protection Terms`
+  - Submit button disabled until both checkboxes are checked.
+- **Authentication & Registration**:
+  - Full Name, Email, Country (with auto prefix), Phone Number, Password, Confirm Password.
+  - Saves all details permanently to persistent memory.
+- **Structured Multi-Tab Layout with Bottom Navigation**:
+  - **Tab 1 (Surveys)**: Hero balance card, activation banner, rich survey list (8+ surveys).
+  - **Tab 2 (Wallet)**: Withdrawable balance, regional withdrawal methods (M-Pesa, Bank, PayPal, USDT), transaction log.
+  - **Tab 3 (Profile)**: Displays user avatar (`Copilot_20260927_184420.png`), registered user details in distinct colorful cards.
+  - **Tab 4 (FAQ & Logout)**: Help guides and Logout button.
+- **Bottom Navigation Bar**: Fixed bottom bar with glowing active tab indicator.
 
-#### [NEW] [MainActivity.java](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/java/com/surveypay/app/MainActivity.java)
-- Android Activity containing a full-screen `WebView`.
-- Configure `WebSettings`: `setJavaScriptEnabled(true)`, `setDomStorageEnabled(true)`, `setAllowFileAccess(true)`.
-- Load local web assets from `file:///android_asset/index.html`.
+### Android Project & Signed APK Generation
 
-#### [NEW] [Assets & Resources](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/assets)
-- Bundle `index.html` and `app-icon.png` into Android `assets/` and `res/mipmap` drawables.
+#### [MODIFY] [android/app/src/main/res/mipmap-*/](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/res)
+- Replace launcher icons with `Copilot_20260927_184420.png`.
 
-#### [NEW] [Build & Signing Scripts](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/build.gradle.kts)
-- Android Gradle project configuration.
-- Sign APK with release keystore and output `survy pay.apk` to `C:\Users\EAGLE\Downloads\survy pay.apk`.
+#### [COMPILE] [Signed APK Output](file:///C:/Users/EAGLE/Downloads/survy%20pay.apk)
+- Recompile with Gradle (`./gradlew assembleRelease`).
+- Sign with release keystore and output `survy pay.apk` to `C:\Users\EAGLE\Downloads\survy pay.apk`.
 
 ## Verification Plan
 
-### Automated Build & Deployment
-1. Compile release APK using Gradle wrapper / Android SDK build tools.
-2. Verify signed APK generation and copy to `C:\Users\EAGLE\Downloads\survy pay.apk`.
-3. Confirm APK file exists, is valid, signed, and ready for device installation.
+### Automated Build & Manual Testing
+1. Verify `Copilot_20260927_184420.png` copied to web and Android assets.
+2. Test splash screen loading and 2-checkbox Terms & Conditions agreement flow.
+3. Confirm persistent session memory across page reloads.
+4. Verify bottom navigation tabs and colorful profile details display.
+5. Recompile, sign, and verify release APK output to `C:\Users\EAGLE\Downloads\survy pay.apk`.

@@ -21,7 +21,7 @@
 
         /* Custom Colorful Glowing Cards */
         .glass-card {
-            background: rgba(15, 20, 38, 0.8);
+            background: rgba(15, 20, 38, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -44,29 +44,12 @@
         }
 
         /* Colorful Typed Inputs styling */
-        .input-name {
-            color: #38bdf8 !important; /* Bright Cyan */
-            caret-color: #38bdf8;
-        }
-        .input-email {
-            color: #34d399 !important; /* Bright Emerald */
-            caret-color: #34d399;
-        }
-        .input-country {
-            color: #fbbf24 !important; /* Amber / Gold */
-        }
-        .input-phone {
-            color: #fb923c !important; /* Bright Orange */
-            caret-color: #fb923c;
-        }
-        .input-password {
-            color: #c084fc !important; /* Bright Purple */
-            caret-color: #c084fc;
-        }
-        .input-confirm-password {
-            color: #f472b6 !important; /* Bright Pink */
-            caret-color: #f472b6;
-        }
+        .input-name { color: #38bdf8 !important; caret-color: #38bdf8; }
+        .input-email { color: #34d399 !important; caret-color: #34d399; }
+        .input-country { color: #fbbf24 !important; }
+        .input-phone { color: #fb923c !important; caret-color: #fb923c; }
+        .input-password { color: #c084fc !important; caret-color: #c084fc; }
+        .input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; }
 
         /* Gradient Texts */
         .gradient-gold {
@@ -85,9 +68,14 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Hide scrollbars */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Spinning loader animation */
+        @keyframes spin-custom {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-custom {
+            animation: spin-custom 1.2s linear infinite;
+        }
 
         /* Active Navigation Tab */
         .nav-tab-active {
@@ -115,12 +103,87 @@
     <div class="fixed bottom-20 left-10 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
     <div class="fixed top-1/3 right-5 w-72 h-72 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
-    <!-- ================= AUTH SCREEN ================= -->
+    <!-- ================= 1. CIRCULAR LOADING SPLASH SCREEN ================= -->
+    <div id="screen-loading" class="fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+
+        <!-- App Logo Icon -->
+        <div class="relative w-24 h-20 mb-6 flex items-center justify-center">
+            <!-- Outer Spinning Circle -->
+            <div class="absolute inset-0 w-24 h-24 border-4 border-cyan-500/20 border-t-cyan-400 border-r-purple-500 rounded-full animate-spin-custom"></div>
+            <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shadow-lg">
+                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-xl" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-black tracking-tight gradient-brand mt-2">SurveyPay Pro</h1>
+        <p class="text-xs font-bold text-cyan-400 mt-1 uppercase tracking-widest flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-check text-emerald-400"></i> Global Monetization Network
+        </p>
+
+        <!-- Progress Bar -->
+        <div class="w-48 bg-slate-900 rounded-full h-1.5 mt-8 overflow-hidden border border-slate-800">
+            <div id="loading-progress-bar" class="bg-gradient-to-r from-cyan-400 to-purple-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <p id="loading-status-text" class="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
+    </div>
+
+    <!-- ================= 2. TERMS & CONDITIONS AND PRIVACY MODAL ================= -->
+    <div id="modal-terms" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[150] flex items-center justify-center p-5">
+        <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-6 rounded-3xl flex flex-col max-h-[85vh] relative animate-in fade-in duration-300">
+
+            <div class="text-center pb-3 border-b border-slate-800 mb-3">
+                <div class="w-12 h-12 mx-auto rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-2">
+                    <i class="fa-solid fa-file-contract"></i>
+                </div>
+                <h2 class="text-xl font-black text-white">Terms & Privacy Policy</h2>
+                <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-wider">SurveyPay Pro Legal Agreement</p>
+            </div>
+
+            <!-- Scrollable Legal Terms Content -->
+            <div class="flex-1 overflow-y-auto no-scrollbar space-y-3.5 pr-1 text-xs text-slate-300 leading-relaxed my-2">
+                <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800/80 space-y-1">
+                    <h4 class="font-extrabold text-cyan-300 text-xs uppercase">1. Account Activation & Bot Protection</h4>
+                    <p class="text-[11px]">To prevent automated spam accounts and ensure high data quality for research sponsors, accounts require a one-time activation fee (<strong>500 KES</strong> for Kenyan accounts, or <strong>$4.00 USD</strong> via Card for international accounts).</p>
+                </div>
+
+                <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800/80 space-y-1">
+                    <h4 class="font-extrabold text-emerald-300 text-xs uppercase">2. Survey Rewards & Payout Rules</h4>
+                    <p class="text-[11px]">Rewards are credited immediately upon authentic completion of survey tasks. Withdrawals are processed directly to your registered Mobile Money (M-Pesa), PayPal, or Bank Transfer once reaching the minimum threshold.</p>
+                </div>
+
+                <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800/80 space-y-1">
+                    <h4 class="font-extrabold text-purple-300 text-xs uppercase">3. Privacy & Encrypted Data Handling</h4>
+                    <p class="text-[11px]">Your personal information, email, phone number, and location data are end-to-end encrypted and strictly confidential under global data protection regulations.</p>
+                </div>
+            </div>
+
+            <!-- TWO REQUIRED CHECKBOXES -->
+            <div class="pt-3 border-t border-slate-800 space-y-2.5">
+                <label class="flex items-start gap-2.5 cursor-pointer text-[11px] font-bold text-slate-300 hover:text-white">
+                    <input type="checkbox" id="chk-terms" onchange="validateTermsCheckboxes()" class="mt-0.5 rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-slate-950 w-4 h-4 cursor-pointer">
+                    <span>I have read and agree to the <strong class="text-cyan-300">SurveyPay Pro Terms & Conditions</strong>.</span>
+                </label>
+
+                <label class="flex items-start gap-2.5 cursor-pointer text-[11px] font-bold text-slate-300 hover:text-white">
+                    <input type="checkbox" id="chk-privacy" onchange="validateTermsCheckboxes()" class="mt-0.5 rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-slate-950 w-4 h-4 cursor-pointer">
+                    <span>I agree to the <strong class="text-emerald-300">Privacy Policy and Data Protection Terms</strong>.</span>
+                </label>
+
+                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3.5 mt-2 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                    <span>ACCEPT & CONTINUE TO ACCOUNT</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= 3. AUTH SCREEN (REGISTER / LOGIN) ================= -->
     <section id="screen-auth" class="min-h-screen flex flex-col justify-center px-5 py-8">
 
         <!-- HEADER / BRANDING WITH APP ICON -->
         <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[3px] shadow-xl shadow-cyan-500/25 mb-3 animate-pulse">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[3px] shadow-xl shadow-cyan-500/25 mb-3">
                 <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[21px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
             <h1 class="text-4xl font-black tracking-tight gradient-brand">SurveyPay Pro</h1>
@@ -192,11 +255,11 @@
                 <!-- Phone Number with Auto-populated Country Prefix -->
                 <div>
                     <label class="block text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-mobile-screen-button text-orange-400 text-xs"></i> Phone Number
+                        <i class="fa-solid fa-mobile-screen-button text-orange-400 text-xs"></i> Mobile Phone Number
                     </label>
                     <div class="flex items-center gap-2">
                         <!-- Country Prefix Badge -->
-                        <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-3.5 py-3.5 rounded-xl border border-orange-500/50 min-w-[70px] text-center shadow-inner flex items-center justify-center gap-1">
+                        <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-3 py-3.5 rounded-xl border border-orange-500/50 min-w-[75px] text-center shadow-inner flex items-center justify-center gap-1">
                             <i class="fa-solid fa-phone text-[10px]"></i> +254
                         </div>
                         <div class="relative flex-1 flex items-center">
@@ -282,7 +345,7 @@
 
     </section>
 
-    <!-- ================= MAIN APP SCREEN ================= -->
+    <!-- ================= 4. MAIN APP SCREEN ================= -->
     <div id="screen-app" class="hidden flex-1 flex flex-col min-h-screen">
 
         <!-- TOP BAR / HEADER WITH APP LOGO ICON -->
@@ -357,7 +420,7 @@
                 <!-- SURVEYS LIST HEADER -->
                 <div class="flex justify-between items-center pt-2">
                     <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check"></i> Available Premium Surveys
+                        <i class="fa-solid fa-list-check"></i> Premium Survey Catalog
                     </h3>
                     <span id="surveys-lock-indicator" class="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-full border border-rose-500/30">
                         <i class="fa-solid fa-lock text-[9px] mr-1"></i> Locked
@@ -513,11 +576,25 @@
                                     <i class="fa-solid fa-calendar-check text-sm"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Registration Timestamp</p>
-                                    <p id="rec-date" class="text-xs font-black text-purple-300">2026-09-27</p>
+                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Registration Date</p>
+                                    <p id="rec-date" class="text-xs font-black text-purple-300">2026-09-28</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-clock text-purple-500/60 text-xs"></i>
+                        </div>
+
+                        <!-- Terms Agreement Record -->
+                        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-pink-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400">
+                                    <i class="fa-solid fa-file-signature text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-pink-400 uppercase tracking-wider">Terms & Policy Verified</p>
+                                    <p id="rec-terms" class="text-xs font-black text-pink-300">Accepted & Verified</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-circle-check text-pink-500/60 text-xs"></i>
                         </div>
 
                     </div>
@@ -537,11 +614,11 @@
 
             </div>
 
-            <!-- TAB 4: HELP & FAQ -->
+            <!-- TAB 4: HELP & FAQ & LOGOUT MENU -->
             <div id="tab-content-faq" class="hidden space-y-4">
                 <div class="glass-card p-6 rounded-3xl space-y-4">
                     <h3 class="text-sm font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-circle-question text-cyan-400"></i> Frequently Asked Questions
+                        <i class="fa-solid fa-circle-question text-cyan-400"></i> Help Center & Account Menu
                     </h3>
 
                     <div class="space-y-3 text-xs">
@@ -560,12 +637,17 @@
                             <p class="text-slate-300 leading-relaxed">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
                         </div>
                     </div>
+
+                    <button onclick="handleLogout()" class="mt-4 w-full py-3.5 bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/50 rounded-xl text-xs font-black text-rose-300 flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>LOG OUT OF CURRENT ACCOUNT</span>
+                    </button>
                 </div>
             </div>
 
         </main>
 
-        <!-- FIXED BOTTOM NAVIGATION BAR -->
+        <!-- FIXED BOTTOM NAVIGATION BAR MENU -->
         <nav class="fixed bottom-0 max-w-md w-full bg-slate-950/90 backdrop-blur-2xl border-t border-slate-800/80 px-6 py-3.5 flex justify-between items-center z-50">
             <button id="nav-btn-surveys" onclick="switchMainTab('surveys')" class="nav-tab-active flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
                 <i class="fa-solid fa-list-check text-lg"></i>
@@ -583,8 +665,8 @@
             </button>
 
             <button id="nav-btn-faq" onclick="switchMainTab('faq')" class="flex flex-col items-center gap-1 text-[11px] font-extrabold text-slate-400 transition-all">
-                <i class="fa-solid fa-circle-question text-lg"></i>
-                <span>FAQ</span>
+                <i class="fa-solid fa-gear text-lg"></i>
+                <span>Menu</span>
             </button>
         </nav>
 
@@ -641,7 +723,7 @@
         // CONFIG & CONSTANTS
         const PAYSTACK_LIVE_PUBLIC_KEY = "pk_live_d3ad28a96d0faa12c3c25a14389d29980a707d3b";
 
-        // Country Dictionary with phone codes, currency symbols, and activation pricing rules
+        // Comprehensive Country Dictionary with phone codes, currencies, and exchange rules vs KES
         const COUNTRIES_MAP = {
             "KE": { name: "Kenya", code: "+254", currency: "KES", symbol: "KSh", rateVsKES: 1, feeKES: 500, isKenya: true },
             "US": { name: "United States", code: "+1", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
@@ -654,17 +736,53 @@
             "RW": { name: "Rwanda", code: "+250", currency: "RWF", symbol: "FRw", rateVsKES: 10.4, feeUSD: 4, isKenya: false },
             "CA": { name: "Canada", code: "+1", currency: "CAD", symbol: "CA$", rateVsKES: 0.0105, feeUSD: 4, isKenya: false },
             "AU": { name: "Australia", code: "+61", currency: "AUD", symbol: "A$", rateVsKES: 0.0118, feeUSD: 4, isKenya: false },
-            "EU": { name: "Europe (Eurozone)", code: "+49", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "DE": { name: "Germany", code: "+49", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "FR": { name: "France", code: "+33", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "IT": { name: "Italy", code: "+39", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "ES": { name: "Spain", code: "+34", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "NL": { name: "Netherlands", code: "+31", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
             "IN": { name: "India", code: "+91", currency: "INR", symbol: "₹", rateVsKES: 0.65, feeUSD: 4, isKenya: false },
+            "BR": { name: "Brazil", code: "+55", currency: "BRL", symbol: "R$", rateVsKES: 0.042, feeUSD: 4, isKenya: false },
+            "MX": { name: "Mexico", code: "+52", currency: "MXN", symbol: "Mex$", rateVsKES: 0.15, feeUSD: 4, isKenya: false },
+            "AE": { name: "United Arab Emirates", code: "+971", currency: "AED", symbol: "AED", rateVsKES: 0.028, feeUSD: 4, isKenya: false },
+            "SA": { name: "Saudi Arabia", code: "+966", currency: "SAR", symbol: "SAR", rateVsKES: 0.029, feeUSD: 4, isKenya: false },
+            "EG": { name: "Egypt", code: "+20", currency: "EGP", symbol: "E£", rateVsKES: 0.37, feeUSD: 4, isKenya: false },
+            "ET": { name: "Ethiopia", code: "+251", currency: "ETB", symbol: "Br", rateVsKES: 0.88, feeUSD: 4, isKenya: false },
+            "ZM": { name: "Zambia", code: "+260", currency: "ZMW", symbol: "ZK", rateVsKES: 0.21, feeUSD: 4, isKenya: false },
+            "ZW": { name: "Zimbabwe", code: "+263", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
+            "CM": { name: "Cameroon", code: "+237", currency: "XAF", symbol: "FCFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "CI": { name: "Ivory Coast", code: "+225", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "SN": { name: "Senegal", code: "+221", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "CN": { name: "China", code: "+86", currency: "CNY", symbol: "¥", rateVsKES: 0.055, feeUSD: 4, isKenya: false },
+            "JP": { name: "Japan", code: "+81", currency: "JPY", symbol: "¥", rateVsKES: 1.15, feeUSD: 4, isKenya: false },
+            "KR": { name: "South Korea", code: "+82", currency: "KRW", symbol: "₩", rateVsKES: 10.3, feeUSD: 4, isKenya: false },
+            "SG": { name: "Singapore", code: "+65", currency: "SGD", symbol: "S$", rateVsKES: 0.0102, feeUSD: 4, isKenya: false },
+            "MY": { name: "Malaysia", code: "+60", currency: "MYR", symbol: "RM", rateVsKES: 0.034, feeUSD: 4, isKenya: false },
+            "ID": { name: "Indonesia", code: "+62", currency: "IDR", symbol: "Rp", rateVsKES: 122.5, feeUSD: 4, isKenya: false },
+            "PH": { name: "Philippines", code: "+63", currency: "PHP", symbol: "₱", rateVsKES: 0.44, feeUSD: 4, isKenya: false },
+            "PK": { name: "Pakistan", code: "+92", currency: "PKR", symbol: "Rs", rateVsKES: 2.15, feeUSD: 4, isKenya: false },
+            "BD": { name: "Bangladesh", code: "+880", currency: "BDT", symbol: "৳", rateVsKES: 0.92, feeUSD: 4, isKenya: false },
+            "TR": { name: "Turkey", code: "+90", currency: "TRY", symbol: "₺", rateVsKES: 0.26, feeUSD: 4, isKenya: false },
+            "AR": { name: "Argentina", code: "+54", currency: "ARS", symbol: "$", rateVsKES: 7.45, feeUSD: 4, isKenya: false },
+            "CL": { name: "Chile", code: "+56", currency: "CLP", symbol: "CLP$", rateVsKES: 7.25, feeUSD: 4, isKenya: false },
+            "SE": { name: "Sweden", code: "+46", currency: "SEK", symbol: "kr", rateVsKES: 0.081, feeUSD: 4, isKenya: false },
+            "NO": { name: "Norway", code: "+47", currency: "NOK", symbol: "kr", rateVsKES: 0.082, feeUSD: 4, isKenya: false },
+            "CH": { name: "Switzerland", code: "+41", currency: "CHF", symbol: "CHF", rateVsKES: 0.0067, feeUSD: 4, isKenya: false },
             "OTHER": { name: "Other International", code: "+", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false }
         };
 
-        // Standard Surveys Definition
+        // Extended Catalog of High-Paying Premium Surveys
         const DEFAULT_SURVEYS = [
             { id: 1, title: "Global Consumer Tech Trends 2026", sponsor: "TechInsights", baseRewardKES: 650, timeMin: 5, icon: "fa-laptop" },
             { id: 2, title: "E-Commerce & Digital Payments Study", sponsor: "FinResearch", baseRewardKES: 950, timeMin: 8, icon: "fa-credit-card" },
             { id: 3, title: "Mobile Apps & Gaming Experience", sponsor: "AppPulse", baseRewardKES: 1200, timeMin: 12, icon: "fa-gamepad" },
-            { id: 4, title: "Media Streaming Habits & Preferences", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-film" }
+            { id: 4, title: "Media Streaming Habits & Preferences", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-film" },
+            { id: 5, title: "Artificial Intelligence in Everyday Life", sponsor: "AI Global", baseRewardKES: 1100, timeMin: 10, icon: "fa-brain" },
+            { id: 6, title: "Sustainable Living & Green Products", sponsor: "EcoMonitor", baseRewardKES: 750, timeMin: 7, icon: "fa-leaf" },
+            { id: 7, title: "Electric Vehicles & Future Mobility", sponsor: "AutoResearch", baseRewardKES: 1350, timeMin: 15, icon: "fa-car" },
+            { id: 8, title: "Online Education & Career Upskilling", sponsor: "EduPulse", baseRewardKES: 900, timeMin: 9, icon: "fa-graduation-cap" },
+            { id: 9, title: "Global Travel & Hospitality Industry", sponsor: "TravelX", baseRewardKES: 1050, timeMin: 11, icon: "fa-plane" },
+            { id: 10, title: "Health, Fitness & Digital Wearables", sponsor: "WellTech", baseRewardKES: 850, timeMin: 7, icon: "fa-heart-pulse" }
         ];
 
         // APP STATE
@@ -672,9 +790,67 @@
 
         // INIT APP
         document.addEventListener('DOMContentLoaded', () => {
-            populateCountryOptions();
-            loadUserFromStorage();
+            initLoadingSplashScreen();
         });
+
+        // 1. SPLASH LOADING SCREEN ANIMATION
+        function initLoadingSplashScreen() {
+            const bar = document.getElementById('loading-progress-bar');
+            const txt = document.getElementById('loading-status-text');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 25;
+                bar.style.width = progress + '%';
+
+                if (progress === 50) txt.textContent = "Loading Encryption Keys & Brain...";
+                if (progress === 75) txt.textContent = "Verifying Session Records...";
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('screen-loading').classList.add('opacity-0');
+                        setTimeout(() => {
+                            document.getElementById('screen-loading').classList.add('hidden');
+                            checkOnboardingAndSession();
+                        }, 500);
+                    }, 300);
+                }
+            }, 300);
+        }
+
+        // 2. CHECK ONBOARDING & TERMS MEMORY
+        function checkOnboardingAndSession() {
+            populateCountryOptions();
+
+            const termsAccepted = localStorage.getItem('surveypay_terms_accepted');
+            if (termsAccepted !== 'true') {
+                document.getElementById('modal-terms').classList.remove('hidden');
+            } else {
+                loadUserFromStorage();
+            }
+        }
+
+        // TERMS CHECKBOXES VALIDATION
+        function validateTermsCheckboxes() {
+            const terms = document.getElementById('chk-terms').checked;
+            const privacy = document.getElementById('chk-privacy').checked;
+            const btn = document.getElementById('btn-terms-accept');
+
+            if (terms && privacy) {
+                btn.disabled = false;
+                btn.className = "w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
+            } else {
+                btn.disabled = true;
+                btn.className = "w-full py-3.5 mt-2 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
+            }
+        }
+
+        function acceptTermsAndProceed() {
+            localStorage.setItem('surveypay_terms_accepted', 'true');
+            document.getElementById('modal-terms').classList.add('hidden');
+            loadUserFromStorage();
+        }
 
         // POPULATE COUNTRY SELECT DROPDOWN
         function populateCountryOptions() {
@@ -750,7 +926,7 @@
                 registeredAt: regDateStr
             };
 
-            // Store user details in localStorage
+            // Store user details permanently in localStorage
             localStorage.setItem('surveypay_user', JSON.stringify(newUser));
             currentUser = newUser;
             renderAppDashboard();
@@ -791,7 +967,7 @@
 
         // LOGOUT
         function handleLogout() {
-            if (confirm("Are you sure you want to log out?")) {
+            if (confirm("Are you sure you want to log out? Your recorded account details will remain safely saved.")) {
                 currentUser = null;
                 document.getElementById('screen-auth').classList.remove('hidden');
                 document.getElementById('screen-app').classList.add('hidden');
