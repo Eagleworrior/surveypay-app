@@ -1,46 +1,42 @@
-# SurveyPay Pro - Comprehensive App Redesign & Enhancements Plan
+# SurveyPay App Layout Optimization, Rebranding & Bottom Navigation Matching Screenshot
 
-Refactor SurveyPay Pro into a structured multi-screen application featuring a circular loading splash screen, required 2-checkbox Terms & Conditions agreement modal, persistent session memory, expanded survey catalog, bottom navigation menu, updated app icon from `Copilot_20260927_184420.png`, and re-compiled signed release Android APK.
+Refactor SurveyPay to match the exact design style from the user's screenshot (`WhatsApp Image 2026-09-28 at 07.42.49.jpeg`), featuring 3D colorful bottom navigation menu icons, a blue gradient hero card, left-accented survey cards, zero-scroll 2-step registration wizard, paginated surveys, rebranding from **SurveyPay Pro** to **SurveyPay**, and signed Android APK generation.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **App Icon**: Updated using `Copilot_20260927_184420.png` from Downloads.
-> - **Startup Loading Screen**: Spinning progress loader with **SurveyPay Pro** logo header on app open.
-> - **Terms & Policy Onboarding Modal**: Mandatory agreement screen with **two required checkboxes** before account registration/login can proceed.
-> - **Clean Layout Structure (No Long Single Page Scrolling)**: Structured views with fixed bottom navigation menu tabs (Surveys, Wallet, Profile, Settings/FAQ).
-> - **Persistent App Brain / Memory**: Persistent session storage (`localStorage`) so the app never forgets registered user details, balance, activation state, and terms agreement.
-> - **Expanded Survey Catalog**: Multiple high-paying surveys unlocked upon account activation (500 KES Kenya / $4.00 USD Card international).
-> - **Android Signed APK**: Recompiled and signed release APK saved as `C:\Users\EAGLE\Downloads\survy pay.apk`.
+> - **Bottom Navigation Menu Design (Matched to Screenshot)**:
+>   - **HOME**: House icon with orange/red roof (`<i class="fa-solid fa-house"></i>` with 3D gradient/colors).
+>   - **SURVEYS**: Gift box icon with gold ribbon (`<i class="fa-solid fa-gift"></i>`).
+>   - **WALLET**: Briefcase icon (`<i class="fa-solid fa-briefcase"></i>`).
+>   - **PROFILE / ME**: User silhouette icon (`<i class="fa-solid fa-user-large"></i>`).
+>   - Active tab highlighted in bright cyan with bold uppercase labels (`HOME`, `SURVEYS`, `WALLET`, `ME`).
+> - **Card & UI Styling (Matched to Screenshot)**:
+>   - **Hero Balance Card**: Rich blue gradient (`bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700`) with white balance text and prominent activation button.
+>   - **Survey Task Cards**: Dark rounded cards with a cyan left border accent (`border-l-4 border-cyan-400`), cyan title, green reward text, and cyan pill action buttons.
+> - **Rebranding**: Changed all occurrences of **SurveyPay Pro** to **SurveyPay**.
+> - **2-Step Registration Wizard (Zero Scrolling)**:
+>   - **Step 1**: Name, Email, Country Selection, and Phone Number (*Next*).
+>   - **Step 2**: Password and Confirm Password (*Create Account*).
+> - **Compact Paginated Surveys**: Shows 3 surveys per page with Previous/Next controls.
+> - **Android Signed APK**: Recompile and sign release APK `survy pay.apk` directly to `C:\Users\EAGLE\Downloads\survy pay.apk`.
 
 ## Proposed Changes
 
 ### Web Application (`index.html` & `frontend/index.html`)
 
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- **App Icon Integration**: Copy `Copilot_20260927_184420.png` as main icon (`app-icon.png`).
-- **Loading Screen (Splash)**:
-  - Spinning loader circle with glowing cyan gradient and **SurveyPay Pro** branding.
-  - Auto-hides after initialization.
-- **Terms & Privacy Modal**:
-  - Comprehensive document covering survey rules, activation fees (500 KES / $4 USD), payouts, and privacy.
-  - Checkbox 1: `I agree to the SurveyPay Pro Terms & Conditions`
-  - Checkbox 2: `I agree to the Privacy Policy and Data Protection Terms`
-  - Submit button disabled until both checkboxes are checked.
-- **Authentication & Registration**:
-  - Full Name, Email, Country (with auto prefix), Phone Number, Password, Confirm Password.
-  - Saves all details permanently to persistent memory.
-- **Structured Multi-Tab Layout with Bottom Navigation**:
-  - **Tab 1 (Surveys)**: Hero balance card, activation banner, rich survey list (8+ surveys).
-  - **Tab 2 (Wallet)**: Withdrawable balance, regional withdrawal methods (M-Pesa, Bank, PayPal, USDT), transaction log.
-  - **Tab 3 (Profile)**: Displays user avatar (`Copilot_20260927_184420.png`), registered user details in distinct colorful cards.
-  - **Tab 4 (FAQ & Logout)**: Help guides and Logout button.
-- **Bottom Navigation Bar**: Fixed bottom bar with glowing active tab indicator.
+- Rebrand to `SurveyPay`.
+- Style bottom navigation menu to match the screenshot (`HOME`, `SURVEYS`, `WALLET`, `ME`) with 3D colorful icons and glowing active cyan text.
+- Re-style Hero Balance card with blue gradient and rounded corners matching screenshot.
+- Re-style Survey cards with cyan left-border accent (`border-l-4 border-cyan-400`), green earnings rate, and rounded cyan buttons.
+- Implement 2-step registration wizard for `form-register`.
+- Implement 3-survey pagination (`prevSurveyPage()`, `nextSurveyPage()`).
 
-### Android Project & Signed APK Generation
+### Android Gradle Project (`android/`)
 
-#### [MODIFY] [android/app/src/main/res/mipmap-*/](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/res)
-- Replace launcher icons with `Copilot_20260927_184420.png`.
+#### [MODIFY] [strings.xml](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/res/values/strings.xml) & [AndroidManifest.xml](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/android/app/src/main/AndroidManifest.xml)
+- Update `app_name` string resource and manifest label to `SurveyPay`.
 
 #### [COMPILE] [Signed APK Output](file:///C:/Users/EAGLE/Downloads/survy%20pay.apk)
 - Recompile with Gradle (`./gradlew assembleRelease`).
@@ -48,9 +44,9 @@ Refactor SurveyPay Pro into a structured multi-screen application featuring a ci
 
 ## Verification Plan
 
-### Automated Build & Manual Testing
-1. Verify `Copilot_20260927_184420.png` copied to web and Android assets.
-2. Test splash screen loading and 2-checkbox Terms & Conditions agreement flow.
-3. Confirm persistent session memory across page reloads.
-4. Verify bottom navigation tabs and colorful profile details display.
-5. Recompile, sign, and verify release APK output to `C:\Users\EAGLE\Downloads\survy pay.apk`.
+### Manual & Automated Build Verification
+1. Verify bottom navigation menu styling against the user's screenshot.
+2. Verify 2-step registration wizard fits on single mobile screen height.
+3. Test survey pagination (Previous/Next controls).
+4. Recompile, sign, and verify release APK output to `C:\Users\EAGLE\Downloads\survy pay.apk`.
+5. Commit and push updated files to remote git repository.

@@ -1,13 +1,11 @@
 # Task List
 
-- [/] Copy `Copilot_20260927_184420.png` from Downloads to `app-icon.png`, `frontend/app-icon.png`, and Android mipmap launcher icons
-- [/] Implement circular loading splash screen with SurveyPay Pro logo & branding
-- [/] Implement onboarding Terms & Conditions and Privacy Policy agreement modal with 2 required checkboxes
-- [/] Update registration & login flow with persistent session memory (`localStorage`)
-- [/] Refactor app layout to structured multi-tab container with fixed bottom navigation menu (Surveys, Wallet, Profile, FAQ/Logout)
-- [/] Expand country list with comprehensive worldwide countries and dynamic country code prefixing
-- [/] Expand survey catalog with multiple surveys unlocked upon account activation (500 KES / $4 USD)
-- [/] Record and display all user registration details in decorated colorful cards in Profile tab
+- [/] Rebrand app name from `SurveyPay Pro` to `SurveyPay` in `index.html` and `frontend/index.html`
+- [/] Implement 3D colorful bottom navigation menu (`HOME`, `SURVEYS`, `WALLET`, `ME`) matching the user's screenshot
+- [/] Implement blue gradient hero balance card and cyan left-border accented survey task cards
+- [/] Implement 2-step registration wizard (Step 1: Contact Info -> Step 2: Passwords) for zero-scroll auth screen
+- [/] Implement compact paginated survey list (3 surveys per page with Prev/Next controls)
+- [/] Update Android manifest, string resources, and app labels to `SurveyPay`
 - [/] Recompile, sign, and output release APK to `C:\Users\EAGLE\Downloads\survy pay.apk`
 - [/] Commit and push updated files to remote git repository
 - [ ] Create walkthrough artifact
