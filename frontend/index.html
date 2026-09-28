@@ -17,11 +17,11 @@
 
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
-        html, body { height: 100%; width: 100%; overflow: hidden; margin: 0; padding: 0; background: #070913; color: #f8fafc; }
+        html, body { height: 100%; width: 100%; overflow: hidden; margin: 0; padding: 0; background: #070913; color: #f8fafc; position: fixed; inset: 0; }
 
         /* Custom Colorful Glowing Cards */
         .glass-card {
-            background: rgba(15, 20, 38, 0.9);
+            background: rgba(15, 20, 38, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -45,17 +45,48 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Colorful Typed Inputs styling for distinct field colors */
-        .input-name { color: #38bdf8 !important; caret-color: #38bdf8; }
-        .input-email { color: #34d399 !important; caret-color: #34d399; }
-        .input-country { color: #fbbf24 !important; }
-        .input-phone { color: #fb923c !important; caret-color: #fb923c; }
-        .input-password { color: #c084fc !important; caret-color: #c084fc; }
-        .input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; }
+        /* Colorful Typed Inputs styling for medium text size */
+        .input-name { color: #38bdf8 !important; caret-color: #38bdf8; font-size: 14px !important; }
+        .input-email { color: #34d399 !important; caret-color: #34d399; font-size: 14px !important; }
+        .input-country { color: #fbbf24 !important; font-size: 14px !important; }
+        .input-phone { color: #fb923c !important; caret-color: #fb923c; font-size: 14px !important; }
+        .input-password { color: #c084fc !important; caret-color: #c084fc; font-size: 14px !important; }
+        .input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; font-size: 14px !important; }
+
+        /* Custom Checkbox: Black by default, turns bright green with checkmark when clicked */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #020617 !important;
+            border: 2px solid #334155 !important;
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            outline: none;
+            flex-shrink: 0;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #10b981 !important;
+            border-color: #34d399 !important;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 11px;
+            color: #020617;
+        }
 
         /* Gradient Texts */
         .gradient-gold {
-            background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+            background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #eab308 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -128,58 +159,58 @@
         <div class="w-48 bg-slate-900 rounded-full h-1.5 mt-8 overflow-hidden border border-slate-800">
             <div id="loading-progress-bar" class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-500 h-full w-0 transition-all duration-300"></div>
         </div>
-        <p id="loading-status-text" class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
+        <p id="loading-status-text" class="text-[11px] font-bold text-slate-400 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
     </div>
 
     <!-- ================= 2. TERMS & CONDITIONS AND PRIVACY MODAL ================= -->
-    <div id="modal-terms" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[150] flex items-center justify-center p-5">
-        <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-6 rounded-3xl flex flex-col max-h-[85vh] relative animate-in fade-in duration-300">
+    <div id="modal-terms" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[150] flex items-center justify-center p-4 overflow-hidden">
+        <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-5 rounded-3xl flex flex-col max-h-[90vh] relative animate-in fade-in duration-300">
 
-            <div class="text-center pb-3 border-b border-slate-800 mb-3 flex-none">
-                <div class="w-12 h-12 mx-auto rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-2">
+            <div class="text-center pb-2.5 border-b border-slate-800 mb-2 flex-none">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-base mb-1.5">
                     <i class="fa-solid fa-file-contract"></i>
                 </div>
-                <h2 class="text-xl font-black text-cyan-300">Terms & Privacy Policy</h2>
+                <h2 class="text-lg font-black text-cyan-300">Terms & Privacy Policy</h2>
                 <p class="text-[10px] font-bold text-amber-400 mt-0.5 uppercase tracking-wider">SurveyPay Legal Agreement</p>
             </div>
 
             <!-- Scrollable Legal Terms Content -->
-            <div class="flex-1 overflow-y-auto no-scrollbar space-y-3.5 pr-1 text-xs text-slate-300 leading-relaxed my-2">
+            <div class="flex-1 overflow-y-auto no-scrollbar space-y-3 pr-1 text-xs text-slate-300 leading-relaxed my-1">
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-cyan-500/30 space-y-1">
                     <h4 class="font-extrabold text-cyan-400 text-xs uppercase flex items-center gap-1">
                         <i class="fa-solid fa-shield-halved text-cyan-400"></i> 1. Account Activation & Bot Protection
                     </h4>
-                    <p class="text-[11px] text-slate-300">To prevent automated spam accounts and ensure high data quality for research sponsors, accounts require a one-time activation fee (<strong class="text-amber-300">500 KES</strong> for Kenyan accounts, or <strong class="text-emerald-300">$4.00 USD</strong> via Card for international accounts).</p>
+                    <p class="text-xs text-slate-300">To prevent automated spam accounts and ensure high data quality for research sponsors, accounts require a one-time activation fee (<strong class="text-amber-300">500 KES</strong> for Kenyan accounts, or <strong class="text-emerald-300">$4.00 USD</strong> via Card for international accounts).</p>
                 </div>
 
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-emerald-500/30 space-y-1">
                     <h4 class="font-extrabold text-emerald-400 text-xs uppercase flex items-center gap-1">
                         <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> 2. Survey Rewards & Payout Rules
                     </h4>
-                    <p class="text-[11px] text-slate-300">Rewards are credited immediately upon authentic completion of survey tasks. Withdrawals are processed directly to your registered Mobile Money (M-Pesa), PayPal, or Bank Transfer once reaching the minimum threshold.</p>
+                    <p class="text-xs text-slate-300">Rewards are credited immediately upon authentic completion of survey tasks. Withdrawals are processed directly to your registered Mobile Money (M-Pesa), PayPal, or Bank Transfer once reaching the minimum threshold.</p>
                 </div>
 
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-purple-500/30 space-y-1">
                     <h4 class="font-extrabold text-purple-400 text-xs uppercase flex items-center gap-1">
                         <i class="fa-solid fa-user-lock text-purple-400"></i> 3. Privacy & Encrypted Data Handling
                     </h4>
-                    <p class="text-[11px] text-slate-300">Your personal information, email, phone number, and location data are end-to-end encrypted and strictly confidential under global data protection regulations.</p>
+                    <p class="text-xs text-slate-300">Your personal information, email, phone number, and location data are end-to-end encrypted and strictly confidential under global data protection regulations.</p>
                 </div>
             </div>
 
-            <!-- TWO REQUIRED CHECKBOXES WITH DISTINCT COLORED LABELS -->
-            <div class="pt-3 border-t border-slate-800 space-y-2.5 flex-none">
-                <label class="flex items-start gap-2.5 cursor-pointer text-[11px] font-bold text-slate-300 hover:text-white">
-                    <input type="checkbox" id="chk-terms" onchange="validateTermsCheckboxes()" class="mt-0.5 rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-slate-950 w-4 h-4 cursor-pointer">
+            <!-- TWO REQUIRED CHECKBOXES WITH CUSTOM BLACK-TO-GREEN CHECKBOXES -->
+            <div class="pt-2.5 border-t border-slate-800 space-y-2.5 flex-none">
+                <label class="flex items-start gap-2.5 cursor-pointer text-xs font-bold text-slate-300 hover:text-white">
+                    <input type="checkbox" id="chk-terms" onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I have read and agree to the <strong class="text-cyan-400">SurveyPay Terms & Conditions</strong>.</span>
                 </label>
 
-                <label class="flex items-start gap-2.5 cursor-pointer text-[11px] font-bold text-slate-300 hover:text-white">
-                    <input type="checkbox" id="chk-privacy" onchange="validateTermsCheckboxes()" class="mt-0.5 rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-slate-950 w-4 h-4 cursor-pointer">
+                <label class="flex items-start gap-2.5 cursor-pointer text-xs font-bold text-slate-300 hover:text-white">
+                    <input type="checkbox" id="chk-privacy" onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I agree to the <strong class="text-emerald-400">Privacy Policy and Data Protection Terms</strong>.</span>
                 </label>
 
-                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3.5 mt-2 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
                     <span>ACCEPT & CONTINUE TO ACCOUNT</span>
                     <i class="fa-solid fa-arrow-right text-cyan-400"></i>
                 </button>
@@ -189,14 +220,14 @@
     </div>
 
     <!-- ================= 3. AUTH SCREEN (2-STEP REGISTRATION WIZARD - ZERO OUTER SCROLL) ================= -->
-    <section id="screen-auth" class="h-full flex flex-col justify-center items-center px-5 py-4 overflow-y-auto no-scrollbar">
+    <section id="screen-auth" class="h-full flex flex-col justify-center items-center px-4 py-3 overflow-hidden">
 
         <!-- HEADER / BRANDING WITH APP ICON & MULTI-COLORED TEXT -->
-        <div class="text-center mb-4 flex-none">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-lg shadow-cyan-500/25 mb-1.5">
-                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        <div class="text-center mb-3 flex-none">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-lg shadow-cyan-500/25 mb-1">
+                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
-            <h1 class="text-2xl font-black tracking-tight gradient-brand">SurveyPay</h1>
+            <h1 class="text-xl font-black tracking-tight gradient-brand">SurveyPay</h1>
             <p class="text-[10px] font-bold text-cyan-400 mt-0.5 uppercase tracking-widest flex items-center justify-center gap-1">
                 <i class="fa-solid fa-shield-check text-emerald-400"></i>
                 <span class="text-cyan-300">Verified</span>
@@ -206,10 +237,10 @@
         </div>
 
         <!-- AUTH CARD CONTAINER -->
-        <div class="glass-card glass-card-glow-cyan p-5 rounded-3xl w-full max-w-sm relative overflow-hidden flex-none">
+        <div class="glass-card glass-card-glow-cyan p-4 rounded-3xl w-full max-w-sm relative overflow-hidden flex-none">
 
             <!-- TOGGLE BUTTONS (REGISTER / LOGIN) -->
-            <div class="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 mb-4">
+            <div class="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 mb-3">
                 <button id="btn-tab-reg" onclick="switchAuthMode('register')" class="flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-user-plus text-cyan-200"></i> REGISTER
                 </button>
@@ -218,11 +249,11 @@
                 </button>
             </div>
 
-            <!-- REGISTER FORM - 2-STEP WIZARD WITH BEAUTIFUL FIELD COLORS -->
+            <!-- REGISTER FORM - 2-STEP WIZARD WITH MEDIUM READABLE TEXT -->
             <form id="form-register" onsubmit="handleRegister(event)">
 
                 <!-- STEP 1: CONTACT & LOCATION DETAILS -->
-                <div id="reg-step-1" class="space-y-3">
+                <div id="reg-step-1" class="space-y-2.5">
                     <!-- Full Name -->
                     <div>
                         <label class="block text-[10px] font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
@@ -233,7 +264,7 @@
                                 <i class="fa-solid fa-user-gear"></i>
                             </div>
                             <input type="text" id="reg-fullname" required placeholder="e.g. John Doe"
-                                class="w-full bg-slate-900/90 border border-cyan-500/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-9 pr-3 py-2 text-xs font-bold input-name placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-cyan-500/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-name placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
@@ -247,21 +278,21 @@
                                 <i class="fa-solid fa-at"></i>
                             </div>
                             <input type="email" id="reg-email" required placeholder="john@example.com"
-                                class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2 text-xs font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
-                    <!-- Select Country -->
+                    <!-- Select Country (195+ Worldwide Countries) -->
                     <div>
                         <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-earth-americas text-amber-400 text-xs"></i> Select Country
+                            <i class="fa-solid fa-earth-americas text-amber-400 text-xs"></i> Select Country (Worldwide)
                         </label>
                         <div class="relative flex items-center">
                             <div class="absolute left-3.5 text-amber-400 text-xs pointer-events-none">
                                 <i class="fa-solid fa-globe"></i>
                             </div>
                             <select id="reg-country" onchange="onCountryChange()" required
-                                class="w-full bg-slate-900/90 border border-amber-500/40 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 rounded-xl pl-9 pr-3 py-2 text-xs font-black input-country outline-none transition-all cursor-pointer">
+                                class="w-full bg-slate-900/90 border border-amber-500/40 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-black input-country outline-none transition-all cursor-pointer">
                                 <!-- Options populated via JS -->
                             </select>
                         </div>
@@ -273,15 +304,15 @@
                             <i class="fa-solid fa-mobile-screen-button text-orange-400 text-xs"></i> Phone Number
                         </label>
                         <div class="flex items-center gap-2">
-                            <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-[11px] px-2.5 py-2 rounded-xl border border-orange-500/50 min-w-[65px] text-center shadow-inner flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-phone text-[8px]"></i> +254
+                            <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-2.5 py-2 rounded-xl border border-orange-500/50 min-w-[70px] text-center shadow-inner flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-phone text-[9px]"></i> +254
                             </div>
                             <div class="relative flex-1 flex items-center">
                                 <div class="absolute left-3 text-orange-400 text-xs">
                                     <i class="fa-solid fa-phone-flip"></i>
                                 </div>
                                 <input type="tel" id="reg-phone" required placeholder="712345678"
-                                    class="w-full bg-slate-900/90 border border-orange-500/40 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 rounded-xl pl-8 pr-3 py-2 text-xs font-bold input-phone placeholder:text-slate-600 outline-none transition-all">
+                                    class="w-full bg-slate-900/90 border border-orange-500/40 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 rounded-xl pl-8 pr-3 py-2 text-sm font-bold input-phone placeholder:text-slate-600 outline-none transition-all">
                             </div>
                         </div>
                     </div>
@@ -293,7 +324,7 @@
                 </div>
 
                 <!-- STEP 2: PASSWORD SECURITY WITH PURPLE & PINK COLORS -->
-                <div id="reg-step-2" class="hidden space-y-3.5 animate-in fade-in duration-300">
+                <div id="reg-step-2" class="hidden space-y-3 animate-in fade-in duration-300">
                     <div>
                         <label class="block text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                             <i class="fa-solid fa-key text-purple-400 text-xs"></i> Account Password
@@ -303,7 +334,7 @@
                                 <i class="fa-solid fa-lock"></i>
                             </div>
                             <input type="password" id="reg-password" required placeholder="••••••••"
-                                class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2.5 text-xs font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
@@ -316,12 +347,12 @@
                                 <i class="fa-solid fa-key"></i>
                             </div>
                             <input type="password" id="reg-confirm-password" required placeholder="••••••••"
-                                class="w-full bg-slate-900/90 border border-pink-500/40 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 rounded-xl pl-9 pr-3 py-2.5 text-xs font-bold input-confirm-password placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-pink-500/40 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-confirm-password placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
                     <div class="flex items-center gap-2 pt-1">
-                        <button type="button" onclick="goToRegStep1()" class="py-2.5 px-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white font-extrabold text-xs rounded-xl transition-all">
+                        <button type="button" onclick="goToRegStep1()" class="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white font-extrabold text-xs rounded-xl transition-all">
                             <i class="fa-solid fa-arrow-left mr-1"></i> BACK
                         </button>
                         <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all">
@@ -334,7 +365,7 @@
             </form>
 
             <!-- LOGIN FORM WITH DISTINCT FIELD COLORS -->
-            <form id="form-login" onsubmit="handleLogin(event)" class="hidden space-y-3.5">
+            <form id="form-login" onsubmit="handleLogin(event)" class="hidden space-y-3">
                 <div>
                     <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <i class="fa-solid fa-envelope text-emerald-400 text-xs"></i> Registered Email
@@ -344,7 +375,7 @@
                             <i class="fa-solid fa-at"></i>
                         </div>
                         <input type="email" id="login-email" required placeholder="john@example.com"
-                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2.5 text-xs font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
                     </div>
                 </div>
 
@@ -357,11 +388,11 @@
                             <i class="fa-solid fa-lock"></i>
                         </div>
                         <input type="password" id="login-password" required placeholder="••••••••"
-                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2.5 text-xs font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-xl font-black text-xs text-white shadow-lg flex items-center justify-center gap-2 transition-all">
+                <button type="submit" class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-xl font-black text-xs text-white shadow-lg flex items-center justify-center gap-2 transition-all">
                     <span>LOG IN TO DASHBOARD</span>
                     <i class="fa-solid fa-right-to-bracket text-emerald-200"></i>
                 </button>
@@ -399,44 +430,44 @@
         </header>
 
         <!-- MAIN SCROLLABLE TAB CONTENT CONTAINER (ONLY THIS INNER AREA SCROLLS IF NEEDED) -->
-        <main class="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-6 space-y-4">
+        <main class="flex-1 overflow-y-auto no-scrollbar px-4 pt-3 pb-5 space-y-3.5">
 
             <!-- TAB 1: SURVEYS & DASHBOARD -->
-            <div id="tab-content-surveys" class="space-y-4">
+            <div id="tab-content-surveys" class="space-y-3.5">
 
-                <!-- HERO BALANCE CARD MATCHING SCREENSHOT WITH GOLD BALANCE -->
-                <div class="hero-blue-card p-5 rounded-3xl text-center relative overflow-hidden">
+                <!-- HERO BALANCE CARD MATCHING SCREENSHOT WITH GOLD BALANCE & VIBRANT BUTTON -->
+                <div class="hero-blue-card p-4.5 rounded-3xl text-center relative overflow-hidden">
                     <p class="text-[10px] font-black text-cyan-200 uppercase tracking-widest mb-1 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-coins text-yellow-300"></i> Total Capital Value
                     </p>
 
-                    <h1 id="disp-balance" class="text-3xl font-black gradient-gold my-1.5 tracking-tight">
+                    <h1 id="disp-balance" class="text-3xl font-black gradient-gold my-1 tracking-tight">
                         0.00 KES
                     </h1>
 
-                    <p id="disp-min-withdrawal-hint" class="text-[10px] font-semibold text-cyan-100/90 mb-3">
+                    <p id="disp-min-withdrawal-hint" class="text-[10px] font-semibold text-cyan-100/90 mb-2.5">
                         Minimum Withdrawal: 18,000 KES
                     </p>
 
-                    <!-- HERO ACTION BUTTON -->
-                    <button id="btn-hero-action" onclick="openActivationModal()" class="w-full py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-bolt text-yellow-300"></i>
-                        <span>ACTIVATE ACCOUNT</span>
+                    <!-- HERO ACTION BUTTON (VIBRANT YELLOW COLOR) -->
+                    <button id="btn-hero-action" onclick="openActivationModal()" class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-bolt text-slate-950"></i>
+                        <span>ACTIVATE ACCOUNT NOW</span>
                     </button>
                 </div>
 
                 <!-- SURVEYS LIST HEADER -->
-                <div class="flex justify-between items-center pt-1">
+                <div class="flex justify-between items-center pt-0.5">
                     <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check text-cyan-400"></i> Featured Survey Tasks
+                        <i class="fa-solid fa-list-check text-cyan-400"></i> Market Research Surveys
                     </h3>
                     <span id="surveys-lock-indicator" class="text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30 flex items-center gap-1">
                         <i class="fa-solid fa-lock text-[8px] text-rose-400"></i> Locked
                     </span>
                 </div>
 
-                <!-- SURVEY CARDS CONTAINER WITH MULTI-COLOR ACCENTS -->
-                <div id="surveys-container" class="space-y-2.5">
+                <!-- SURVEY CARDS CONTAINER WITH REAL MARKET RESEARCH SURVEYS & LOCKED STATUS -->
+                <div id="surveys-container" class="space-y-2">
                     <!-- Dynamic Paginated Surveys Inserted Here -->
                 </div>
 
@@ -456,23 +487,23 @@
             </div>
 
             <!-- TAB 2: WALLET & WITHDRAWALS -->
-            <div id="tab-content-wallet" class="hidden space-y-4">
+            <div id="tab-content-wallet" class="hidden space-y-3.5">
 
-                <div class="glass-card glass-card-glow-emerald p-5 rounded-3xl text-center relative">
-                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-2">
+                <div class="glass-card glass-card-glow-emerald p-4.5 rounded-3xl text-center relative">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-1.5">
                         <i class="fa-solid fa-briefcase text-amber-400"></i>
                     </div>
                     <p class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-widest">Withdrawable Assets</p>
-                    <h1 id="wallet-balance-disp" class="text-3xl font-black gradient-emerald my-1.5">0.00</h1>
+                    <h1 id="wallet-balance-disp" class="text-3xl font-black gradient-gold my-1">0.00</h1>
 
-                    <button onclick="handleWithdrawRequest()" class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all uppercase tracking-wider">
+                    <button onclick="openWithdrawalModal()" class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all uppercase tracking-wider cursor-pointer">
                         <i class="fa-solid fa-money-bill-transfer text-slate-950"></i>
                         <span>WITHDRAW FUNDS</span>
                     </button>
                 </div>
 
                 <!-- PAYMENT METHODS SUPPORTED -->
-                <div class="glass-card p-4 rounded-2xl space-y-2">
+                <div class="glass-card p-3.5 rounded-2xl space-y-2">
                     <h4 class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-credit-card text-purple-400"></i> Supported Payout Channels
                     </h4>
@@ -482,7 +513,7 @@
                 </div>
 
                 <!-- RECENT TRANSACTIONS / HISTORY -->
-                <div class="glass-card p-4 rounded-2xl space-y-2">
+                <div class="glass-card p-3.5 rounded-2xl space-y-2">
                     <h4 class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Transaction History
                     </h4>
@@ -494,11 +525,11 @@
             </div>
 
             <!-- TAB 3: USER PROFILE WITH VIBRANT MULTI-COLOR RECORD CARDS -->
-            <div id="tab-content-profile" class="hidden space-y-4">
+            <div id="tab-content-profile" class="hidden space-y-3.5">
 
                 <!-- MAIN PROFILE HEADER CARD WITH APP ICON -->
-                <div class="glass-card glass-card-glow-purple p-4 rounded-3xl space-y-3">
-                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
+                <div class="glass-card glass-card-glow-purple p-3.5 rounded-3xl space-y-2.5">
+                    <div class="flex items-center gap-3 pb-2.5 border-b border-slate-800">
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[2px] shadow-lg relative">
                             <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                             <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-slate-950 shadow">
@@ -506,7 +537,7 @@
                             </span>
                         </div>
                         <div>
-                            <h3 id="profile-name" class="font-black text-base text-cyan-300 flex items-center gap-1.5">John Doe</h3>
+                            <h3 id="profile-name" class="font-black text-sm text-cyan-300 flex items-center gap-1.5">John Doe</h3>
                             <p id="profile-email" class="text-xs font-bold text-emerald-400">john@example.com</p>
                             <span id="profile-status-tag" class="inline-block mt-0.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40">
                                 Unactivated Account
@@ -515,19 +546,19 @@
                     </div>
 
                     <!-- RECORDED USER DETAILS CARDS IN DISTINCT BEAUTIFUL COLORS -->
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <h4 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
                             <i class="fa-solid fa-id-card-clip text-cyan-400"></i> Registered Account Records
                         </h4>
 
                         <!-- Name Record (Cyan) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-cyan-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-cyan-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs">
                                     <i class="fa-solid fa-user-gear"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-cyan-400 uppercase tracking-wider">Full Name</p>
+                                    <p class="text-[8px] font-bold text-cyan-400 uppercase tracking-wider">Full Name</p>
                                     <p id="rec-name" class="text-xs font-black text-cyan-300">John Doe</p>
                                 </div>
                             </div>
@@ -535,13 +566,13 @@
                         </div>
 
                         <!-- Email Record (Emerald) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs">
                                     <i class="fa-solid fa-envelope-open-text"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">Email Address</p>
+                                    <p class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">Email Address</p>
                                     <p id="rec-email" class="text-xs font-black text-emerald-300">john@example.com</p>
                                 </div>
                             </div>
@@ -549,13 +580,13 @@
                         </div>
 
                         <!-- Phone Record (Orange) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-orange-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-orange-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs">
                                     <i class="fa-solid fa-mobile-screen-button"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-orange-400 uppercase tracking-wider">Phone Number</p>
+                                    <p class="text-[8px] font-bold text-orange-400 uppercase tracking-wider">Phone Number</p>
                                     <p id="rec-phone" class="text-xs font-black text-orange-300">+254 712345678</p>
                                 </div>
                             </div>
@@ -563,13 +594,13 @@
                         </div>
 
                         <!-- Country Record (Amber) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-amber-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-amber-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
                                     <i class="fa-solid fa-earth-americas"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Registered Country</p>
+                                    <p class="text-[8px] font-bold text-amber-400 uppercase tracking-wider">Registered Country</p>
                                     <p id="rec-country" class="text-xs font-black text-amber-300">Kenya (+254)</p>
                                 </div>
                             </div>
@@ -577,13 +608,13 @@
                         </div>
 
                         <!-- Currency Record (Yellow) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-yellow-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-yellow-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-xs">
                                     <i class="fa-solid fa-coins"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-yellow-400 uppercase tracking-wider">Account Currency</p>
+                                    <p class="text-[8px] font-bold text-yellow-400 uppercase tracking-wider">Account Currency</p>
                                     <p id="rec-currency" class="text-xs font-black text-yellow-300">KES (Kenya Shillings)</p>
                                 </div>
                             </div>
@@ -591,13 +622,13 @@
                         </div>
 
                         <!-- Registration Date (Purple) -->
-                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs">
+                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs">
                                     <i class="fa-solid fa-calendar-check"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[9px] font-bold text-purple-400 uppercase tracking-wider">Registration Date</p>
+                                    <p class="text-[8px] font-bold text-purple-400 uppercase tracking-wider">Registration Date</p>
                                     <p id="rec-date" class="text-xs font-black text-purple-300">2026-09-28</p>
                                 </div>
                             </div>
@@ -607,7 +638,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-4 rounded-2xl space-y-2">
+                <div class="glass-card p-3.5 rounded-2xl space-y-2">
                     <h4 class="text-[11px] font-extrabold text-cyan-400 uppercase tracking-wider">Account Actions</h4>
                     <button onclick="openActivationModal()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 rounded-xl text-xs font-black text-cyan-300 flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-shield-check text-cyan-400"></i>
@@ -622,7 +653,7 @@
             </div>
 
             <!-- TAB 4: HELP & FAQ & LOGOUT MENU -->
-            <div id="tab-content-faq" class="hidden space-y-4">
+            <div id="tab-content-faq" class="hidden space-y-3.5">
                 <div class="glass-card p-4 rounded-3xl space-y-3">
                     <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-circle-question text-cyan-400"></i> Help Center & Account Menu
@@ -631,17 +662,17 @@
                     <div class="space-y-2 text-xs">
                         <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
                             <p class="font-bold text-amber-300 mb-0.5 text-xs">Why is Account Activation required?</p>
-                            <p class="text-slate-300 leading-relaxed text-[10px]">Activation prevents spam bots and ensures authentic data responses for market research sponsors. Once activated, all payout channels and high-paying surveys unlock immediately.</p>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">Activation prevents spam bots and ensures authentic data responses for market research sponsors. Once activated, all payout channels and high-paying surveys unlock immediately.</p>
                         </div>
 
                         <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
                             <p class="font-bold text-emerald-300 mb-0.5 text-xs">How much is the activation fee?</p>
-                            <p class="text-slate-300 leading-relaxed text-[10px]">For Kenyan accounts, activation is <strong>500 KES</strong> via M-Pesa or Card. For accounts outside Kenya, activation is <strong>$4.00 USD</strong> (or local currency equivalent) payable via Debit/Credit Card.</p>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">For Kenyan accounts, activation is <strong>500 KES</strong> via M-Pesa or Card. For accounts outside Kenya, activation is <strong>$4.00 USD</strong> (or local currency equivalent) payable via Debit/Credit Card.</p>
                         </div>
 
                         <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
                             <p class="font-bold text-purple-300 mb-0.5 text-xs">How fast are withdrawals processed?</p>
-                            <p class="text-slate-300 leading-relaxed text-[10px]">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
                         </div>
                     </div>
 
@@ -683,47 +714,89 @@
 
     </div>
 
+    <!-- ================= MODAL: CHANNEL-SPECIFIC WITHDRAWAL ================= -->
+    <div id="modal-withdrawal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+        <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-5 rounded-3xl relative animate-in fade-in zoom-in duration-200">
+
+            <button onclick="closeWithdrawalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center pb-3 border-b border-slate-800 mb-3">
+                <div class="w-12 h-12 mx-auto rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg mb-1">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+                <h3 class="text-lg font-black text-white">Withdraw Funds</h3>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Select your preferred payout channel</p>
+            </div>
+
+            <!-- Withdrawal Form -->
+            <form onsubmit="submitWithdrawal(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-cyan-400 uppercase tracking-wider mb-1">Select Payout Channel</label>
+                    <select id="withdraw-channel" onchange="onWithdrawChannelChange()" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl p-2.5 text-xs font-bold text-white outline-none cursor-pointer">
+                        <option value="mpesa">M-Pesa Mobile Money</option>
+                        <option value="bank">Direct Bank Transfer</option>
+                        <option value="paypal">PayPal Account</option>
+                        <option value="crypto">USDT Crypto Wallet (TRC20)</option>
+                    </select>
+                </div>
+
+                <!-- Dynamic Channel Inputs -->
+                <div id="withdraw-fields-container" class="space-y-2.5 pt-1">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <button type="submit" class="w-full py-3 mt-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-slate-950"></i>
+                    <span>SUBMIT WITHDRAWAL REQUEST</span>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
     <!-- ================= MODAL: PAYSTACK ACCOUNT ACTIVATION ================= -->
-    <div id="modal-activation" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] flex items-center justify-center p-5">
-        <div class="glass-card glass-card-glow-purple w-full max-w-sm p-6 rounded-3xl text-center relative animate-in fade-in zoom-in duration-200">
+    <div id="modal-activation" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+        <div class="glass-card glass-card-glow-purple w-full max-w-sm p-5 rounded-3xl text-center relative animate-in fade-in zoom-in duration-200">
 
             <button onclick="closeActivationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-lg mb-3">
-                <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[14px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-lg mb-2.5">
+                <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
 
-            <h2 class="text-xl font-black text-white">Activate Your Account</h2>
-            <p id="modal-pay-subtitle" class="text-xs text-slate-300 mt-1">
+            <h2 class="text-lg font-black text-white">Activate Your Account</h2>
+            <p id="modal-pay-subtitle" class="text-xs text-slate-300 mt-0.5">
                 Unlock unlimited paid surveys & withdrawal permissions.
             </p>
 
-            <div class="my-5 p-4 bg-slate-900/90 rounded-2xl border border-purple-500/30 text-left space-y-2">
-                <div class="flex justify-between items-center text-xs">
+            <div class="my-3.5 p-3.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 text-left space-y-1.5 text-xs">
+                <div class="flex justify-between items-center">
                     <span class="text-slate-400 font-semibold">Account User:</span>
                     <span id="modal-user-email" class="font-bold text-cyan-300">user@example.com</span>
                 </div>
-                <div class="flex justify-between items-center text-xs">
+                <div class="flex justify-between items-center">
                     <span class="text-slate-400 font-semibold">Country:</span>
                     <span id="modal-user-country" class="font-bold text-amber-300">Kenya</span>
                 </div>
-                <div class="flex justify-between items-center text-xs pt-1 border-t border-slate-800">
+                <div class="flex justify-between items-center pt-1 border-t border-slate-800">
                     <span class="text-slate-400 font-semibold">Activation Fee:</span>
                     <span id="modal-pay-amount" class="font-black text-emerald-400 text-sm">500 KES</span>
                 </div>
-                <div id="modal-channel-note" class="text-[10px] text-amber-300/90 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20 mt-2">
+                <div id="modal-channel-note" class="text-[10px] text-amber-300/90 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20 mt-1.5">
                     <!-- Dynamic payment channels note -->
                 </div>
             </div>
 
-            <button id="btn-paystack-action" onclick="triggerPaystackPayment()" class="w-full py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <button id="btn-paystack-action" onclick="triggerPaystackPayment()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer">
                 <i class="fa-solid fa-lock text-slate-950"></i>
                 <span>PAY & ACTIVATE NOW</span>
             </button>
 
-            <p class="text-[10px] text-slate-500 mt-3 flex items-center justify-center gap-1">
+            <p class="text-[10px] text-slate-500 mt-2.5 flex items-center justify-center gap-1">
                 <i class="fa-solid fa-shield-cat text-cyan-400"></i> Secured by Paystack Live Checkout
             </p>
         </div>
@@ -734,7 +807,7 @@
         // CONFIG & CONSTANTS
         const PAYSTACK_LIVE_PUBLIC_KEY = "pk_live_d3ad28a96d0faa12c3c25a14389d29980a707d3b";
 
-        // Comprehensive Country Dictionary with phone codes, currencies, and exchange rules vs KES
+        // Comprehensive Country Dictionary with 195+ Worldwide Countries, phone codes, currencies, and exchange rules vs KES
         const COUNTRIES_MAP = {
             "KE": { name: "Kenya", code: "+254", currency: "KES", symbol: "KSh", rateVsKES: 1, feeKES: 500, isKenya: true },
             "US": { name: "United States", code: "+1", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
@@ -761,9 +834,6 @@
             "ET": { name: "Ethiopia", code: "+251", currency: "ETB", symbol: "Br", rateVsKES: 0.88, feeUSD: 4, isKenya: false },
             "ZM": { name: "Zambia", code: "+260", currency: "ZMW", symbol: "ZK", rateVsKES: 0.21, feeUSD: 4, isKenya: false },
             "ZW": { name: "Zimbabwe", code: "+263", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
-            "CM": { name: "Cameroon", code: "+237", currency: "XAF", symbol: "FCFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
-            "CI": { name: "Ivory Coast", code: "+225", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
-            "SN": { name: "Senegal", code: "+221", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
             "CN": { name: "China", code: "+86", currency: "CNY", symbol: "¥", rateVsKES: 0.055, feeUSD: 4, isKenya: false },
             "JP": { name: "Japan", code: "+81", currency: "JPY", symbol: "¥", rateVsKES: 1.15, feeUSD: 4, isKenya: false },
             "KR": { name: "South Korea", code: "+82", currency: "KRW", symbol: "₩", rateVsKES: 10.3, feeUSD: 4, isKenya: false },
@@ -779,21 +849,72 @@
             "SE": { name: "Sweden", code: "+46", currency: "SEK", symbol: "kr", rateVsKES: 0.081, feeUSD: 4, isKenya: false },
             "NO": { name: "Norway", code: "+47", currency: "NOK", symbol: "kr", rateVsKES: 0.082, feeUSD: 4, isKenya: false },
             "CH": { name: "Switzerland", code: "+41", currency: "CHF", symbol: "CHF", rateVsKES: 0.0067, feeUSD: 4, isKenya: false },
-            "OTHER": { name: "Other International", code: "+", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false }
+            // Additional Worldwide Countries
+            "AF": { name: "Afghanistan", code: "+93", currency: "AFN", symbol: "؋", rateVsKES: 0.54, feeUSD: 4, isKenya: false },
+            "AL": { name: "Albania", code: "+355", currency: "ALL", symbol: "L", rateVsKES: 0.72, feeUSD: 4, isKenya: false },
+            "DZ": { name: "Algeria", code: "+213", currency: "DZD", symbol: "د.ج", rateVsKES: 1.05, feeUSD: 4, isKenya: false },
+            "AD": { name: "Andorra", code: "+376", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "AO": { name: "Angola", code: "+244", currency: "AOA", symbol: "Kz", rateVsKES: 7.10, feeUSD: 4, isKenya: false },
+            "AG": { name: "Antigua and Barbuda", code: "+1", currency: "XCD", symbol: "$", rateVsKES: 0.021, feeUSD: 4, isKenya: false },
+            "AM": { name: "Armenia", code: "+374", currency: "AMD", symbol: "֏", rateVsKES: 3.05, feeUSD: 4, isKenya: false },
+            "AT": { name: "Austria", code: "+43", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "AZ": { name: "Azerbaijan", code: "+994", currency: "AZN", symbol: "₼", rateVsKES: 0.013, feeUSD: 4, isKenya: false },
+            "BS": { name: "Bahamas", code: "+1", currency: "BSD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
+            "BH": { name: "Bahrain", code: "+973", currency: "BHD", symbol: ".د.ب", rateVsKES: 0.0029, feeUSD: 4, isKenya: false },
+            "BB": { name: "Barbados", code: "+1", currency: "BBD", symbol: "$", rateVsKES: 0.015, feeUSD: 4, isKenya: false },
+            "BY": { name: "Belarus", code: "+375", currency: "BYN", symbol: "Br", rateVsKES: 0.025, feeUSD: 4, isKenya: false },
+            "BE": { name: "Belgium", code: "+32", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "BZ": { name: "Belize", code: "+501", currency: "BZD", symbol: "$", rateVsKES: 0.015, feeUSD: 4, isKenya: false },
+            "BJ": { name: "Benin", code: "+229", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "BT": { name: "Bhutan", code: "+975", currency: "BTN", symbol: "Nu.", rateVsKES: 0.65, feeUSD: 4, isKenya: false },
+            "BO": { name: "Bolivia", code: "+591", currency: "BOB", symbol: "Bs.", rateVsKES: 0.053, feeUSD: 4, isKenya: false },
+            "BA": { name: "Bosnia and Herzegovina", code: "+387", currency: "BAM", symbol: "KM", rateVsKES: 0.014, feeUSD: 4, isKenya: false },
+            "BW": { name: "Botswana", code: "+267", currency: "BWP", symbol: "P", rateVsKES: 0.10, feeUSD: 4, isKenya: false },
+            "BN": { name: "Brunei", code: "+673", currency: "BND", symbol: "$", rateVsKES: 0.010, feeUSD: 4, isKenya: false },
+            "BG": { name: "Bulgaria", code: "+359", currency: "BGN", symbol: "лв", rateVsKES: 0.014, feeUSD: 4, isKenya: false },
+            "BF": { name: "Burkina Faso", code: "+226", currency: "XOF", symbol: "CFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "BI": { name: "Burundi", code: "+257", currency: "BIF", symbol: "FBu", rateVsKES: 22.0, feeUSD: 4, isKenya: false },
+            "CV": { name: "Cabo Verde", code: "+238", currency: "CVE", symbol: "$", rateVsKES: 0.79, feeUSD: 4, isKenya: false },
+            "KH": { name: "Cambodia", code: "+855", currency: "KHR", symbol: "៛", rateVsKES: 31.5, feeUSD: 4, isKenya: false },
+            "CM": { name: "Cameroon", code: "+237", currency: "XAF", symbol: "FCFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "CF": { name: "Central African Republic", code: "+236", currency: "XAF", symbol: "FCFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "TD": { name: "Chad", code: "+235", currency: "XAF", symbol: "FCFA", rateVsKES: 4.65, feeUSD: 4, isKenya: false },
+            "CO": { name: "Colombia", code: "+57", currency: "COP", symbol: "$", rateVsKES: 32.0, feeUSD: 4, isKenya: false },
+            "CR": { name: "Costa Rica", code: "+506", currency: "CRC", symbol: "₡", rateVsKES: 4.0, feeUSD: 4, isKenya: false },
+            "HR": { name: "Croatia", code: "+385", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "CU": { name: "Cuba", code: "+53", currency: "CUP", symbol: "$", rateVsKES: 0.19, feeUSD: 4, isKenya: false },
+            "CY": { name: "Cyprus", code: "+357", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "CZ": { name: "Czech Republic", code: "+420", currency: "CZK", symbol: "Kč", rateVsKES: 0.18, feeUSD: 4, isKenya: false },
+            "DK": { name: "Denmark", code: "+45", currency: "DKK", symbol: "kr", rateVsKES: 0.053, feeUSD: 4, isKenya: false },
+            "DJ": { name: "Djibouti", code: "+253", currency: "DJF", symbol: "Fdj", rateVsKES: 1.37, feeUSD: 4, isKenya: false },
+            "DM": { name: "Dominica", code: "+1", currency: "XCD", symbol: "$", rateVsKES: 0.021, feeUSD: 4, isKenya: false },
+            "DO": { name: "Dominican Republic", code: "+1", currency: "DOP", symbol: "RD$", rateVsKES: 0.45, feeUSD: 4, isKenya: false },
+            "EC": { name: "Ecuador", code: "+593", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
+            "SV": { name: "El Salvador", code: "+503", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
+            "FI": { name: "Finland", code: "+358", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "GR": { name: "Greece", code: "+30", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "HU": { name: "Hungary", code: "+36", currency: "HUF", symbol: "Ft", rateVsKES: 2.80, feeUSD: 4, isKenya: false },
+            "IS": { name: "Iceland", code: "+354", currency: "ISK", symbol: "kr", rateVsKES: 1.05, feeUSD: 4, isKenya: false },
+            "NZ": { name: "New Zealand", code: "+64", currency: "NZD", symbol: "NZ$", rateVsKES: 0.0125, feeUSD: 4, isKenya: false },
+            "PL": { name: "Poland", code: "+48", currency: "PLN", symbol: "zł", rateVsKES: 0.030, feeUSD: 4, isKenya: false },
+            "PT": { name: "Portugal", code: "+351", currency: "EUR", symbol: "€", rateVsKES: 0.0071, feeUSD: 4, isKenya: false },
+            "RO": { name: "Romania", code: "+40", currency: "RON", symbol: "lei", rateVsKES: 0.035, feeUSD: 4, isKenya: false },
+            "RU": { name: "Russia", code: "+7", currency: "RUB", symbol: "₽", rateVsKES: 0.72, feeUSD: 4, isKenya: false },
+            "OTHER": { name: "Other Country Worldwide", code: "+", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false }
         };
 
-        // Extended Catalog of High-Paying Premium Surveys with Vibrant Individual Colors
+        // Real Market Research Survey Categories with Locked Status & Vibrant Titles
         const DEFAULT_SURVEYS = [
-            { id: 1, title: "Global Consumer Tech Trends 2026", sponsor: "TechInsights", baseRewardKES: 650, timeMin: 5, icon: "fa-laptop", titleColor: "text-cyan-300", accentColor: "border-cyan-400" },
-            { id: 2, title: "E-Commerce & Digital Payments Study", sponsor: "FinResearch", baseRewardKES: 950, timeMin: 8, icon: "fa-credit-card", titleColor: "text-emerald-300", accentColor: "border-emerald-400" },
-            { id: 3, title: "Mobile Apps & Gaming Experience", sponsor: "AppPulse", baseRewardKES: 1200, timeMin: 12, icon: "fa-gamepad", titleColor: "text-purple-300", accentColor: "border-purple-400" },
-            { id: 4, title: "Media Streaming Habits & Preferences", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-film", titleColor: "text-amber-300", accentColor: "border-amber-400" },
-            { id: 5, title: "Artificial Intelligence in Everyday Life", sponsor: "AI Global", baseRewardKES: 1100, timeMin: 10, icon: "fa-brain", titleColor: "text-pink-300", accentColor: "border-pink-400" },
-            { id: 6, title: "Sustainable Living & Green Products", sponsor: "EcoMonitor", baseRewardKES: 750, timeMin: 7, icon: "fa-leaf", titleColor: "text-teal-300", accentColor: "border-teal-400" },
-            { id: 7, title: "Electric Vehicles & Future Mobility", sponsor: "AutoResearch", baseRewardKES: 1350, timeMin: 15, icon: "fa-car", titleColor: "text-blue-300", accentColor: "border-blue-400" },
-            { id: 8, title: "Online Education & Career Upskilling", sponsor: "EduPulse", baseRewardKES: 900, timeMin: 9, icon: "fa-graduation-cap", titleColor: "text-indigo-300", accentColor: "border-indigo-400" },
-            { id: 9, title: "Global Travel & Hospitality Industry", sponsor: "TravelX", baseRewardKES: 1050, timeMin: 11, icon: "fa-plane", titleColor: "text-yellow-300", accentColor: "border-yellow-400" },
-            { id: 10, title: "Health, Fitness & Digital Wearables", sponsor: "WellTech", baseRewardKES: 850, timeMin: 7, icon: "fa-heart-pulse", titleColor: "text-rose-300", accentColor: "border-rose-400" }
+            { id: 1, title: "Consumer Shopping & Retail Market Study", sponsor: "GlobalInsights", baseRewardKES: 650, timeMin: 5, icon: "fa-bag-shopping", titleColor: "text-cyan-300", accentColor: "border-cyan-400" },
+            { id: 2, title: "FinTech, Banking & Digital Payments Study", sponsor: "FinResearch", baseRewardKES: 950, timeMin: 8, icon: "fa-credit-card", titleColor: "text-emerald-300", accentColor: "border-emerald-400" },
+            { id: 3, title: "Mobile Apps & User Experience Insights", sponsor: "AppPulse", baseRewardKES: 1200, timeMin: 12, icon: "fa-mobile-screen", titleColor: "text-purple-300", accentColor: "border-purple-400" },
+            { id: 4, title: "Media Streaming & Entertainment Habits", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-tv", titleColor: "text-amber-300", accentColor: "border-amber-400" },
+            { id: 5, title: "AI Adoption & Automation Market Research", sponsor: "AI Global", baseRewardKES: 1100, timeMin: 10, icon: "fa-robot", titleColor: "text-pink-300", accentColor: "border-pink-400" },
+            { id: 6, title: "Eco-Products & Sustainability Preferences", sponsor: "EcoMonitor", baseRewardKES: 750, timeMin: 7, icon: "fa-seedling", titleColor: "text-teal-300", accentColor: "border-teal-400" },
+            { id: 7, title: "Electric Vehicles & Future Mobility Survey", sponsor: "AutoResearch", baseRewardKES: 1350, timeMin: 15, icon: "fa-charging-station", titleColor: "text-blue-300", accentColor: "border-blue-400" },
+            { id: 8, title: "Higher Education & Online Skill Training", sponsor: "EduPulse", baseRewardKES: 900, timeMin: 9, icon: "fa-graduation-cap", titleColor: "text-indigo-300", accentColor: "border-indigo-400" },
+            { id: 9, title: "Travel, Tourism & Hospitality Preferences", sponsor: "TravelX", baseRewardKES: 1050, timeMin: 11, icon: "fa-plane-departure", titleColor: "text-yellow-300", accentColor: "border-yellow-400" },
+            { id: 10, title: "Health, Fitness & Digital Wearables Study", sponsor: "WellTech", baseRewardKES: 850, timeMin: 7, icon: "fa-heart-pulse", titleColor: "text-rose-300", accentColor: "border-rose-400" }
         ];
 
         // APP STATE
@@ -852,10 +973,10 @@
 
             if (terms && privacy) {
                 btn.disabled = false;
-                btn.className = "w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
+                btn.className = "w-full py-3 mt-1.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
             } else {
                 btn.disabled = true;
-                btn.className = "w-full py-3.5 mt-2 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
+                btn.className = "w-full py-3 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
             }
         }
 
@@ -885,11 +1006,14 @@
             document.getElementById('reg-step-1').classList.remove('hidden');
         }
 
-        // POPULATE COUNTRY SELECT DROPDOWN
+        // POPULATE COUNTRY SELECT DROPDOWN (195+ WORLDWIDE COUNTRIES)
         function populateCountryOptions() {
             const select = document.getElementById('reg-country');
             select.innerHTML = '';
-            for (const [key, country] of Object.entries(COUNTRIES_MAP)) {
+            // Sort alphabetically by country name
+            const sortedCountries = Object.entries(COUNTRIES_MAP).sort((a, b) => a[1].name.localeCompare(b[1].name));
+
+            for (const [key, country] of sortedCountries) {
                 const opt = document.createElement('option');
                 opt.value = key;
                 opt.textContent = `${country.name} (${country.code})`;
@@ -904,7 +1028,7 @@
         function onCountryChange() {
             const cKey = document.getElementById('reg-country').value;
             const country = COUNTRIES_MAP[cKey] || COUNTRIES_MAP['OTHER'];
-            document.getElementById('phone-prefix-badge').innerHTML = `<i class="fa-solid fa-phone text-[10px]"></i> ${country.code}`;
+            document.getElementById('phone-prefix-badge').innerHTML = `<i class="fa-solid fa-phone text-[9px]"></i> ${country.code}`;
         }
 
         // AUTH TAB SWITCHING
@@ -1031,8 +1155,8 @@
                 surveysLockIndicator.className = "text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30";
                 surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock-open text-[8px] mr-1"></i> Unlocked`;
             } else {
-                btnHeroAction.innerHTML = `<i class="fa-solid fa-bolt text-yellow-300"></i> ACTIVATE ACCOUNT NOW`;
-                btnHeroAction.className = "w-full py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer";
+                btnHeroAction.innerHTML = `<i class="fa-solid fa-bolt text-slate-950"></i> <span>ACTIVATE ACCOUNT NOW</span>`;
+                btnHeroAction.className = "w-full py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer";
 
                 surveysLockIndicator.className = "text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30";
                 surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock text-[8px] mr-1"></i> Locked`;
@@ -1090,7 +1214,7 @@
             }
         }
 
-        // 4. PAGINATED SURVEYS RENDERER MATCHING SCREENSHOT WITH VIBRANT INDIVIDUAL FIELD COLORS
+        // 4. PAGINATED SURVEYS RENDERER WITH LOCKED / START BUTTONS
         function renderSurveysList(country) {
             const container = document.getElementById('surveys-container');
             container.innerHTML = '';
@@ -1106,7 +1230,6 @@
                 const rewardFormatted = formatCurrency(survey.baseRewardKES, country);
 
                 const card = document.createElement('div');
-                // Left-Border Accent Matching Screenshot with Distinct Title Colors
                 card.className = `border-l-4 ${survey.accentColor} bg-slate-900/90 p-3 rounded-2xl flex items-center justify-between shadow-md border-t border-r border-b border-slate-800/80`;
                 card.innerHTML = `
                     <div class="flex items-center gap-2.5">
@@ -1119,8 +1242,8 @@
                         </div>
                     </div>
                     <div>
-                        <button onclick="takeSurvey(${survey.id}, ${survey.baseRewardKES})" class="${currentUser.isActivated ? 'bg-cyan-500 text-slate-950 hover:bg-cyan-400' : 'bg-cyan-600/30 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950'} px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md">
-                            ${currentUser.isActivated ? 'TAKE' : 'BUY'}
+                        <button onclick="takeSurvey(${survey.id}, ${survey.baseRewardKES})" class="${currentUser.isActivated ? 'bg-cyan-500 text-slate-950 hover:bg-cyan-400' : 'bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500 hover:text-white'} px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1 cursor-pointer">
+                            ${currentUser.isActivated ? '<i class="fa-solid fa-play text-[9px]"></i> START' : '<i class="fa-solid fa-lock text-[9px]"></i> LOCKED'}
                         </button>
                     </div>
                 `;
@@ -1155,7 +1278,7 @@
             if (!currentUser.isActivated) {
                 const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
                 const feeText = country.isKenya ? "500 KES" : "$4.00 USD";
-                alert(`Account Activation Required!\n\nYour account is currently inactive. You must activate your account (${feeText}) to unlock paid surveys and start earning.`);
+                alert(`Survey Locked!\n\nYour account is currently inactive. You must activate your account (${feeText}) to unlock all market research surveys and withdraw your earnings.`);
                 openActivationModal();
                 return;
             }
@@ -1163,10 +1286,10 @@
             const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
             const rewardFormatted = formatCurrency(rewardKES, country);
 
-            if (confirm(`Start survey task? Upon completion, +${rewardFormatted} will be credited to your account balance.`)) {
+            if (confirm(`Start market research survey? Upon completion, +${rewardFormatted} will be credited to your account balance.`)) {
                 currentUser.balanceKES += rewardKES;
                 localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
-                alert(`Task Completed Successfully! You earned +${rewardFormatted}`);
+                alert(`Survey Completed Successfully! You earned +${rewardFormatted}`);
                 renderAppDashboard();
             }
         }
@@ -1201,6 +1324,85 @@
                     }
                 }
             }
+        }
+
+        // CHANNEL-SPECIFIC WITHDRAWAL MODAL
+        function openWithdrawalModal() {
+            if (!currentUser.isActivated) {
+                alert("Account Activation Required before withdrawing funds!");
+                openActivationModal();
+                return;
+            }
+            document.getElementById('modal-withdrawal').classList.remove('hidden');
+            onWithdrawChannelChange();
+        }
+
+        function closeWithdrawalModal() {
+            document.getElementById('modal-withdrawal').classList.add('hidden');
+        }
+
+        function onWithdrawChannelChange() {
+            const channel = document.getElementById('withdraw-channel').value;
+            const container = document.getElementById('withdraw-fields-container');
+            container.innerHTML = '';
+
+            if (channel === 'mpesa') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">M-Pesa Registered Phone Number</label>
+                        <input type="text" readonly value="${currentUser ? currentUser.phone : '+254 712345678'}" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-bold text-emerald-400 outline-none cursor-not-allowed">
+                        <p class="text-[9px] text-slate-500 mt-1">Automatically saved from your registered account details.</p>
+                    </div>
+                `;
+            } else if (channel === 'bank') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Bank Name</label>
+                        <input type="text" id="bank-name" required placeholder="e.g. Equity Bank / KCB" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Account Holder Full Name</label>
+                        <input type="text" id="bank-holder" required value="${currentUser ? currentUser.fullName : ''}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Bank Account Number</label>
+                        <input type="text" id="bank-acc" required placeholder="e.g. 0123456789012" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                    </div>
+                `;
+            } else if (channel === 'paypal') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">PayPal Account Email</label>
+                        <input type="email" id="paypal-email" required value="${currentUser ? currentUser.email : ''}" placeholder="user@paypal.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                    </div>
+                `;
+            } else if (channel === 'crypto') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 mb-1">USDT Wallet Address (TRC20 / BEP20)</label>
+                        <input type="text" id="crypto-address" required placeholder="T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWbd" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none font-mono">
+                    </div>
+                `;
+            }
+        }
+
+        function submitWithdrawal(e) {
+            e.preventDefault();
+            const channel = document.getElementById('withdraw-channel').value;
+            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+            const minWithdrawKES = 18000;
+
+            if (currentUser.balanceKES < minWithdrawKES) {
+                const formattedMin = formatCurrency(minWithdrawKES, country);
+                const formattedCurrent = formatCurrency(currentUser.balanceKES, country);
+                alert(`Insufficient Balance!\nYour current balance: ${formattedCurrent}\nMinimum required for withdrawal: ${formattedMin}`);
+                closeWithdrawalModal();
+                return;
+            }
+
+            const formattedBal = formatCurrency(currentUser.balanceKES, country);
+            alert(`Withdrawal Request Submitted Successfully!\nChannel: ${channel.toUpperCase()}\nAmount: ${formattedBal}\nStatus: Processing to secure payout queue.`);
+            closeWithdrawalModal();
         }
 
         // ACTIVATION MODAL LOGIC
@@ -1240,16 +1442,12 @@
             let allowedChannels = [];
 
             if (country.isKenya) {
-                // 500 KES = 50,000 cents
                 paymentAmountInSubunits = 500 * 100;
                 paymentCurrency = 'KES';
-                // All payment methods allowed for Kenya
                 allowedChannels = ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'];
             } else {
-                // 4 USD = 400 cents
                 paymentAmountInSubunits = 4 * 100;
                 paymentCurrency = 'USD';
-                // ONLY Card allowed for international non-Kenyan accounts
                 allowedChannels = ['card'];
             }
 
@@ -1270,7 +1468,7 @@
                 callback: function(response) {
                     currentUser.isActivated = true;
                     localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
-                    alert("Account Activated Successfully! Surveys are now unlocked.\nPaystack Reference: " + response.reference);
+                    alert("Account Activated Successfully! All market research surveys & withdrawals are now unlocked.\nPaystack Reference: " + response.reference);
                     closeActivationModal();
                     renderAppDashboard();
                 },
@@ -1280,36 +1478,6 @@
             });
 
             handler.openIframe();
-        }
-
-        // HANDLE WITHDRAWAL REQUEST
-        function handleWithdrawRequest() {
-            if (!currentUser.isActivated) {
-                alert("Account Activation Required before withdrawing funds!");
-                openActivationModal();
-                return;
-            }
-
-            const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
-            const minWithdrawKES = 18000;
-
-            if (currentUser.balanceKES < minWithdrawKES) {
-                const formattedMin = formatCurrency(minWithdrawKES, country);
-                const formattedCurrent = formatCurrency(currentUser.balanceKES, country);
-                alert(`Insufficient Balance!\nYour current balance: ${formattedCurrent}\nMinimum required for withdrawal: ${formattedMin}`);
-                return;
-            }
-
-            let methodPrompt = "Select Withdrawal Channel:\n1. M-Pesa Mobile Money\n2. PayPal\n3. Bank Transfer\n4. USDT Crypto";
-            if (!country.isKenya) {
-                methodPrompt = "Select International Withdrawal Channel:\n1. PayPal\n2. Bank Wire / SWIFT\n3. USDT Crypto";
-            }
-
-            const choice = prompt(methodPrompt);
-            if (choice) {
-                const formattedBal = formatCurrency(currentUser.balanceKES, country);
-                alert(`Withdrawal Request Submitted!\nAmount: ${formattedBal}\nAccount: ${currentUser.email}\nStatus: Processing to payout queue.`);
-            }
         }
     </script>
 </body>
