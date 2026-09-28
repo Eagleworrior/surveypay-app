@@ -1,12 +1,12 @@
 # Task List
 
-- [x] Increase text sizes across all inputs, labels, buttons, and cards for medium readability
-- [x] Style terms agreement checkboxes black by default, turning bright green with a tick on click
-- [x] Add all 195+ worldwide countries to country selection dropdown
-- [x] Update survey list to real Market Research Survey categories with "LOCKED" action badges
-- [x] Implement channel-specific withdrawal modal (Bank Name/Holder/Account for Bank, pre-filled phone for M-Pesa, PayPal Email, Crypto USDT Wallet)
-- [x] Re-style balance numbers and "ACTIVATE ACCOUNT" button with vibrant gold/yellow text colors
-- [x] Sync `index.html` across frontend and Android assets
-- [x] Recompile, sign, and output release APK to `C:\Users\EAGLE\Downloads\survy pay.apk`
-- [x] Commit and push changes to remote git repository
-- [x] Create walkthrough artifact
+- [/] Add fail-safe splash loader initialization to fix first-install cold boot white screen bug
+- [/] Add Top-Bar Back Arrow button on sub-screens to return to HOME main menu
+- [/] Populate 195+ world countries sorted strictly A to Z from Afghanistan to Zimbabwe
+- [/] Generate 100+ surveys with short 2-word titles, reward values, and colorful icons
+- [/] Implement 5-survey pagination controls with page numbers
+- [/] Increase text sizes across all inputs, labels, headers, and cards for large clear readability
+- [/] Sync `index.html` across frontend and Android assets
+- [/] Recompile, sign, and output release APK to `C:\Users\EAGLE\Downloads\survy pay.apk`
+- [/] Commit and push changes to remote git repository
+- [/] Create walkthrough artifact

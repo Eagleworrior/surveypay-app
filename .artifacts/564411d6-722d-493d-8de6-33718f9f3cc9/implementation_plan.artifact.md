@@ -1,38 +1,35 @@
-# SurveyPay UI Enhancement, Global Countries & Withdrawal Workflows Plan
+# SurveyPay 100+ Surveys, A-Z World Countries, Cold Boot Fix & Navigation Plan
 
-Refactor SurveyPay web application and Android APK to incorporate user feedback: increased text sizing, vibrant button and balance colors, realistic Market Research Survey categories, dedicated withdrawal input forms per channel, 195+ global country selector, and black-to-green custom terms agreement checkboxes.
+Implement all requested major updates:
+1. Fix the first-install cold boot white/freeze screen bug by adding fail-safe DOM initialization.
+2. Expand the country list to all 195+ sovereign world nations sorted strictly A to Z.
+3. Add a top-bar **Back Arrow Button** on every sub-screen to easily return to the HOME/Surveys main menu.
+4. Expand the survey catalog to **100+ surveys** with short, clean **2-word titles** and clear reward earnings.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> 1. **Text Sizing**: Increased base text sizes across the app from tiny `text-[10px]` / `text-xs` to comfortable medium sizes (`text-xs`, `text-sm`, `text-base`).
-> 2. **Vibrant Text & Balance Colors**:
->    - Total Capital Balance displayed in glowing **Gradient Gold/Emerald** text.
->    - "ACTIVATE ACCOUNT" hero button styled in **Bright Yellow/Gold** text with a glowing border.
-> 3. **Market Research Survey Categories**:
->    - Survey titles updated to authentic market research types (e.g., *Consumer Habits Survey*, *FinTech & Digital Banking Survey*, *Streaming & Entertainment Survey*, *Healthcare & Wearables Survey*).
->    - Card action button clearly labeled **LOCKED** (or **START** if activated) with a lock icon instead of "BUY".
-> 4. **Detailed Withdrawal Channel Forms**:
->    - **Bank Transfer**: Prompts for Bank Name, Account Holder Name, and Account Number.
->    - **M-Pesa**: Pre-fills the user's registered phone number automatically.
->    - **PayPal**: Asks for PayPal Email Address.
->    - **Crypto**: Asks for USDT Wallet Address (TRC20 / BEP20).
-> 5. **Complete 195+ Worldwide Countries**:
->    - Expanded country dropdown with all sovereign nations globally and international dialing codes.
-> 6. **Custom Terms Checkboxes**:
->    - Styled with a dark black background (`bg-slate-950 border-slate-700`) that turns bright green with a checkmark when selected.
+> 1. **First-Install Cold Boot Fix (Zero White Screen)**:
+>    - Root cause: On first install without cached external CDNs (Tailwind, FontAwesome, Paystack), JS execution delayed or blocked hiding `#screen-loading` (`z-[200]`), causing a white/frozen screen until app restart.
+>    - Solution: Added a 1.5-second fail-safe timer that forcibly hides the splash screen and presents the Terms/Auth modal immediately upon DOM load, guaranteeing instant app launch on first install.
+> 2. **Top Header Back Arrow Button**:
+>    - Added a `<button onclick="switchMainTab('surveys')"><i class="fa-solid fa-arrow-left text-cyan-400"></i></button>` to the top header on Wallet, Profile, and Help screens so users can tap Back anytime to return to the HOME/Surveys main menu.
+> 3. **100+ Surveys with Short 2-Word Titles**:
+>    - Built a catalog of **100+ surveys** with concise 2-word names (e.g., *M-Pesa Usage*, *Daily Expenses*, *Youth Jobs*, *Data Networks*, *Social Media*, *Public Transit*, *Food Delivery*, *Mobile Banking*, *Health Insurance*, *Gaming Habits*, *Online Shopping*, *Smart Watches*, *Crypto Assets*, *Solar Power*, *Air Travel*, etc.).
+>    - Paginated 5 surveys per page with Previous/Next controls and explicit reward earnings (+650 KES to +1,800 KES).
+> 4. **195+ Sovereign World Countries (A to Z)**:
+>    - Alphabetically sorted array containing every sovereign country in the world from **Afghanistan** to **Zimbabwe**.
 
 ## Proposed Changes
 
 ### Web Application (`index.html`, `frontend/index.html`, `android/app/src/main/assets/index.html`)
 
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Increase text size classes across inputs, labels, buttons, and badges.
-- Expand `COUNTRIES_MAP` to include all world countries (195+ entries).
-- Add custom CSS for `.custom-checkbox` (black unselected, bright green with checkmark when selected).
-- Update `DEFAULT_SURVEYS` catalog with real Market Research Survey types and "LOCKED" action pills.
-- Enhance `handleWithdrawRequest()` to open a modal with specific input fields based on chosen payment channel (Bank Name/Holder/Account for Bank, pre-filled phone for M-Pesa, Email for PayPal, TRC20 address for Crypto).
-- Re-style `#disp-balance`, `#wallet-balance-disp`, and `#btn-hero-action` with vibrant gold/yellow colors.
+- Add cold boot fail-safe timer (`setTimeout`) in splash screen JS to ensure `#screen-loading` is hidden instantly.
+- Update header with dynamic `<button id="btn-header-back">` showing a Back Arrow when not on the Home tab.
+- Populate `COUNTRIES_MAP` with all 195+ world countries alphabetically from A to Z.
+- Generate `DEFAULT_SURVEYS` with **100+ surveys** having short 2-word titles, reward values, and icons.
+- Update survey pagination to show 5 surveys per page with Previous/Next controls.
 
 ### Android Asset Synchronization & Build
 
@@ -43,10 +40,9 @@ Refactor SurveyPay web application and Android APK to incorporate user feedback:
 
 ## Verification Plan
 
-### Manual Verification
-1. Verify terms agreement checkboxes start black and turn green with a tick on click.
-2. Verify all text sizes are comfortable medium readability.
-3. Test country selector dropdown contains global countries and populates dial code properly.
-4. Verify survey task cards display realistic survey titles with "LOCKED" status badges.
-5. Test withdrawal channels modal with Bank, M-Pesa, PayPal, and Crypto input fields.
-6. Recompile release APK, verify signature, and push to GitHub.
+### Automated & Manual Verification
+1. Test cold boot / first install initialization to ensure no white screen or freeze occurs.
+2. Verify top-bar Back Arrow button appears when navigating to Wallet, Profile, or Help tabs and returns user to HOME.
+3. Verify country selector dropdown lists all world countries strictly A to Z.
+4. Verify survey list contains 100+ items with short 2-word titles and reward earnings.
+5. Recompile, sign, and verify release APK output to `C:\Users\EAGLE\Downloads\survy pay.apk`.

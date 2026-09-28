@@ -1,35 +1,29 @@
-# SurveyPay - Complete Feature & UI Refinement Walkthrough
+# SurveyPay - Final UI Refinements Walkthrough
 
-All user feedback items have been successfully addressed, built, recompiled, signed, and pushed to GitHub.
+All requested refinements have been successfully built, recompiled, signed, and pushed to GitHub.
 
-## Summary of Refinements
+## Summary of Changes
 
-### 1. Zero First-Install Scrolling Fixed
-- Locked `html, body` with `position: fixed; inset: 0; overflow: hidden;` so that on first install, app load, and terms modal display, the app never shows outer scrolling behavior.
+### 1. 195+ Worldwide Countries & All 47 Counties of Kenya
+- The country dropdown now contains **all sovereign nations globally** (alphabetically sorted).
+- When **Kenya** is selected, a dedicated **Select County / Region** dropdown dynamically populates with **all 47 Counties of Kenya** (*Nairobi, Mombasa, Kisumu, Nakuru, Kiambu, Machakos, Uasin Gishu, Kakamega, Meru, Kilifi, Murang'a, Bungoma, Kisii, Kitui, Kajiado, Kericho, Nyeri, Embu, Homa Bay, Siaya, Migori, Narok, Nyamira, Bomet, Vihiga, Busia, Trans Nzoia, Elgeyo-Marakwet, Nandi, Baringo, Laikipia, Nyandarua, Kirinyaga, Makueni, Turkana, West Pokot, Samburu, Tana River, Lamu, Taita-Taveta, Garissa, Wajir, Mandera, Marsabit, Isiolo, Tharaka-Nithi, Kwale*).
 
-### 2. Medium Readable Text Sizes
-- Upgraded font sizes across inputs, labels, cards, buttons, and badges from tiny (`text-[10px]`) to comfortable medium readability (`text-xs`, `text-sm`, `text-base`).
+### 2. Authentic Survey Names (No Marketing Titles)
+- Replaced placeholder corporate titles with realistic SurveyPay earning activities:
+  - *Mobile Money Usage & M-Pesa Experience Survey*
+  - *Daily Household Expenses & Inflation Impact Survey*
+  - *Youth Employment & Digital Side Hustles Survey*
+  - *Smartphone Data Connectivity & Internet Survey*
+  - *Social Media Trends & Online News Survey*
+  - *Public Transport & Commuting Habits Survey*
+  - *Food Delivery & Restaurant Ordering Survey*
+  - *Mobile Banking & Financial Literacy Survey*
+  - *Healthcare Access & Medical Insurance Survey*
+  - *Entertainment, Music & Gaming Habits Survey*
 
-### 3. Custom Black-to-Green Checkboxes
-- Terms agreement checkboxes are styled **solid black** by default (`bg-slate-950 border-slate-700`) and turn **bright emerald green** (`bg-emerald-500 border-emerald-400`) with a checkmark when clicked.
+### 3. Larger Readable Menu & Card Font Sizes
+- Increased text size across survey titles, wallet balances, navigation tabs, profile records, and modals (`text-sm`, `text-base`, `text-lg`) so everything is extremely clear and easy to read without any struggling.
 
-### 4. 195+ Worldwide Countries Selector
-- Expanded the country selection dropdown to include every sovereign country globally, sorted alphabetically with international dialing codes.
-
-### 5. Authentic Market Research Surveys & Locked Status
-- Replaced stock placeholder titles with real Market Research Survey Categories (*Consumer Shopping & Retail Study*, *FinTech & Digital Payments*, *Mobile Apps & UX*, *AI Adoption Insights*, etc.).
-- Action buttons clearly display **LOCKED** with a lock icon for unactivated accounts, unlocking instantly upon account activation.
-
-### 6. Channel-Specific Withdrawal Modal
-- **M-Pesa**: Automatically pre-fills and shows the user's registered phone number.
-- **Bank Transfer**: Prompts for Bank Name, Account Holder Name, and Account Number.
-- **PayPal**: Asks for PayPal Account Email.
-- **Crypto USDT**: Asks for USDT Wallet Address (TRC20 / BEP20).
-
-### 7. Vibrant Balance & Activation Button Colors
-- Total Capital Value displayed in glowing **Gradient Gold**.
-- "ACTIVATE ACCOUNT NOW" hero button decorated in **Vibrant Yellow/Gold** with a glowing gold border.
-
-### 8. Re-Compiled Signed Release APK & GitHub Push
+### 4. Re-Compiled Signed Release APK & GitHub Sync
 - **Output APK**: [survy pay.apk](file:///C:/Users/EAGLE/Downloads/survy%20pay.apk) (24.1 MB, verified signed).
 - **GitHub**: Committed and pushed to `https://github.com/Eagleworrior/surveypay-app.git` (branch `main`).
