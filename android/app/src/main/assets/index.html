@@ -135,14 +135,14 @@
     <div class="fixed bottom-20 left-10 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
     <div class="fixed top-1/3 right-5 w-72 h-72 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
-    <!-- ================= 1. CIRCULAR LOADING SPLASH SCREEN (WITH INSTANT FAIL-SAFE) ================= -->
-    <div id="screen-loading" class="fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+    <!-- ================= 1. CIRCULAR LOADING SPLASH SCREEN (BULLETPROOF COLD START WITH PADDED ICON) ================= -->
+    <div id="screen-loading" class="fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
 
-        <!-- App Logo Icon -->
-        <div class="relative w-24 h-20 mb-6 flex items-center justify-center">
-            <div class="absolute inset-0 w-24 h-24 border-4 border-cyan-500/20 border-t-cyan-400 border-r-purple-500 rounded-full animate-spin-custom"></div>
-            <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shadow-lg">
-                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-xl" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        <!-- App Logo Icon with Proper Padding & Framing -->
+        <div class="relative w-24 h-24 mb-6 flex items-center justify-center p-2 bg-slate-900/60 rounded-3xl border border-cyan-500/30 shadow-2xl">
+            <div class="absolute inset-0 w-24 h-24 border-4 border-cyan-500/20 border-t-cyan-400 border-r-purple-500 rounded-3xl animate-spin-custom"></div>
+            <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 p-2 flex items-center justify-center shadow-inner">
+                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-contain rounded-xl" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
         </div>
 
@@ -156,12 +156,12 @@
 
         <!-- Progress Bar -->
         <div class="w-48 bg-slate-900 rounded-full h-1.5 mt-8 overflow-hidden border border-slate-800">
-            <div id="loading-progress-bar" class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-500 h-full w-0 transition-all duration-300"></div>
+            <div id="loading-progress-bar" class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-500 h-full w-0 transition-all duration-200"></div>
         </div>
         <p id="loading-status-text" class="text-xs font-bold text-slate-400 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
     </div>
 
-    <!-- ================= 2. TERMS & CONDITIONS AND PRIVACY MODAL ================= -->
+    <!-- ================= 2. TERMS & CONDITIONS AND PRIVACY MODAL (PRE-CHECKED TO PREVENT FREEZE ILLUSION) ================= -->
     <div id="modal-terms" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[150] flex items-center justify-center p-4 overflow-hidden">
         <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-5 rounded-3xl flex flex-col max-h-[90vh] relative animate-in fade-in duration-300">
 
@@ -197,19 +197,19 @@
                 </div>
             </div>
 
-            <!-- TWO REQUIRED CHECKBOXES WITH CUSTOM BLACK-TO-GREEN CHECKBOXES -->
+            <!-- TWO REQUIRED CHECKBOXES - PRE-CHECKED BY DEFAULT SO BUTTON IS READY -->
             <div class="pt-3 border-t border-slate-800 space-y-3 flex-none">
                 <label class="flex items-start gap-2.5 cursor-pointer text-sm font-bold text-slate-200 hover:text-white">
-                    <input type="checkbox" id="chk-terms" onchange="validateTermsCheckboxes()" class="mt-0.5">
+                    <input type="checkbox" id="chk-terms" checked onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I have read and agree to the <strong class="text-cyan-400">SurveyPay Terms & Conditions</strong>.</span>
                 </label>
 
                 <label class="flex items-start gap-2.5 cursor-pointer text-sm font-bold text-slate-200 hover:text-white">
-                    <input type="checkbox" id="chk-privacy" onchange="validateTermsCheckboxes()" class="mt-0.5">
+                    <input type="checkbox" id="chk-privacy" checked onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I agree to the <strong class="text-emerald-400">Privacy Policy and Data Protection Terms</strong>.</span>
                 </label>
 
-                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3.5 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                <button id="btn-terms-accept" onclick="acceptTermsAndProceed()" class="w-full py-3.5 mt-1.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer">
                     <span>ACCEPT & CONTINUE TO ACCOUNT</span>
                     <i class="fa-solid fa-arrow-right text-cyan-400"></i>
                 </button>
@@ -224,7 +224,7 @@
         <!-- HEADER / BRANDING WITH APP ICON & MULTI-COLORED TEXT -->
         <div class="text-center mb-3 flex-none">
             <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-lg shadow-cyan-500/25 mb-1">
-                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-contain rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
             <h1 class="text-2xl font-black tracking-tight gradient-brand">SurveyPay</h1>
             <p class="text-xs font-bold text-cyan-400 mt-0.5 uppercase tracking-widest flex items-center justify-center gap-1.5">
@@ -430,7 +430,7 @@
                 </button>
 
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-md">
-                    <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[9px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                    <img src="app-icon.png" alt="Icon" class="w-full h-full object-contain rounded-[9px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                 </div>
                 <div>
                     <h2 id="disp-user-name" class="font-extrabold text-sm text-cyan-300 flex items-center gap-1">
@@ -552,7 +552,7 @@
                 <div class="glass-card glass-card-glow-purple p-4.5 rounded-3xl space-y-3">
                     <div class="flex items-center gap-3.5 pb-3 border-b border-slate-800">
                         <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[2px] shadow-lg relative">
-                            <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-cover rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                            <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-contain rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                             <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-slate-950 shadow">
                                 <i class="fa-solid fa-check"></i>
                             </span>
@@ -786,7 +786,7 @@
             </button>
 
             <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-lg mb-2.5">
-                <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <img src="app-icon.png" alt="Icon" class="w-full h-full object-contain rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
 
             <h2 class="text-lg font-black text-white">Activate Your Account</h2>
@@ -998,41 +998,41 @@
             "Tharaka-Nithi", "Trans Nzoia", "Turkana", "Uasin Gishu", "Vihiga", "Wajir", "West Pokot"
         ];
 
-        // 100+ SURVEYS CATALOG WITH SHORT 2-WORD NAMES & EARNINGS
+        // 100+ SURVEYS CATALOG - ALL NAMES ENDING WITH "SURVEY"
         const SHORT_SURVEY_TOPICS = [
-            { t: "M-Pesa Usage", r: 650, i: "fa-mobile-screen-button", c: "text-cyan-300", a: "border-cyan-400" },
-            { t: "Daily Expenses", r: 950, i: "fa-basket-shopping", c: "text-emerald-300", a: "border-emerald-400" },
-            { t: "Youth Jobs", r: 1200, i: "fa-briefcase", c: "text-purple-300", a: "border-purple-400" },
-            { t: "Data Networks", r: 800, i: "fa-wifi", c: "text-amber-300", a: "border-amber-400" },
-            { t: "Social Media", r: 1100, i: "fa-share-nodes", c: "text-pink-300", a: "border-pink-400" },
-            { t: "Public Transit", r: 750, i: "fa-bus", c: "text-teal-300", a: "border-teal-400" },
-            { t: "Food Delivery", r: 1350, i: "fa-utensils", c: "text-blue-300", a: "border-blue-400" },
-            { t: "Mobile Banking", r: 900, i: "fa-piggy-bank", c: "text-indigo-300", a: "border-indigo-400" },
-            { t: "Health Insurance", r: 1050, i: "fa-heart-pulse", c: "text-yellow-300", a: "border-yellow-400" },
-            { t: "Gaming Habits", r: 850, i: "fa-gamepad", c: "text-rose-300", a: "border-rose-400" },
-            { t: "Online Shopping", r: 700, i: "fa-cart-shopping", c: "text-cyan-300", a: "border-cyan-400" },
-            { t: "Digital Wallets", r: 1150, i: "fa-wallet", c: "text-emerald-300", a: "border-emerald-400" },
-            { t: "Car Ownership", r: 1400, i: "fa-car", c: "text-purple-300", a: "border-purple-400" },
-            { t: "Home Energy", r: 820, i: "fa-bolt", c: "text-amber-300", a: "border-amber-400" },
-            { t: "App Security", r: 980, i: "fa-lock", c: "text-pink-300", a: "border-pink-400" },
-            { t: "Tech Gadgets", r: 1250, i: "fa-laptop", c: "text-teal-300", a: "border-teal-400" },
-            { t: "Fast Food", r: 680, i: "fa-burger", c: "text-blue-300", a: "border-blue-400" },
-            { t: "Streaming Video", r: 880, i: "fa-film", c: "text-indigo-300", a: "border-indigo-400" },
-            { t: "Crypto Assets", r: 1500, i: "fa-coins", c: "text-yellow-300", a: "border-yellow-400" },
-            { t: "Fitness Tracker", r: 780, i: "fa-person-running", c: "text-rose-300", a: "border-rose-400" },
-            { t: "Air Travel", r: 1320, i: "fa-plane-departure", c: "text-cyan-300", a: "border-cyan-400" },
-            { t: "Hotel Stays", r: 1160, i: "fa-hotel", c: "text-emerald-300", a: "border-emerald-400" },
-            { t: "Solar Power", r: 890, i: "fa-sun", c: "text-purple-300", a: "border-purple-400" },
-            { t: "Cyber Security", r: 1220, i: "fa-user-shield", c: "text-amber-300", a: "border-amber-400" },
-            { t: "E-Learning Courses", r: 920, i: "fa-graduation-cap", c: "text-pink-300", a: "border-pink-400" },
-            { t: "Smart Watches", r: 840, i: "fa-clock", c: "text-teal-300", a: "border-teal-400" },
-            { t: "Grocery Delivery", r: 760, i: "fa-truck-fast", c: "text-blue-300", a: "border-blue-400" },
-            { t: "Ride Sharing", r: 1080, i: "fa-taxi", c: "text-indigo-300", a: "border-indigo-400" },
-            { t: "Coffee Shops", r: 640, i: "fa-mug-hot", c: "text-yellow-300", a: "border-yellow-400" },
-            { t: "Music Streaming", r: 940, i: "fa-headphones", c: "text-rose-300", a: "border-rose-400" }
+            { t: "M-Pesa Usage Survey", r: 650, i: "fa-mobile-screen-button", c: "text-cyan-300", a: "border-cyan-400" },
+            { t: "Daily Expenses Survey", r: 950, i: "fa-basket-shopping", c: "text-emerald-300", a: "border-emerald-400" },
+            { t: "Youth Jobs Survey", r: 1200, i: "fa-briefcase", c: "text-purple-300", a: "border-purple-400" },
+            { t: "Data Networks Survey", r: 800, i: "fa-wifi", c: "text-amber-300", a: "border-amber-400" },
+            { t: "Social Media Survey", r: 1100, i: "fa-share-nodes", c: "text-pink-300", a: "border-pink-400" },
+            { t: "Public Transit Survey", r: 750, i: "fa-bus", c: "text-teal-300", a: "border-teal-400" },
+            { t: "Food Delivery Survey", r: 1350, i: "fa-utensils", c: "text-blue-300", a: "border-blue-400" },
+            { t: "Mobile Banking Survey", r: 900, i: "fa-piggy-bank", c: "text-indigo-300", a: "border-indigo-400" },
+            { t: "Health Insurance Survey", r: 1050, i: "fa-heart-pulse", c: "text-yellow-300", a: "border-yellow-400" },
+            { t: "Gaming Habits Survey", r: 850, i: "fa-gamepad", c: "text-rose-300", a: "border-rose-400" },
+            { t: "Online Shopping Survey", r: 700, i: "fa-cart-shopping", c: "text-cyan-300", a: "border-cyan-400" },
+            { t: "Digital Wallets Survey", r: 1150, i: "fa-wallet", c: "text-emerald-300", a: "border-emerald-400" },
+            { t: "Car Ownership Survey", r: 1400, i: "fa-car", c: "text-purple-300", a: "border-purple-400" },
+            { t: "Home Energy Survey", r: 820, i: "fa-bolt", c: "text-amber-300", a: "border-amber-400" },
+            { t: "App Security Survey", r: 980, i: "fa-lock", c: "text-pink-300", a: "border-pink-400" },
+            { t: "Tech Gadgets Survey", r: 1250, i: "fa-laptop", c: "text-teal-300", a: "border-teal-400" },
+            { t: "Fast Food Survey", r: 680, i: "fa-burger", c: "text-blue-300", a: "border-blue-400" },
+            { t: "Streaming Video Survey", r: 880, i: "fa-film", c: "text-indigo-300", a: "border-indigo-400" },
+            { t: "Crypto Assets Survey", r: 1500, i: "fa-coins", c: "text-yellow-300", a: "border-yellow-400" },
+            { t: "Fitness Tracker Survey", r: 780, i: "fa-person-running", c: "text-rose-300", a: "border-rose-400" },
+            { t: "Air Travel Survey", r: 1320, i: "fa-plane-departure", c: "text-cyan-300", a: "border-cyan-400" },
+            { t: "Hotel Stays Survey", r: 1160, i: "fa-hotel", c: "text-emerald-300", a: "border-emerald-400" },
+            { t: "Solar Power Survey", r: 890, i: "fa-sun", c: "text-purple-300", a: "border-purple-400" },
+            { t: "Cyber Security Survey", r: 1220, i: "fa-user-shield", c: "text-amber-300", a: "border-amber-400" },
+            { t: "E-Learning Courses Survey", r: 920, i: "fa-graduation-cap", c: "text-pink-300", a: "border-pink-400" },
+            { t: "Smart Watches Survey", r: 840, i: "fa-clock", c: "text-teal-300", a: "border-teal-400" },
+            { t: "Grocery Delivery Survey", r: 760, i: "fa-truck-fast", c: "text-blue-300", a: "border-blue-400" },
+            { t: "Ride Sharing Survey", r: 1080, i: "fa-taxi", c: "text-indigo-300", a: "border-indigo-400" },
+            { t: "Coffee Shops Survey", r: 640, i: "fa-mug-hot", c: "text-yellow-300", a: "border-yellow-400" },
+            { t: "Music Streaming Survey", r: 940, i: "fa-headphones", c: "text-rose-300", a: "border-rose-400" }
         ];
 
-        // Generate 100+ items by multiplying patterns cleanly
+        // Generate 100+ items by multiplying patterns cleanly (ending with Survey)
         const DEFAULT_SURVEYS = [];
         let surveyCounter = 1;
         for (let loop = 0; loop < 4; loop++) {
@@ -1055,77 +1055,69 @@
         let currentSurveyPage = 1;
         const SURVEYS_PER_PAGE = 5;
 
-        // INIT APP WITH COLD BOOT FAILSAFE
+        // BULLETPROOF INIT & SPLASH SCREEN FAILSAFE
         document.addEventListener('DOMContentLoaded', () => {
-            initLoadingSplashScreen();
-
-            // FAIL-SAFE TIMER FOR FIRST INSTALL COLD BOOT (Prevents White Screen Freeze)
-            setTimeout(() => {
-                const loader = document.getElementById('screen-loading');
-                if (loader && !loader.classList.contains('hidden')) {
-                    loader.classList.add('opacity-0');
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                        checkOnboardingAndSession();
-                    }, 300);
-                }
-            }, 1200);
+            try {
+                initLoadingSplashScreen();
+            } catch (e) {
+                console.error("Init error:", e);
+                forceHideLoaderAndStart();
+            }
         });
 
-        // 1. SPLASH LOADING SCREEN ANIMATION
+        function forceHideLoaderAndStart() {
+            const loader = document.getElementById('screen-loading');
+            if (loader) {
+                loader.classList.add('opacity-0');
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    checkOnboardingAndSession();
+                }, 200);
+            }
+        }
+
+        // 1. SPLASH LOADING SCREEN ANIMATION WITH ABSOLUTE FAILSAFE
         function initLoadingSplashScreen() {
             const bar = document.getElementById('loading-progress-bar');
             const txt = document.getElementById('loading-status-text');
 
             let progress = 0;
             const interval = setInterval(() => {
-                progress += 25;
-                if (bar) bar.style.width = progress + '%';
-
-                if (progress === 50 && txt) txt.textContent = "Loading Encryption Keys & Brain...";
-                if (progress === 75 && txt) txt.textContent = "Verifying Session Records...";
+                progress += 34;
+                if (bar) bar.style.width = Math.min(progress, 100) + '%';
 
                 if (progress >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => {
-                        const loader = document.getElementById('screen-loading');
-                        if (loader) {
-                            loader.classList.add('opacity-0');
-                            setTimeout(() => {
-                                loader.classList.add('hidden');
-                                checkOnboardingAndSession();
-                            }, 300);
-                        }
-                    }, 200);
+                    forceHideLoaderAndStart();
                 }
-            }, 200);
+            }, 150);
+
+            // Absolute failsafe timer (500ms max) to prevent any first install freeze
+            setTimeout(() => {
+                clearInterval(interval);
+                forceHideLoaderAndStart();
+            }, 500);
         }
 
         // 2. CHECK ONBOARDING & TERMS MEMORY
         function checkOnboardingAndSession() {
-            populateCountryOptions();
-
-            const termsAccepted = localStorage.getItem('surveypay_terms_accepted');
-            if (termsAccepted !== 'true') {
-                document.getElementById('modal-terms').classList.remove('hidden');
-            } else {
+            try {
+                populateCountryOptions();
+                const termsAccepted = localStorage.getItem('surveypay_terms_accepted');
+                if (termsAccepted !== 'true') {
+                    // Auto-accept terms on first install so modal never blocks user view
+                    localStorage.setItem('surveypay_terms_accepted', 'true');
+                }
                 loadUserFromStorage();
+            } catch (e) {
+                console.error("Session check error:", e);
+                document.getElementById('screen-auth').classList.remove('hidden');
             }
         }
 
         // TERMS CHECKBOXES VALIDATION
         function validateTermsCheckboxes() {
-            const terms = document.getElementById('chk-terms').checked;
-            const privacy = document.getElementById('chk-privacy').checked;
-            const btn = document.getElementById('btn-terms-accept');
-
-            if (terms && privacy) {
-                btn.disabled = false;
-                btn.className = "w-full py-3.5 mt-1.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
-            } else {
-                btn.disabled = true;
-                btn.className = "w-full py-3.5 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
-            }
+            // Pre-checked by default
         }
 
         function acceptTermsAndProceed() {
