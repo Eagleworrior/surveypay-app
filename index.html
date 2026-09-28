@@ -21,21 +21,21 @@
 
         /* Custom Colorful Glowing Cards */
         .glass-card {
-            background: rgba(15, 20, 38, 0.92);
+            background: rgba(15, 20, 38, 0.94);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
         .glass-card-glow-cyan {
-            border-color: rgba(6, 182, 212, 0.35);
-            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.18);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.2);
         }
 
         .glass-card-glow-purple {
-            border-color: rgba(168, 85, 247, 0.35);
-            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.18);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.2);
         }
 
         /* Hero Card Blue Gradient Matching Screenshot */
@@ -45,13 +45,13 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Colorful Typed Inputs styling for medium text size */
-        .input-name { color: #38bdf8 !important; caret-color: #38bdf8; font-size: 14px !important; }
-        .input-email { color: #34d399 !important; caret-color: #34d399; font-size: 14px !important; }
-        .input-country { color: #fbbf24 !important; font-size: 14px !important; }
-        .input-phone { color: #fb923c !important; caret-color: #fb923c; font-size: 14px !important; }
-        .input-password { color: #c084fc !important; caret-color: #c084fc; font-size: 14px !important; }
-        .input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; font-size: 14px !important; }
+        /* Larger Readable Typed Inputs */
+        .input-name { color: #38bdf8 !important; caret-color: #38bdf8; font-size: 15px !important; }
+        .input-email { color: #34d399 !important; caret-color: #34d399; font-size: 15px !important; }
+        .input-country { color: #fbbf24 !important; font-size: 15px !important; }
+        .input-phone { color: #fb923c !important; caret-color: #fb923c; font-size: 15px !important; }
+        .input-password { color: #c084fc !important; caret-color: #c084fc; font-size: 15px !important; }
+        .input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; font-size: 15px !important; }
 
         /* Custom Checkbox: Black by default, turns bright green with checkmark when clicked */
         input[type="checkbox"] {
@@ -59,8 +59,8 @@
             -webkit-appearance: none;
             background-color: #020617 !important;
             border: 2px solid #334155 !important;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 6px;
             cursor: pointer;
             display: inline-flex;
@@ -80,7 +80,7 @@
             content: '\f00c';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
-            font-size: 11px;
+            font-size: 12px;
             color: #020617;
         }
 
@@ -148,7 +148,7 @@
         </div>
 
         <h1 class="text-3xl font-black tracking-tight gradient-brand mt-2">SurveyPay</h1>
-        <p class="text-xs font-bold text-cyan-400 mt-1 uppercase tracking-widest flex items-center gap-1.5">
+        <p class="text-sm font-bold text-cyan-400 mt-1 uppercase tracking-widest flex items-center gap-1.5">
             <i class="fa-solid fa-shield-check text-emerald-400"></i>
             <span class="text-cyan-300">Verified</span>
             <span class="text-amber-400">Monetization</span>
@@ -159,7 +159,7 @@
         <div class="w-48 bg-slate-900 rounded-full h-1.5 mt-8 overflow-hidden border border-slate-800">
             <div id="loading-progress-bar" class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-500 h-full w-0 transition-all duration-300"></div>
         </div>
-        <p id="loading-status-text" class="text-[11px] font-bold text-slate-400 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
+        <p id="loading-status-text" class="text-xs font-bold text-slate-400 mt-2 uppercase tracking-wider">Initializing Secure Environment...</p>
     </div>
 
     <!-- ================= 2. TERMS & CONDITIONS AND PRIVACY MODAL ================= -->
@@ -167,50 +167,50 @@
         <div class="glass-card glass-card-glow-cyan w-full max-w-sm p-5 rounded-3xl flex flex-col max-h-[90vh] relative animate-in fade-in duration-300">
 
             <div class="text-center pb-2.5 border-b border-slate-800 mb-2 flex-none">
-                <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-base mb-1.5">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-lg mb-1.5">
                     <i class="fa-solid fa-file-contract"></i>
                 </div>
                 <h2 class="text-lg font-black text-cyan-300">Terms & Privacy Policy</h2>
-                <p class="text-[10px] font-bold text-amber-400 mt-0.5 uppercase tracking-wider">SurveyPay Legal Agreement</p>
+                <p class="text-xs font-bold text-amber-400 mt-0.5 uppercase tracking-wider">SurveyPay Legal Agreement</p>
             </div>
 
             <!-- Scrollable Legal Terms Content -->
-            <div class="flex-1 overflow-y-auto no-scrollbar space-y-3 pr-1 text-xs text-slate-300 leading-relaxed my-1">
+            <div class="flex-1 overflow-y-auto no-scrollbar space-y-3 pr-1 text-sm text-slate-300 leading-relaxed my-1">
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-cyan-500/30 space-y-1">
-                    <h4 class="font-extrabold text-cyan-400 text-xs uppercase flex items-center gap-1">
+                    <h4 class="font-extrabold text-cyan-400 text-sm uppercase flex items-center gap-1">
                         <i class="fa-solid fa-shield-halved text-cyan-400"></i> 1. Account Activation & Bot Protection
                     </h4>
-                    <p class="text-xs text-slate-300">To prevent automated spam accounts and ensure high data quality for research sponsors, accounts require a one-time activation fee (<strong class="text-amber-300">500 KES</strong> for Kenyan accounts, or <strong class="text-emerald-300">$4.00 USD</strong> via Card for international accounts).</p>
+                    <p class="text-sm text-slate-300">To prevent automated spam accounts and ensure high data quality for research sponsors, accounts require a one-time activation fee (<strong class="text-amber-300">500 KES</strong> for Kenyan accounts, or <strong class="text-emerald-300">$4.00 USD</strong> via Card for international accounts).</p>
                 </div>
 
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-emerald-500/30 space-y-1">
-                    <h4 class="font-extrabold text-emerald-400 text-xs uppercase flex items-center gap-1">
+                    <h4 class="font-extrabold text-emerald-400 text-sm uppercase flex items-center gap-1">
                         <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> 2. Survey Rewards & Payout Rules
                     </h4>
-                    <p class="text-xs text-slate-300">Rewards are credited immediately upon authentic completion of survey tasks. Withdrawals are processed directly to your registered Mobile Money (M-Pesa), PayPal, or Bank Transfer once reaching the minimum threshold.</p>
+                    <p class="text-sm text-slate-300">Rewards are credited immediately upon authentic completion of survey tasks. Withdrawals are processed directly to your registered Mobile Money (M-Pesa), PayPal, or Bank Transfer once reaching the minimum threshold.</p>
                 </div>
 
                 <div class="p-3 bg-slate-900/90 rounded-2xl border border-purple-500/30 space-y-1">
-                    <h4 class="font-extrabold text-purple-400 text-xs uppercase flex items-center gap-1">
+                    <h4 class="font-extrabold text-purple-400 text-sm uppercase flex items-center gap-1">
                         <i class="fa-solid fa-user-lock text-purple-400"></i> 3. Privacy & Encrypted Data Handling
                     </h4>
-                    <p class="text-xs text-slate-300">Your personal information, email, phone number, and location data are end-to-end encrypted and strictly confidential under global data protection regulations.</p>
+                    <p class="text-sm text-slate-300">Your personal information, email, phone number, and location data are end-to-end encrypted and strictly confidential under global data protection regulations.</p>
                 </div>
             </div>
 
             <!-- TWO REQUIRED CHECKBOXES WITH CUSTOM BLACK-TO-GREEN CHECKBOXES -->
-            <div class="pt-2.5 border-t border-slate-800 space-y-2.5 flex-none">
-                <label class="flex items-start gap-2.5 cursor-pointer text-xs font-bold text-slate-300 hover:text-white">
+            <div class="pt-3 border-t border-slate-800 space-y-3 flex-none">
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm font-bold text-slate-200 hover:text-white">
                     <input type="checkbox" id="chk-terms" onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I have read and agree to the <strong class="text-cyan-400">SurveyPay Terms & Conditions</strong>.</span>
                 </label>
 
-                <label class="flex items-start gap-2.5 cursor-pointer text-xs font-bold text-slate-300 hover:text-white">
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm font-bold text-slate-200 hover:text-white">
                     <input type="checkbox" id="chk-privacy" onchange="validateTermsCheckboxes()" class="mt-0.5">
                     <span>I agree to the <strong class="text-emerald-400">Privacy Policy and Data Protection Terms</strong>.</span>
                 </label>
 
-                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                <button id="btn-terms-accept" disabled onclick="acceptTermsAndProceed()" class="w-full py-3.5 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
                     <span>ACCEPT & CONTINUE TO ACCOUNT</span>
                     <i class="fa-solid fa-arrow-right text-cyan-400"></i>
                 </button>
@@ -224,11 +224,11 @@
 
         <!-- HEADER / BRANDING WITH APP ICON & MULTI-COLORED TEXT -->
         <div class="text-center mb-3 flex-none">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-lg shadow-cyan-500/25 mb-1">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-lg shadow-cyan-500/25 mb-1">
                 <img src="app-icon.png" alt="SurveyPay Icon" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
-            <h1 class="text-xl font-black tracking-tight gradient-brand">SurveyPay</h1>
-            <p class="text-[10px] font-bold text-cyan-400 mt-0.5 uppercase tracking-widest flex items-center justify-center gap-1">
+            <h1 class="text-2xl font-black tracking-tight gradient-brand">SurveyPay</h1>
+            <p class="text-xs font-bold text-cyan-400 mt-0.5 uppercase tracking-widest flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-shield-check text-emerald-400"></i>
                 <span class="text-cyan-300">Verified</span>
                 <span class="text-amber-400">Earning</span>
@@ -237,125 +237,141 @@
         </div>
 
         <!-- AUTH CARD CONTAINER -->
-        <div class="glass-card glass-card-glow-cyan p-4 rounded-3xl w-full max-w-sm relative overflow-hidden flex-none">
+        <div class="glass-card glass-card-glow-cyan p-4.5 rounded-3xl w-full max-w-sm relative overflow-hidden flex-none">
 
             <!-- TOGGLE BUTTONS (REGISTER / LOGIN) -->
             <div class="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 mb-3">
-                <button id="btn-tab-reg" onclick="switchAuthMode('register')" class="flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5">
+                <button id="btn-tab-reg" onclick="switchAuthMode('register')" class="flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-user-plus text-cyan-200"></i> REGISTER
                 </button>
-                <button id="btn-tab-login" onclick="switchAuthMode('login')" class="flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5">
+                <button id="btn-tab-login" onclick="switchAuthMode('login')" class="flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-right-to-bracket text-slate-400"></i> LOGIN
                 </button>
             </div>
 
-            <!-- REGISTER FORM - 2-STEP WIZARD WITH MEDIUM READABLE TEXT -->
+            <!-- REGISTER FORM - 2-STEP WIZARD WITH LARGER READABLE TEXT -->
             <form id="form-register" onsubmit="handleRegister(event)">
 
                 <!-- STEP 1: CONTACT & LOCATION DETAILS -->
-                <div id="reg-step-1" class="space-y-2.5">
+                <div id="reg-step-1" class="space-y-3">
                     <!-- Full Name -->
                     <div>
-                        <label class="block text-[10px] font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-id-card text-cyan-400 text-xs"></i> Full Name
+                        <label class="block text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-id-card text-cyan-400 text-sm"></i> Full Name
                         </label>
                         <div class="relative flex items-center">
-                            <div class="absolute left-3.5 text-cyan-400 text-xs">
+                            <div class="absolute left-3.5 text-cyan-400 text-sm">
                                 <i class="fa-solid fa-user-gear"></i>
                             </div>
                             <input type="text" id="reg-fullname" required placeholder="e.g. John Doe"
-                                class="w-full bg-slate-900/90 border border-cyan-500/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-name placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-cyan-500/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-name placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
                     <!-- Email Address -->
                     <div>
-                        <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-envelope-open-text text-emerald-400 text-xs"></i> Email Address
+                        <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-envelope-open-text text-emerald-400 text-sm"></i> Email Address
                         </label>
                         <div class="relative flex items-center">
-                            <div class="absolute left-3.5 text-emerald-400 text-xs">
+                            <div class="absolute left-3.5 text-emerald-400 text-sm">
                                 <i class="fa-solid fa-at"></i>
                             </div>
                             <input type="email" id="reg-email" required placeholder="john@example.com"
-                                class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
                     <!-- Select Country (195+ Worldwide Countries) -->
                     <div>
-                        <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-earth-americas text-amber-400 text-xs"></i> Select Country (Worldwide)
+                        <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-earth-americas text-amber-400 text-sm"></i> Select Country (Worldwide)
                         </label>
                         <div class="relative flex items-center">
-                            <div class="absolute left-3.5 text-amber-400 text-xs pointer-events-none">
+                            <div class="absolute left-3.5 text-amber-400 text-sm pointer-events-none">
                                 <i class="fa-solid fa-globe"></i>
                             </div>
                             <select id="reg-country" onchange="onCountryChange()" required
-                                class="w-full bg-slate-900/90 border border-amber-500/40 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-black input-country outline-none transition-all cursor-pointer">
+                                class="w-full bg-slate-900/90 border border-amber-500/40 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-black input-country outline-none transition-all cursor-pointer">
                                 <!-- Options populated via JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select County / Region (All 47 Counties if Kenya, or Region) -->
+                    <div id="county-container">
+                        <label class="block text-xs font-bold text-teal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-teal-400 text-sm"></i> Select County / Region
+                        </label>
+                        <div class="relative flex items-center">
+                            <div class="absolute left-3.5 text-teal-400 text-sm pointer-events-none">
+                                <i class="fa-solid fa-map-pin"></i>
+                            </div>
+                            <select id="reg-county" required
+                                class="w-full bg-slate-900/90 border border-teal-500/40 focus:border-teal-400 focus:ring-2 focus:ring-teal-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-black text-teal-300 outline-none transition-all cursor-pointer">
+                                <!-- Populated via JS -->
                             </select>
                         </div>
                     </div>
 
                     <!-- Mobile Phone Number -->
                     <div>
-                        <label class="block text-[10px] font-bold text-orange-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-mobile-screen-button text-orange-400 text-xs"></i> Phone Number
+                        <label class="block text-xs font-bold text-orange-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-mobile-screen-button text-orange-400 text-sm"></i> Phone Number
                         </label>
                         <div class="flex items-center gap-2">
-                            <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-2.5 py-2 rounded-xl border border-orange-500/50 min-w-[70px] text-center shadow-inner flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-phone text-[9px]"></i> +254
+                            <div id="phone-prefix-badge" class="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs px-3 py-2.5 rounded-xl border border-orange-500/50 min-w-[75px] text-center shadow-inner flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-phone text-[10px]"></i> +254
                             </div>
                             <div class="relative flex-1 flex items-center">
-                                <div class="absolute left-3 text-orange-400 text-xs">
+                                <div class="absolute left-3 text-orange-400 text-sm">
                                     <i class="fa-solid fa-phone-flip"></i>
                                 </div>
                                 <input type="tel" id="reg-phone" required placeholder="712345678"
-                                    class="w-full bg-slate-900/90 border border-orange-500/40 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 rounded-xl pl-8 pr-3 py-2 text-sm font-bold input-phone placeholder:text-slate-600 outline-none transition-all">
+                                    class="w-full bg-slate-900/90 border border-orange-500/40 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 rounded-xl pl-9 pr-3 py-2.5 text-sm font-bold input-phone placeholder:text-slate-600 outline-none transition-all">
                             </div>
                         </div>
                     </div>
 
-                    <button type="button" onclick="goToRegStep2()" class="w-full py-2.5 mt-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 rounded-xl font-black text-xs text-white shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <button type="button" onclick="goToRegStep2()" class="w-full py-3 mt-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 rounded-xl font-black text-sm text-white shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer">
                         <span>NEXT: SET PASSWORD</span>
                         <i class="fa-solid fa-arrow-right text-cyan-200"></i>
                     </button>
                 </div>
 
                 <!-- STEP 2: PASSWORD SECURITY WITH PURPLE & PINK COLORS -->
-                <div id="reg-step-2" class="hidden space-y-3 animate-in fade-in duration-300">
+                <div id="reg-step-2" class="hidden space-y-3.5 animate-in fade-in duration-300">
                     <div>
-                        <label class="block text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-key text-purple-400 text-xs"></i> Account Password
+                        <label class="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-key text-purple-400 text-sm"></i> Account Password
                         </label>
                         <div class="relative flex items-center">
-                            <div class="absolute left-3.5 text-purple-400 text-xs">
+                            <div class="absolute left-3.5 text-purple-400 text-sm">
                                 <i class="fa-solid fa-lock"></i>
                             </div>
                             <input type="password" id="reg-password" required placeholder="••••••••"
-                                class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-pink-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-shield-halved text-pink-400 text-xs"></i> Confirm Password
+                        <label class="block text-xs font-bold text-pink-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-pink-400 text-sm"></i> Confirm Password
                         </label>
                         <div class="relative flex items-center">
-                            <div class="absolute left-3.5 text-pink-400 text-xs">
+                            <div class="absolute left-3.5 text-pink-400 text-sm">
                                 <i class="fa-solid fa-key"></i>
                             </div>
                             <input type="password" id="reg-confirm-password" required placeholder="••••••••"
-                                class="w-full bg-slate-900/90 border border-pink-500/40 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-confirm-password placeholder:text-slate-600 outline-none transition-all">
+                                class="w-full bg-slate-900/90 border border-pink-500/40 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-confirm-password placeholder:text-slate-600 outline-none transition-all">
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 pt-1">
-                        <button type="button" onclick="goToRegStep1()" class="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white font-extrabold text-xs rounded-xl transition-all">
+                    <div class="flex items-center gap-2 pt-1.5">
+                        <button type="button" onclick="goToRegStep1()" class="py-3 px-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white font-extrabold text-xs rounded-xl transition-all">
                             <i class="fa-solid fa-arrow-left mr-1"></i> BACK
                         </button>
-                        <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all">
+                        <button type="submit" class="flex-1 py-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all">
                             <span>CREATE MY ACCOUNT</span>
                             <i class="fa-solid fa-check text-slate-950"></i>
                         </button>
@@ -364,35 +380,35 @@
 
             </form>
 
-            <!-- LOGIN FORM WITH DISTINCT FIELD COLORS -->
-            <form id="form-login" onsubmit="handleLogin(event)" class="hidden space-y-3">
+            <!-- LOGIN FORM WITH LARGER READABLE TEXT -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="hidden space-y-3.5">
                 <div>
-                    <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <i class="fa-solid fa-envelope text-emerald-400 text-xs"></i> Registered Email
+                    <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-envelope text-emerald-400 text-sm"></i> Registered Email
                     </label>
                     <div class="relative flex items-center">
-                        <div class="absolute left-3.5 text-emerald-400 text-xs">
+                        <div class="absolute left-3.5 text-emerald-400 text-sm">
                             <i class="fa-solid fa-at"></i>
                         </div>
                         <input type="email" id="login-email" required placeholder="john@example.com"
-                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
+                            class="w-full bg-slate-900/90 border border-emerald-500/40 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-email placeholder:text-slate-600 outline-none transition-all">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <i class="fa-solid fa-key text-purple-400 text-xs"></i> Account Password
+                    <label class="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key text-purple-400 text-sm"></i> Account Password
                     </label>
                     <div class="relative flex items-center">
-                        <div class="absolute left-3.5 text-purple-400 text-xs">
+                        <div class="absolute left-3.5 text-purple-400 text-sm">
                             <i class="fa-solid fa-lock"></i>
                         </div>
                         <input type="password" id="login-password" required placeholder="••••••••"
-                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-9 pr-3 py-2 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
+                            class="w-full bg-slate-900/90 border border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 rounded-xl pl-10 pr-3 py-2.5 text-sm font-bold input-password placeholder:text-slate-600 outline-none transition-all">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-xl font-black text-xs text-white shadow-lg flex items-center justify-center gap-2 transition-all">
+                <button type="submit" class="w-full py-3.5 mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 rounded-xl font-black text-sm text-white shadow-lg flex items-center justify-center gap-2 transition-all">
                     <span>LOG IN TO DASHBOARD</span>
                     <i class="fa-solid fa-right-to-bracket text-emerald-200"></i>
                 </button>
@@ -408,15 +424,15 @@
         <!-- TOP BAR / HEADER (FIXED TOP, FLEX-NONE) -->
         <header class="flex-none bg-slate-950/90 backdrop-blur-xl border-b border-slate-800 px-5 py-3 flex items-center justify-between z-40">
             <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-md">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] shadow-md">
                     <img src="app-icon.png" alt="Icon" class="w-full h-full object-cover rounded-[9px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                 </div>
                 <div>
-                    <h2 id="disp-user-name" class="font-extrabold text-xs text-cyan-300 flex items-center gap-1">
+                    <h2 id="disp-user-name" class="font-extrabold text-sm text-cyan-300 flex items-center gap-1">
                         <!-- User Full Name -->
                     </h2>
                     <div class="flex items-center gap-1.5 mt-0.5">
-                        <span id="disp-country-badge" class="bg-slate-900 border border-slate-800 text-amber-400 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span id="disp-country-badge" class="bg-slate-900 border border-slate-800 text-amber-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                             <i class="fa-solid fa-location-dot text-[8px] text-amber-400"></i> Kenya (+254)
                         </span>
                     </div>
@@ -424,62 +440,62 @@
             </div>
 
             <!-- LOGOUT BUTTON -->
-            <button onclick="handleLogout()" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-pink-400 hover:text-pink-300 text-xs font-bold transition-all flex items-center gap-1" title="Logout">
+            <button onclick="handleLogout()" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-pink-400 hover:text-pink-300 text-sm font-bold transition-all flex items-center gap-1" title="Logout">
                 <i class="fa-solid fa-power-off text-pink-400"></i>
             </button>
         </header>
 
-        <!-- MAIN SCROLLABLE TAB CONTENT CONTAINER (ONLY THIS INNER AREA SCROLLS IF NEEDED) -->
-        <main class="flex-1 overflow-y-auto no-scrollbar px-4 pt-3 pb-5 space-y-3.5">
+        <!-- MAIN SCROLLABLE TAB CONTENT CONTAINER WITH LARGER READABLE TEXT -->
+        <main class="flex-1 overflow-y-auto no-scrollbar px-4 pt-3.5 pb-6 space-y-4">
 
             <!-- TAB 1: SURVEYS & DASHBOARD -->
-            <div id="tab-content-surveys" class="space-y-3.5">
+            <div id="tab-content-surveys" class="space-y-4">
 
-                <!-- HERO BALANCE CARD MATCHING SCREENSHOT WITH GOLD BALANCE & VIBRANT BUTTON -->
-                <div class="hero-blue-card p-4.5 rounded-3xl text-center relative overflow-hidden">
-                    <p class="text-[10px] font-black text-cyan-200 uppercase tracking-widest mb-1 flex items-center justify-center gap-1">
+                <!-- HERO BALANCE CARD WITH GOLD BALANCE & VIBRANT BUTTON -->
+                <div class="hero-blue-card p-5 rounded-3xl text-center relative overflow-hidden">
+                    <p class="text-xs font-black text-cyan-200 uppercase tracking-widest mb-1 flex items-center justify-center gap-1.5">
                         <i class="fa-solid fa-coins text-yellow-300"></i> Total Capital Value
                     </p>
 
-                    <h1 id="disp-balance" class="text-3xl font-black gradient-gold my-1 tracking-tight">
+                    <h1 id="disp-balance" class="text-4xl font-black gradient-gold my-1.5 tracking-tight">
                         0.00 KES
                     </h1>
 
-                    <p id="disp-min-withdrawal-hint" class="text-[10px] font-semibold text-cyan-100/90 mb-2.5">
+                    <p id="disp-min-withdrawal-hint" class="text-xs font-bold text-cyan-100/90 mb-3">
                         Minimum Withdrawal: 18,000 KES
                     </p>
 
                     <!-- HERO ACTION BUTTON (VIBRANT YELLOW COLOR) -->
-                    <button id="btn-hero-action" onclick="openActivationModal()" class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <button id="btn-hero-action" onclick="openActivationModal()" class="w-full py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-bolt text-slate-950"></i>
                         <span>ACTIVATE ACCOUNT NOW</span>
                     </button>
                 </div>
 
                 <!-- SURVEYS LIST HEADER -->
-                <div class="flex justify-between items-center pt-0.5">
-                    <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check text-cyan-400"></i> Market Research Surveys
+                <div class="flex justify-between items-center pt-1">
+                    <h3 class="text-sm font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check text-cyan-400"></i> Verified Surveys
                     </h3>
-                    <span id="surveys-lock-indicator" class="text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30 flex items-center gap-1">
+                    <span id="surveys-lock-indicator" class="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/30 flex items-center gap-1">
                         <i class="fa-solid fa-lock text-[8px] text-rose-400"></i> Locked
                     </span>
                 </div>
 
-                <!-- SURVEY CARDS CONTAINER WITH REAL MARKET RESEARCH SURVEYS & LOCKED STATUS -->
-                <div id="surveys-container" class="space-y-2">
+                <!-- SURVEY CARDS CONTAINER WITH LARGER TEXT -->
+                <div id="surveys-container" class="space-y-2.5">
                     <!-- Dynamic Paginated Surveys Inserted Here -->
                 </div>
 
                 <!-- SURVEY PAGINATION CONTROLS -->
-                <div id="surveys-pagination-bar" class="flex justify-between items-center pt-1">
-                    <button id="btn-prev-page" onclick="prevSurveyPage()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-[10px] font-extrabold transition-all flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
+                <div id="surveys-pagination-bar" class="flex justify-between items-center pt-1.5">
+                    <button id="btn-prev-page" onclick="prevSurveyPage()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-extrabold transition-all flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
                         <i class="fa-solid fa-chevron-left text-cyan-400"></i> Previous
                     </button>
-                    <span id="survey-page-num" class="text-[10px] font-extrabold text-cyan-300 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+                    <span id="survey-page-num" class="text-xs font-extrabold text-cyan-300 bg-slate-900 px-3.5 py-1 rounded-full border border-slate-800">
                         Page 1 of 4
                     </span>
-                    <button id="btn-next-page" onclick="nextSurveyPage()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-[10px] font-extrabold transition-all flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
+                    <button id="btn-next-page" onclick="nextSurveyPage()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-extrabold transition-all flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
                         Next <i class="fa-solid fa-chevron-right text-cyan-400"></i>
                     </button>
                 </div>
@@ -487,149 +503,149 @@
             </div>
 
             <!-- TAB 2: WALLET & WITHDRAWALS -->
-            <div id="tab-content-wallet" class="hidden space-y-3.5">
+            <div id="tab-content-wallet" class="hidden space-y-4">
 
-                <div class="glass-card glass-card-glow-emerald p-4.5 rounded-3xl text-center relative">
-                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-1.5">
+                <div class="glass-card glass-card-glow-emerald p-5 rounded-3xl text-center relative">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mb-2">
                         <i class="fa-solid fa-briefcase text-amber-400"></i>
                     </div>
-                    <p class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-widest">Withdrawable Assets</p>
-                    <h1 id="wallet-balance-disp" class="text-3xl font-black gradient-gold my-1">0.00</h1>
+                    <p class="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">Withdrawable Assets</p>
+                    <h1 id="wallet-balance-disp" class="text-4xl font-black gradient-gold my-2">0.00</h1>
 
-                    <button onclick="openWithdrawalModal()" class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all uppercase tracking-wider cursor-pointer">
+                    <button onclick="openWithdrawalModal()" class="w-full py-3.5 mt-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer">
                         <i class="fa-solid fa-money-bill-transfer text-slate-950"></i>
                         <span>WITHDRAW FUNDS</span>
                     </button>
                 </div>
 
                 <!-- PAYMENT METHODS SUPPORTED -->
-                <div class="glass-card p-3.5 rounded-2xl space-y-2">
-                    <h4 class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                <div class="glass-card p-4 rounded-2xl space-y-2.5">
+                    <h4 class="text-xs font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-credit-card text-purple-400"></i> Supported Payout Channels
                     </h4>
-                    <div id="wallet-payout-methods" class="grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-300">
+                    <div id="wallet-payout-methods" class="grid grid-cols-2 gap-2.5 text-xs font-bold text-slate-200">
                         <!-- Populated by JS -->
                     </div>
                 </div>
 
                 <!-- RECENT TRANSACTIONS / HISTORY -->
-                <div class="glass-card p-3.5 rounded-2xl space-y-2">
-                    <h4 class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                <div class="glass-card p-4 rounded-2xl space-y-2.5">
+                    <h4 class="text-xs font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Transaction History
                     </h4>
-                    <div id="wallet-tx-history" class="text-xs text-slate-400 text-center py-2">
+                    <div id="wallet-tx-history" class="text-sm text-slate-400 text-center py-3">
                         No transactions yet. Complete surveys to earn!
                     </div>
                 </div>
 
             </div>
 
-            <!-- TAB 3: USER PROFILE WITH VIBRANT MULTI-COLOR RECORD CARDS -->
-            <div id="tab-content-profile" class="hidden space-y-3.5">
+            <!-- TAB 3: USER PROFILE WITH LARGER READABLE TEXT -->
+            <div id="tab-content-profile" class="hidden space-y-4">
 
                 <!-- MAIN PROFILE HEADER CARD WITH APP ICON -->
-                <div class="glass-card glass-card-glow-purple p-3.5 rounded-3xl space-y-2.5">
-                    <div class="flex items-center gap-3 pb-2.5 border-b border-slate-800">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[2px] shadow-lg relative">
-                            <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-cover rounded-[10px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-                            <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-slate-950 shadow">
+                <div class="glass-card glass-card-glow-purple p-4.5 rounded-3xl space-y-3">
+                    <div class="flex items-center gap-3.5 pb-3 border-b border-slate-800">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[2px] shadow-lg relative">
+                            <img src="app-icon.png" alt="Profile Avatar" class="w-full h-full object-cover rounded-[12px]" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                            <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-slate-950 shadow">
                                 <i class="fa-solid fa-check"></i>
                             </span>
                         </div>
                         <div>
-                            <h3 id="profile-name" class="font-black text-sm text-cyan-300 flex items-center gap-1.5">John Doe</h3>
+                            <h3 id="profile-name" class="font-black text-base text-cyan-300 flex items-center gap-1.5">John Doe</h3>
                             <p id="profile-email" class="text-xs font-bold text-emerald-400">john@example.com</p>
-                            <span id="profile-status-tag" class="inline-block mt-0.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40">
+                            <span id="profile-status-tag" class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40">
                                 Unactivated Account
                             </span>
                         </div>
                     </div>
 
-                    <!-- RECORDED USER DETAILS CARDS IN DISTINCT BEAUTIFUL COLORS -->
-                    <div class="space-y-1.5">
-                        <h4 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                    <!-- RECORDED USER DETAILS CARDS -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-extrabold text-slate-300 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                             <i class="fa-solid fa-id-card-clip text-cyan-400"></i> Registered Account Records
                         </h4>
 
                         <!-- Name Record (Cyan) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-cyan-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-cyan-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-sm">
                                     <i class="fa-solid fa-user-gear"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-cyan-400 uppercase tracking-wider">Full Name</p>
-                                    <p id="rec-name" class="text-xs font-black text-cyan-300">John Doe</p>
+                                    <p class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Full Name</p>
+                                    <p id="rec-name" class="text-sm font-black text-cyan-300">John Doe</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-check-double text-cyan-500/60 text-xs"></i>
                         </div>
 
                         <!-- Email Record (Emerald) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-sm">
                                     <i class="fa-solid fa-envelope-open-text"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">Email Address</p>
-                                    <p id="rec-email" class="text-xs font-black text-emerald-300">john@example.com</p>
+                                    <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Email Address</p>
+                                    <p id="rec-email" class="text-sm font-black text-emerald-300">john@example.com</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-at text-emerald-500/60 text-xs"></i>
                         </div>
 
                         <!-- Phone Record (Orange) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-orange-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-orange-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-sm">
                                     <i class="fa-solid fa-mobile-screen-button"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-orange-400 uppercase tracking-wider">Phone Number</p>
-                                    <p id="rec-phone" class="text-xs font-black text-orange-300">+254 712345678</p>
+                                    <p class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Phone Number</p>
+                                    <p id="rec-phone" class="text-sm font-black text-orange-300">+254 712345678</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-phone text-orange-500/60 text-xs"></i>
                         </div>
 
                         <!-- Country Record (Amber) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-amber-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-amber-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm">
                                     <i class="fa-solid fa-earth-americas"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-amber-400 uppercase tracking-wider">Registered Country</p>
-                                    <p id="rec-country" class="text-xs font-black text-amber-300">Kenya (+254)</p>
+                                    <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Registered Country & County</p>
+                                    <p id="rec-country" class="text-sm font-black text-amber-300">Kenya - Nairobi (+254)</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-flag text-amber-500/60 text-xs"></i>
                         </div>
 
                         <!-- Currency Record (Yellow) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-yellow-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-yellow-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-sm">
                                     <i class="fa-solid fa-coins"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-yellow-400 uppercase tracking-wider">Account Currency</p>
-                                    <p id="rec-currency" class="text-xs font-black text-yellow-300">KES (Kenya Shillings)</p>
+                                    <p class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">Account Currency</p>
+                                    <p id="rec-currency" class="text-sm font-black text-yellow-300">KES (Kenya Shillings)</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-money-bill-wave text-yellow-500/60 text-xs"></i>
                         </div>
 
                         <!-- Registration Date (Purple) -->
-                        <div class="p-2 bg-slate-900/90 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs">
+                        <div class="p-2.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-sm">
                                     <i class="fa-solid fa-calendar-check"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[8px] font-bold text-purple-400 uppercase tracking-wider">Registration Date</p>
-                                    <p id="rec-date" class="text-xs font-black text-purple-300">2026-09-28</p>
+                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Registration Date</p>
+                                    <p id="rec-date" class="text-sm font-black text-purple-300">2026-09-28</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-clock text-purple-500/60 text-xs"></i>
@@ -638,13 +654,13 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-3.5 rounded-2xl space-y-2">
-                    <h4 class="text-[11px] font-extrabold text-cyan-400 uppercase tracking-wider">Account Actions</h4>
-                    <button onclick="openActivationModal()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 rounded-xl text-xs font-black text-cyan-300 flex items-center justify-center gap-2 cursor-pointer">
+                <div class="glass-card p-4 rounded-2xl space-y-2.5">
+                    <h4 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider">Account Actions</h4>
+                    <button onclick="openActivationModal()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 rounded-xl text-sm font-black text-cyan-300 flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-shield-check text-cyan-400"></i>
                         <span>Re-Verify / Activate Account</span>
                     </button>
-                    <button onclick="handleLogout()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 border border-rose-500/40 rounded-xl text-xs font-black text-rose-400 flex items-center justify-center gap-2 cursor-pointer">
+                    <button onclick="handleLogout()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 border border-rose-500/40 rounded-xl text-sm font-black text-rose-400 flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-power-off text-rose-400"></i>
                         <span>Log Out of Account</span>
                     </button>
@@ -653,30 +669,30 @@
             </div>
 
             <!-- TAB 4: HELP & FAQ & LOGOUT MENU -->
-            <div id="tab-content-faq" class="hidden space-y-3.5">
-                <div class="glass-card p-4 rounded-3xl space-y-3">
-                    <h3 class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+            <div id="tab-content-faq" class="hidden space-y-4">
+                <div class="glass-card p-4.5 rounded-3xl space-y-3.5">
+                    <h3 class="text-sm font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-circle-question text-cyan-400"></i> Help Center & Account Menu
                     </h3>
 
-                    <div class="space-y-2 text-xs">
-                        <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <p class="font-bold text-amber-300 mb-0.5 text-xs">Why is Account Activation required?</p>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">Activation prevents spam bots and ensures authentic data responses for market research sponsors. Once activated, all payout channels and high-paying surveys unlock immediately.</p>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-amber-300 mb-1">Why is Account Activation required?</p>
+                            <p class="text-slate-300 leading-relaxed text-xs">Activation prevents spam bots and ensures authentic data responses for research sponsors. Once activated, all payout channels and high-paying surveys unlock immediately.</p>
                         </div>
 
-                        <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <p class="font-bold text-emerald-300 mb-0.5 text-xs">How much is the activation fee?</p>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">For Kenyan accounts, activation is <strong>500 KES</strong> via M-Pesa or Card. For accounts outside Kenya, activation is <strong>$4.00 USD</strong> (or local currency equivalent) payable via Debit/Credit Card.</p>
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-emerald-300 mb-1">How much is the activation fee?</p>
+                            <p class="text-slate-300 leading-relaxed text-xs">For Kenyan accounts, activation is <strong>500 KES</strong> via M-Pesa or Card. For accounts outside Kenya, activation is <strong>$4.00 USD</strong> (or local currency equivalent) payable via Debit/Credit Card.</p>
                         </div>
 
-                        <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <p class="font-bold text-purple-300 mb-0.5 text-xs">How fast are withdrawals processed?</p>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+                            <p class="font-bold text-purple-300 mb-1">How fast are withdrawals processed?</p>
+                            <p class="text-slate-300 leading-relaxed text-xs">Withdrawals are processed instantly to Mobile Money (M-Pesa), PayPal, or Direct Bank Transfer once you meet the minimum threshold.</p>
                         </div>
                     </div>
 
-                    <button onclick="handleLogout()" class="mt-2 w-full py-2.5 bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/50 rounded-xl text-xs font-black text-rose-300 flex items-center justify-center gap-2 shadow-lg uppercase tracking-wider cursor-pointer">
+                    <button onclick="handleLogout()" class="mt-2 w-full py-3 bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/50 rounded-xl text-sm font-black text-rose-300 flex items-center justify-center gap-2 shadow-lg uppercase tracking-wider cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket text-rose-400"></i>
                         <span>LOG OUT OF CURRENT ACCOUNT</span>
                     </button>
@@ -686,28 +702,28 @@
         </main>
 
         <!-- ================= FIXED BOTTOM NAVIGATION BAR MENU (FIXED BOTTOM, FLEX-NONE) ================= -->
-        <nav class="flex-none bg-slate-950/95 backdrop-blur-2xl border-t border-slate-800 px-4 py-2.5 flex justify-around items-center z-40">
+        <nav class="flex-none bg-slate-950/95 backdrop-blur-2xl border-t border-slate-800 px-4 py-3 flex justify-around items-center z-40">
             <!-- HOME TAB (Orange House Icon) -->
-            <button id="nav-btn-surveys" onclick="switchMainTab('surveys')" class="nav-tab-active flex flex-col items-center gap-0.5 text-[10px] font-black uppercase transition-all">
-                <i class="fa-solid fa-house text-orange-400 text-lg"></i>
+            <button id="nav-btn-surveys" onclick="switchMainTab('surveys')" class="nav-tab-active flex flex-col items-center gap-1 text-xs font-black uppercase transition-all">
+                <i class="fa-solid fa-house text-orange-400 text-xl"></i>
                 <span>HOME</span>
             </button>
 
             <!-- SURVEYS / STORE TAB (Red Gift Box Icon) -->
-            <button id="nav-btn-store" onclick="switchMainTab('surveys')" class="flex flex-col items-center gap-0.5 text-[10px] font-black uppercase text-slate-400 transition-all">
-                <i class="fa-solid fa-gift text-red-500 text-lg"></i>
+            <button id="nav-btn-store" onclick="switchMainTab('surveys')" class="flex flex-col items-center gap-1 text-xs font-black uppercase text-slate-400 transition-all">
+                <i class="fa-solid fa-gift text-red-500 text-xl"></i>
                 <span>SURVEYS</span>
             </button>
 
             <!-- WALLET / ASSETS TAB (Brown Briefcase Icon) -->
-            <button id="nav-btn-wallet" onclick="switchMainTab('wallet')" class="flex flex-col items-center gap-0.5 text-[10px] font-black uppercase text-slate-400 transition-all">
-                <i class="fa-solid fa-briefcase text-amber-500 text-lg"></i>
+            <button id="nav-btn-wallet" onclick="switchMainTab('wallet')" class="flex flex-col items-center gap-1 text-xs font-black uppercase text-slate-400 transition-all">
+                <i class="fa-solid fa-briefcase text-amber-500 text-xl"></i>
                 <span>WALLET</span>
             </button>
 
             <!-- ME / PROFILE TAB (Cyan Silhouette Icon) -->
-            <button id="nav-btn-profile" onclick="switchMainTab('profile')" class="flex flex-col items-center gap-0.5 text-[10px] font-black uppercase text-slate-400 transition-all">
-                <i class="fa-solid fa-user-large text-cyan-400 text-lg"></i>
+            <button id="nav-btn-profile" onclick="switchMainTab('profile')" class="flex flex-col items-center gap-1 text-xs font-black uppercase text-slate-400 transition-all">
+                <i class="fa-solid fa-user-large text-cyan-400 text-xl"></i>
                 <span>ME</span>
             </button>
         </nav>
@@ -727,14 +743,14 @@
                     <i class="fa-solid fa-money-bill-transfer"></i>
                 </div>
                 <h3 class="text-lg font-black text-white">Withdraw Funds</h3>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Select your preferred payout channel</p>
+                <p class="text-xs text-slate-400 uppercase tracking-wider mt-0.5">Select your preferred payout channel</p>
             </div>
 
             <!-- Withdrawal Form -->
-            <form onsubmit="submitWithdrawal(event)" class="space-y-3 text-xs">
+            <form onsubmit="submitWithdrawal(event)" class="space-y-3 text-sm">
                 <div>
-                    <label class="block font-bold text-cyan-400 uppercase tracking-wider mb-1">Select Payout Channel</label>
-                    <select id="withdraw-channel" onchange="onWithdrawChannelChange()" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl p-2.5 text-xs font-bold text-white outline-none cursor-pointer">
+                    <label class="block font-bold text-cyan-400 uppercase tracking-wider mb-1 text-xs">Select Payout Channel</label>
+                    <select id="withdraw-channel" onchange="onWithdrawChannelChange()" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl p-3 text-sm font-bold text-white outline-none cursor-pointer">
                         <option value="mpesa">M-Pesa Mobile Money</option>
                         <option value="bank">Direct Bank Transfer</option>
                         <option value="paypal">PayPal Account</option>
@@ -743,11 +759,11 @@
                 </div>
 
                 <!-- Dynamic Channel Inputs -->
-                <div id="withdraw-fields-container" class="space-y-2.5 pt-1">
+                <div id="withdraw-fields-container" class="space-y-3 pt-1">
                     <!-- Populated dynamically via JS -->
                 </div>
 
-                <button type="submit" class="w-full py-3 mt-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+                <button type="submit" class="w-full py-3.5 mt-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
                     <i class="fa-solid fa-paper-plane text-slate-950"></i>
                     <span>SUBMIT WITHDRAWAL REQUEST</span>
                 </button>
@@ -773,7 +789,7 @@
                 Unlock unlimited paid surveys & withdrawal permissions.
             </p>
 
-            <div class="my-3.5 p-3.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 text-left space-y-1.5 text-xs">
+            <div class="my-3.5 p-3.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 text-left space-y-2 text-xs">
                 <div class="flex justify-between items-center">
                     <span class="text-slate-400 font-semibold">Account User:</span>
                     <span id="modal-user-email" class="font-bold text-cyan-300">user@example.com</span>
@@ -786,7 +802,7 @@
                     <span class="text-slate-400 font-semibold">Activation Fee:</span>
                     <span id="modal-pay-amount" class="font-black text-emerald-400 text-sm">500 KES</span>
                 </div>
-                <div id="modal-channel-note" class="text-[10px] text-amber-300/90 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20 mt-1.5">
+                <div id="modal-channel-note" class="text-xs text-amber-300/90 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20 mt-1.5">
                     <!-- Dynamic payment channels note -->
                 </div>
             </div>
@@ -796,7 +812,7 @@
                 <span>PAY & ACTIVATE NOW</span>
             </button>
 
-            <p class="text-[10px] text-slate-500 mt-2.5 flex items-center justify-center gap-1">
+            <p class="text-xs text-slate-500 mt-2.5 flex items-center justify-center gap-1">
                 <i class="fa-solid fa-shield-cat text-cyan-400"></i> Secured by Paystack Live Checkout
             </p>
         </div>
@@ -807,7 +823,7 @@
         // CONFIG & CONSTANTS
         const PAYSTACK_LIVE_PUBLIC_KEY = "pk_live_d3ad28a96d0faa12c3c25a14389d29980a707d3b";
 
-        // Comprehensive Country Dictionary with 195+ Worldwide Countries, phone codes, currencies, and exchange rules vs KES
+        // Comprehensive Country Dictionary with 195+ Worldwide Countries
         const COUNTRIES_MAP = {
             "KE": { name: "Kenya", code: "+254", currency: "KES", symbol: "KSh", rateVsKES: 1, feeKES: 500, isKenya: true },
             "US": { name: "United States", code: "+1", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false },
@@ -849,7 +865,7 @@
             "SE": { name: "Sweden", code: "+46", currency: "SEK", symbol: "kr", rateVsKES: 0.081, feeUSD: 4, isKenya: false },
             "NO": { name: "Norway", code: "+47", currency: "NOK", symbol: "kr", rateVsKES: 0.082, feeUSD: 4, isKenya: false },
             "CH": { name: "Switzerland", code: "+41", currency: "CHF", symbol: "CHF", rateVsKES: 0.0067, feeUSD: 4, isKenya: false },
-            // Additional Worldwide Countries
+            // All Worldwide Countries Added
             "AF": { name: "Afghanistan", code: "+93", currency: "AFN", symbol: "؋", rateVsKES: 0.54, feeUSD: 4, isKenya: false },
             "AL": { name: "Albania", code: "+355", currency: "ALL", symbol: "L", rateVsKES: 0.72, feeUSD: 4, isKenya: false },
             "DZ": { name: "Algeria", code: "+213", currency: "DZD", symbol: "د.ج", rateVsKES: 1.05, feeUSD: 4, isKenya: false },
@@ -903,18 +919,27 @@
             "OTHER": { name: "Other Country Worldwide", code: "+", currency: "USD", symbol: "$", rateVsKES: 0.0077, feeUSD: 4, isKenya: false }
         };
 
-        // Real Market Research Survey Categories with Locked Status & Vibrant Titles
+        // All 47 Counties of Kenya
+        const KENYA_COUNTIES = [
+            "Nairobi", "Mombasa", "Kisumu", "Nakuru", "Kiambu", "Machakos", "Uasin Gishu", "Kakamega", "Meru", "Kilifi",
+            "Murang'a", "Bungoma", "Kisii", "Kitui", "Kajiado", "Kericho", "Nyeri", "Embu", "Homa Bay", "Siaya",
+            "Migori", "Narok", "Nyamira", "Bomet", "Vihiga", "Busia", "Trans Nzoia", "Elgeyo-Marakwet", "Nandi", "Baringo",
+            "Laikipia", "Nyandarua", "Kirinyaga", "Makueni", "Turkana", "West Pokot", "Samburu", "Tana River", "Lamu", "Taita-Taveta",
+            "Garissa", "Wajir", "Mandera", "Marsabit", "Isiolo", "Tharaka-Nithi", "Kwale"
+        ];
+
+        // Real Survey Names matching SurveyPay App earning activities (not marketing)
         const DEFAULT_SURVEYS = [
-            { id: 1, title: "Consumer Shopping & Retail Market Study", sponsor: "GlobalInsights", baseRewardKES: 650, timeMin: 5, icon: "fa-bag-shopping", titleColor: "text-cyan-300", accentColor: "border-cyan-400" },
-            { id: 2, title: "FinTech, Banking & Digital Payments Study", sponsor: "FinResearch", baseRewardKES: 950, timeMin: 8, icon: "fa-credit-card", titleColor: "text-emerald-300", accentColor: "border-emerald-400" },
-            { id: 3, title: "Mobile Apps & User Experience Insights", sponsor: "AppPulse", baseRewardKES: 1200, timeMin: 12, icon: "fa-mobile-screen", titleColor: "text-purple-300", accentColor: "border-purple-400" },
-            { id: 4, title: "Media Streaming & Entertainment Habits", sponsor: "StreamMedia", baseRewardKES: 800, timeMin: 6, icon: "fa-tv", titleColor: "text-amber-300", accentColor: "border-amber-400" },
-            { id: 5, title: "AI Adoption & Automation Market Research", sponsor: "AI Global", baseRewardKES: 1100, timeMin: 10, icon: "fa-robot", titleColor: "text-pink-300", accentColor: "border-pink-400" },
-            { id: 6, title: "Eco-Products & Sustainability Preferences", sponsor: "EcoMonitor", baseRewardKES: 750, timeMin: 7, icon: "fa-seedling", titleColor: "text-teal-300", accentColor: "border-teal-400" },
-            { id: 7, title: "Electric Vehicles & Future Mobility Survey", sponsor: "AutoResearch", baseRewardKES: 1350, timeMin: 15, icon: "fa-charging-station", titleColor: "text-blue-300", accentColor: "border-blue-400" },
-            { id: 8, title: "Higher Education & Online Skill Training", sponsor: "EduPulse", baseRewardKES: 900, timeMin: 9, icon: "fa-graduation-cap", titleColor: "text-indigo-300", accentColor: "border-indigo-400" },
-            { id: 9, title: "Travel, Tourism & Hospitality Preferences", sponsor: "TravelX", baseRewardKES: 1050, timeMin: 11, icon: "fa-plane-departure", titleColor: "text-yellow-300", accentColor: "border-yellow-400" },
-            { id: 10, title: "Health, Fitness & Digital Wearables Study", sponsor: "WellTech", baseRewardKES: 850, timeMin: 7, icon: "fa-heart-pulse", titleColor: "text-rose-300", accentColor: "border-rose-400" }
+            { id: 1, title: "Mobile Money Usage & M-Pesa Experience Survey", sponsor: "SurveyPay Research", baseRewardKES: 650, timeMin: 5, icon: "fa-mobile-screen-button", titleColor: "text-cyan-300", accentColor: "border-cyan-400" },
+            { id: 2, title: "Daily Household Expenses & Inflation Impact Survey", sponsor: "Consumer Pulse", baseRewardKES: 950, timeMin: 8, icon: "fa-basket-shopping", titleColor: "text-emerald-300", accentColor: "border-emerald-400" },
+            { id: 3, title: "Youth Employment & Digital Side Hustles Survey", sponsor: "Labor Metrics", baseRewardKES: 1200, timeMin: 12, icon: "fa-briefcase", titleColor: "text-purple-300", accentColor: "border-purple-400" },
+            { id: 4, title: "Smartphone Data Connectivity & Internet Survey", sponsor: "Telecom Audit", baseRewardKES: 800, timeMin: 6, icon: "fa-wifi", titleColor: "text-amber-300", accentColor: "border-amber-400" },
+            { id: 5, title: "Social Media Trends & Online News Survey", sponsor: "Media Insights", baseRewardKES: 1100, timeMin: 10, icon: "fa-share-nodes", titleColor: "text-pink-300", accentColor: "border-pink-400" },
+            { id: 6, title: "Public Transport & Commuting Habits Survey", sponsor: "Urban Transit", baseRewardKES: 750, timeMin: 7, icon: "fa-bus", titleColor: "text-teal-300", accentColor: "border-teal-400" },
+            { id: 7, title: "Food Delivery & Restaurant Ordering Survey", sponsor: "Food Trends", baseRewardKES: 1350, timeMin: 15, icon: "fa-utensils", titleColor: "text-blue-300", accentColor: "border-blue-400" },
+            { id: 8, title: "Mobile Banking & Financial Literacy Survey", sponsor: "FinTech Index", baseRewardKES: 900, timeMin: 9, icon: "fa-piggy-bank", titleColor: "text-indigo-300", accentColor: "border-indigo-400" },
+            { id: 9, title: "Healthcare Access & Medical Insurance Survey", sponsor: "Health Data", baseRewardKES: 1050, timeMin: 11, icon: "fa-heart-pulse", titleColor: "text-yellow-300", accentColor: "border-yellow-400" },
+            { id: 10, title: "Entertainment, Music & Gaming Habits Survey", sponsor: "Gaming Voice", baseRewardKES: 850, timeMin: 7, icon: "fa-gamepad", titleColor: "text-rose-300", accentColor: "border-rose-400" }
         ];
 
         // APP STATE
@@ -973,10 +998,10 @@
 
             if (terms && privacy) {
                 btn.disabled = false;
-                btn.className = "w-full py-3 mt-1.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
+                btn.className = "w-full py-3.5 mt-1.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer";
             } else {
                 btn.disabled = true;
-                btn.className = "w-full py-3 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
+                btn.className = "w-full py-3.5 mt-1.5 bg-slate-800 opacity-50 cursor-not-allowed text-slate-400 font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg";
             }
         }
 
@@ -991,9 +1016,10 @@
             const name = document.getElementById('reg-fullname').value.trim();
             const email = document.getElementById('reg-email').value.trim();
             const phone = document.getElementById('reg-phone').value.trim();
+            const county = document.getElementById('reg-county').value;
 
-            if (!name || !email || !phone) {
-                alert("Please fill in your Full Name, Email, and Phone Number before proceeding.");
+            if (!name || !email || !phone || !county) {
+                alert("Please fill in your Full Name, Email, County/Region, and Phone Number before proceeding.");
                 return;
             }
 
@@ -1006,11 +1032,10 @@
             document.getElementById('reg-step-1').classList.remove('hidden');
         }
 
-        // POPULATE COUNTRY SELECT DROPDOWN (195+ WORLDWIDE COUNTRIES)
+        // POPULATE COUNTRY SELECT DROPDOWN (195+ WORLDWIDE COUNTRIES & COUNTIES)
         function populateCountryOptions() {
             const select = document.getElementById('reg-country');
             select.innerHTML = '';
-            // Sort alphabetically by country name
             const sortedCountries = Object.entries(COUNTRIES_MAP).sort((a, b) => a[1].name.localeCompare(b[1].name));
 
             for (const [key, country] of sortedCountries) {
@@ -1019,16 +1044,35 @@
                 opt.textContent = `${country.name} (${country.code})`;
                 select.appendChild(opt);
             }
-            // Default select Kenya
             select.value = 'KE';
             onCountryChange();
         }
 
-        // HANDLE COUNTRY CHANGE
+        // HANDLE COUNTRY & COUNTY CHANGE
         function onCountryChange() {
             const cKey = document.getElementById('reg-country').value;
             const country = COUNTRIES_MAP[cKey] || COUNTRIES_MAP['OTHER'];
-            document.getElementById('phone-prefix-badge').innerHTML = `<i class="fa-solid fa-phone text-[9px]"></i> ${country.code}`;
+            document.getElementById('phone-prefix-badge').innerHTML = `<i class="fa-solid fa-phone text-[10px]"></i> ${country.code}`;
+
+            const countySelect = document.getElementById('reg-county');
+            countySelect.innerHTML = '';
+
+            if (cKey === 'KE') {
+                // Populate all 47 Counties of Kenya
+                KENYA_COUNTIES.forEach(county => {
+                    const opt = document.createElement('option');
+                    opt.value = county;
+                    opt.textContent = county;
+                    countySelect.appendChild(opt);
+                });
+                countySelect.value = 'Nairobi';
+            } else {
+                // Generic region option for other countries
+                const opt = document.createElement('option');
+                opt.value = country.name + " Region";
+                opt.textContent = country.name + " Region / State";
+                countySelect.appendChild(opt);
+            }
         }
 
         // AUTH TAB SWITCHING
@@ -1041,13 +1085,13 @@
             if (mode === 'register') {
                 formReg.classList.remove('hidden');
                 formLogin.classList.add('hidden');
-                btnReg.className = "flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5";
-                btnLogin.className = "flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
+                btnReg.className = "flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md flex items-center justify-center gap-1.5";
+                btnLogin.className = "flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
             } else {
                 formReg.classList.add('hidden');
                 formLogin.classList.remove('hidden');
-                btnLogin.className = "flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md flex items-center justify-center gap-1.5";
-                btnReg.className = "flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
+                btnLogin.className = "flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md flex items-center justify-center gap-1.5";
+                btnReg.className = "flex-1 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-300 text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
             }
         }
 
@@ -1057,6 +1101,7 @@
             const fullName = document.getElementById('reg-fullname').value.trim();
             const email = document.getElementById('reg-email').value.trim().toLowerCase();
             const cKey = document.getElementById('reg-country').value;
+            const county = document.getElementById('reg-county').value;
             const phoneNum = document.getElementById('reg-phone').value.trim();
             const password = document.getElementById('reg-password').value;
             const confirmPassword = document.getElementById('reg-confirm-password').value;
@@ -1075,6 +1120,7 @@
                 email: email,
                 countryKey: cKey,
                 countryName: country.name,
+                countyName: county,
                 countryCode: country.code,
                 phone: fullPhoneNumber,
                 password: password,
@@ -1139,10 +1185,11 @@
             document.getElementById('screen-app').classList.remove('hidden');
 
             const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
+            const countyLabel = currentUser.countyName ? `${currentUser.countyName}, ${country.name}` : country.name;
 
             // Display Header Info
             document.getElementById('disp-user-name').innerHTML = `${currentUser.fullName} ${currentUser.isActivated ? '<i class="fa-solid fa-circle-check text-emerald-400 text-xs" title="Activated"></i>' : ''}`;
-            document.getElementById('disp-country-badge').innerHTML = `<i class="fa-solid fa-location-dot text-[9px]"></i> ${country.name} (${country.code})`;
+            document.getElementById('disp-country-badge').innerHTML = `<i class="fa-solid fa-location-dot text-[9px]"></i> ${countyLabel} (${country.code})`;
 
             // Status Badge & Banner
             const surveysLockIndicator = document.getElementById('surveys-lock-indicator');
@@ -1150,15 +1197,15 @@
 
             if (currentUser.isActivated) {
                 btnHeroAction.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-300"></i> ACCOUNT ACTIVATED`;
-                btnHeroAction.className = "w-full py-2.5 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg pointer-events-none";
+                btnHeroAction.className = "w-full py-3 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 rounded-xl font-black text-sm uppercase tracking-wider shadow-lg pointer-events-none";
 
-                surveysLockIndicator.className = "text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30";
+                surveysLockIndicator.className = "text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30";
                 surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock-open text-[8px] mr-1"></i> Unlocked`;
             } else {
                 btnHeroAction.innerHTML = `<i class="fa-solid fa-bolt text-slate-950"></i> <span>ACTIVATE ACCOUNT NOW</span>`;
-                btnHeroAction.className = "w-full py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer";
+                btnHeroAction.className = "w-full py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 border border-yellow-300 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer";
 
-                surveysLockIndicator.className = "text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30";
+                surveysLockIndicator.className = "text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/30";
                 surveysLockIndicator.innerHTML = `<i class="fa-solid fa-lock text-[8px] mr-1"></i> Locked`;
             }
 
@@ -1178,7 +1225,7 @@
             document.getElementById('rec-name').textContent = currentUser.fullName;
             document.getElementById('rec-email').textContent = currentUser.email;
             document.getElementById('rec-phone').textContent = currentUser.phone;
-            document.getElementById('rec-country').textContent = `${country.name} (${country.code})`;
+            document.getElementById('rec-country').textContent = `${countyLabel} (${country.code})`;
             document.getElementById('rec-currency').textContent = `${country.currency} (${country.symbol})`;
             document.getElementById('rec-date').textContent = currentUser.registeredAt || new Date().toISOString().split('T')[0];
 
@@ -1186,17 +1233,17 @@
             const walletPayouts = document.getElementById('wallet-payout-methods');
             if (country.isKenya) {
                 walletPayouts.innerHTML = `
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-emerald-400"></i> M-Pesa Express</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-building-columns text-cyan-400"></i> Bank Transfer</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-brands fa-paypal text-blue-400"></i> PayPal</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-400"></i> Crypto USDT</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-mobile-screen text-emerald-400 text-base"></i> M-Pesa Express</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-building-columns text-cyan-400 text-base"></i> Bank Transfer</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-brands fa-paypal text-blue-400 text-base"></i> PayPal</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-coins text-amber-400 text-base"></i> Crypto USDT</div>
                 `;
             } else {
                 walletPayouts.innerHTML = `
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-brands fa-paypal text-blue-400"></i> PayPal International</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-credit-card text-purple-400"></i> Card Payout</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-building-columns text-cyan-400"></i> SWIFT Wire</div>
-                    <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-400"></i> USDT Crypto</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-brands fa-paypal text-blue-400 text-base"></i> PayPal International</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-credit-card text-purple-400 text-base"></i> Card Payout</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-building-columns text-cyan-400 text-base"></i> SWIFT Wire</div>
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-sm"><i class="fa-solid fa-coins text-amber-400 text-base"></i> USDT Crypto</div>
                 `;
             }
 
@@ -1230,20 +1277,20 @@
                 const rewardFormatted = formatCurrency(survey.baseRewardKES, country);
 
                 const card = document.createElement('div');
-                card.className = `border-l-4 ${survey.accentColor} bg-slate-900/90 p-3 rounded-2xl flex items-center justify-between shadow-md border-t border-r border-b border-slate-800/80`;
+                card.className = `border-l-4 ${survey.accentColor} bg-slate-900/90 p-3.5 rounded-2xl flex items-center justify-between shadow-md border-t border-r border-b border-slate-800/80`;
                 card.innerHTML = `
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-cyan-400 text-sm shadow-inner">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-cyan-400 text-base shadow-inner">
                             <i class="fa-solid ${survey.icon}"></i>
                         </div>
                         <div>
-                            <h4 class="font-extrabold text-xs ${survey.titleColor}">${survey.title}</h4>
-                            <p class="text-[10px] font-bold text-emerald-400 mt-0.5">+${rewardFormatted} / task</p>
+                            <h4 class="font-extrabold text-sm ${survey.titleColor}">${survey.title}</h4>
+                            <p class="text-xs font-bold text-emerald-400 mt-0.5">+${rewardFormatted} / task</p>
                         </div>
                     </div>
                     <div>
-                        <button onclick="takeSurvey(${survey.id}, ${survey.baseRewardKES})" class="${currentUser.isActivated ? 'bg-cyan-500 text-slate-950 hover:bg-cyan-400' : 'bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500 hover:text-white'} px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1 cursor-pointer">
-                            ${currentUser.isActivated ? '<i class="fa-solid fa-play text-[9px]"></i> START' : '<i class="fa-solid fa-lock text-[9px]"></i> LOCKED'}
+                        <button onclick="takeSurvey(${survey.id}, ${survey.baseRewardKES})" class="${currentUser.isActivated ? 'bg-cyan-500 text-slate-950 hover:bg-cyan-400' : 'bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500 hover:text-white'} px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
+                            ${currentUser.isActivated ? '<i class="fa-solid fa-play text-[10px]"></i> START' : '<i class="fa-solid fa-lock text-[10px]"></i> LOCKED'}
                         </button>
                     </div>
                 `;
@@ -1278,7 +1325,7 @@
             if (!currentUser.isActivated) {
                 const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
                 const feeText = country.isKenya ? "500 KES" : "$4.00 USD";
-                alert(`Survey Locked!\n\nYour account is currently inactive. You must activate your account (${feeText}) to unlock all market research surveys and withdraw your earnings.`);
+                alert(`Survey Locked!\n\nYour account is currently inactive. You must activate your account (${feeText}) to unlock all paid surveys and withdraw your earnings.`);
                 openActivationModal();
                 return;
             }
@@ -1286,7 +1333,7 @@
             const country = COUNTRIES_MAP[currentUser.countryKey] || COUNTRIES_MAP['OTHER'];
             const rewardFormatted = formatCurrency(rewardKES, country);
 
-            if (confirm(`Start market research survey? Upon completion, +${rewardFormatted} will be credited to your account balance.`)) {
+            if (confirm(`Start survey task? Upon completion, +${rewardFormatted} will be credited to your account balance.`)) {
                 currentUser.balanceKES += rewardKES;
                 localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
                 alert(`Survey Completed Successfully! You earned +${rewardFormatted}`);
@@ -1318,9 +1365,9 @@
                 const btn = document.getElementById(btnId);
                 if (btn) {
                     if ((tab === 'surveys' && (key === 'surveys' || key === 'store')) || (tab === key)) {
-                        btn.className = "nav-tab-active flex flex-col items-center gap-0.5 text-[10px] font-black uppercase text-cyan-400 transition-all";
+                        btn.className = "nav-tab-active flex flex-col items-center gap-1 text-xs font-black uppercase text-cyan-400 transition-all";
                     } else {
-                        btn.className = "flex flex-col items-center gap-0.5 text-[10px] font-black uppercase text-slate-400 transition-all";
+                        btn.className = "flex flex-col items-center gap-1 text-xs font-black uppercase text-slate-400 transition-all";
                     }
                 }
             }
@@ -1349,38 +1396,38 @@
             if (channel === 'mpesa') {
                 container.innerHTML = `
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">M-Pesa Registered Phone Number</label>
-                        <input type="text" readonly value="${currentUser ? currentUser.phone : '+254 712345678'}" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-bold text-emerald-400 outline-none cursor-not-allowed">
-                        <p class="text-[9px] text-slate-500 mt-1">Automatically saved from your registered account details.</p>
+                        <label class="block text-xs font-bold text-slate-200 mb-1">M-Pesa Registered Phone Number</label>
+                        <input type="text" readonly value="${currentUser ? currentUser.phone : '+254 712345678'}" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-bold text-emerald-400 outline-none cursor-not-allowed">
+                        <p class="text-xs text-slate-400 mt-1">Automatically saved from your registered account details.</p>
                     </div>
                 `;
             } else if (channel === 'bank') {
                 container.innerHTML = `
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Bank Name</label>
-                        <input type="text" id="bank-name" required placeholder="e.g. Equity Bank / KCB" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                        <label class="block text-xs font-bold text-slate-200 mb-1">Bank Name</label>
+                        <input type="text" id="bank-name" required placeholder="e.g. Equity Bank / KCB" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Account Holder Full Name</label>
-                        <input type="text" id="bank-holder" required value="${currentUser ? currentUser.fullName : ''}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                        <label class="block text-xs font-bold text-slate-200 mb-1">Account Holder Full Name</label>
+                        <input type="text" id="bank-holder" required value="${currentUser ? currentUser.fullName : ''}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">Bank Account Number</label>
-                        <input type="text" id="bank-acc" required placeholder="e.g. 0123456789012" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                        <label class="block text-xs font-bold text-slate-200 mb-1">Bank Account Number</label>
+                        <input type="text" id="bank-acc" required placeholder="e.g. 0123456789012" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white outline-none">
                     </div>
                 `;
             } else if (channel === 'paypal') {
                 container.innerHTML = `
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">PayPal Account Email</label>
-                        <input type="email" id="paypal-email" required value="${currentUser ? currentUser.email : ''}" placeholder="user@paypal.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none">
+                        <label class="block text-xs font-bold text-slate-200 mb-1">PayPal Account Email</label>
+                        <input type="email" id="paypal-email" required value="${currentUser ? currentUser.email : ''}" placeholder="user@paypal.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white outline-none">
                     </div>
                 `;
             } else if (channel === 'crypto') {
                 container.innerHTML = `
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-300 mb-1">USDT Wallet Address (TRC20 / BEP20)</label>
-                        <input type="text" id="crypto-address" required placeholder="T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWbd" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none font-mono">
+                        <label class="block text-xs font-bold text-slate-200 mb-1">USDT Wallet Address (TRC20 / BEP20)</label>
+                        <input type="text" id="crypto-address" required placeholder="T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWbd" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-bold text-white outline-none font-mono">
                     </div>
                 `;
             }
@@ -1468,7 +1515,7 @@
                 callback: function(response) {
                     currentUser.isActivated = true;
                     localStorage.setItem('surveypay_user', JSON.stringify(currentUser));
-                    alert("Account Activated Successfully! All market research surveys & withdrawals are now unlocked.\nPaystack Reference: " + response.reference);
+                    alert("Account Activated Successfully! All surveys & withdrawals are now unlocked.\nPaystack Reference: " + response.reference);
                     closeActivationModal();
                     renderAppDashboard();
                 },

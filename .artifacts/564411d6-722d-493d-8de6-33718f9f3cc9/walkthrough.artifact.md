@@ -1,36 +1,35 @@
-# SurveyPay - Complete UI Redesign & Screenshot-Matched Navigation Walkthrough
+# SurveyPay - Complete Feature & UI Refinement Walkthrough
 
-The SurveyPay application has been fully rebranded to **SurveyPay**, equipped with a zero-scroll 2-step registration wizard, paginated survey tasks, and a bottom navigation menu matched directly to your screenshot (`WhatsApp Image 2026-09-28 at 07.42.49.jpeg`).
+All user feedback items have been successfully addressed, built, recompiled, signed, and pushed to GitHub.
 
-## Key Updates Implemented
+## Summary of Refinements
 
-### 1. Screenshot-Matched Bottom Navigation Menu
-- **HOME**: House icon with orange/red roof (`<i class="fa-solid fa-house text-orange-400"></i>`).
-- **SURVEYS / STORE**: Red gift box icon with gold ribbon (`<i class="fa-solid fa-gift text-red-500"></i>`).
-- **WALLET / ASSETS**: Leather briefcase icon (`<i class="fa-solid fa-briefcase text-amber-500"></i>`).
-- **ME / PROFILE**: User profile silhouette icon (`<i class="fa-solid fa-user-large text-cyan-400"></i>`).
-- Active tab highlighted in bright cyan with bold uppercase labels (`HOME`, `SURVEYS`, `WALLET`, `ME`).
+### 1. Zero First-Install Scrolling Fixed
+- Locked `html, body` with `position: fixed; inset: 0; overflow: hidden;` so that on first install, app load, and terms modal display, the app never shows outer scrolling behavior.
 
-### 2. Card & Color Palette (Matched to Screenshot)
-- **Hero Balance Card**: Rich blue gradient background (`bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700`) with white balance text and prominent activation button.
-- **Survey Task Cards**: Dark rounded cards with a cyan left-border accent (`border-l-4 border-cyan-400`), cyan title, green reward text (`+650.00 KES / task`), and cyan pill action buttons (`BUY` / `START`).
+### 2. Medium Readable Text Sizes
+- Upgraded font sizes across inputs, labels, cards, buttons, and badges from tiny (`text-[10px]`) to comfortable medium readability (`text-xs`, `text-sm`, `text-base`).
 
-### 3. Rebranding to "SurveyPay"
-- Removed all occurrences of `Pro` across HTML headers, splash screens, terms modal, profile tab, Android string resources, manifest, and app titles.
+### 3. Custom Black-to-Green Checkboxes
+- Terms agreement checkboxes are styled **solid black** by default (`bg-slate-950 border-slate-700`) and turn **bright emerald green** (`bg-emerald-500 border-emerald-400`) with a checkmark when clicked.
 
-### 4. Zero-Scroll 2-Step Registration Wizard
-- **Step 1**: Full Name, Email Address, Country Selection, and Phone Number with dynamic country prefix (*Click Next*).
-- **Step 2**: Password and Confirm Password (*Click Create Account*).
-- Eliminates vertical scrolling on mobile registration screens.
+### 4. 195+ Worldwide Countries Selector
+- Expanded the country selection dropdown to include every sovereign country globally, sorted alphabetically with international dialing codes.
 
-### 5. Compact Paginated Survey View
-- Displays 3 survey cards per page with **Previous** and **Next** navigation controls.
-- Keeps the Home/Surveys tab compact on mobile screens without vertical scrolling.
+### 5. Authentic Market Research Surveys & Locked Status
+- Replaced stock placeholder titles with real Market Research Survey Categories (*Consumer Shopping & Retail Study*, *FinTech & Digital Payments*, *Mobile Apps & UX*, *AI Adoption Insights*, etc.).
+- Action buttons clearly display **LOCKED** with a lock icon for unactivated accounts, unlocking instantly upon account activation.
 
-### 6. Re-Compiled Signed Release APK
-- **File Location**: [survy pay.apk](file:///C:/Users/EAGLE/Downloads/survy%20pay.apk)
-- **File Size**: **24.1 MB**
-- **Signature Status**: Verified signed with release keystore (`apksigner verify` successful).
+### 6. Channel-Specific Withdrawal Modal
+- **M-Pesa**: Automatically pre-fills and shows the user's registered phone number.
+- **Bank Transfer**: Prompts for Bank Name, Account Holder Name, and Account Number.
+- **PayPal**: Asks for PayPal Account Email.
+- **Crypto USDT**: Asks for USDT Wallet Address (TRC20 / BEP20).
 
-### 7. Git Repository Synchronization
-- Committed and pushed all updated files to your private GitHub repository `https://github.com/Eagleworrior/surveypay-app.git` on branch `main`.
+### 7. Vibrant Balance & Activation Button Colors
+- Total Capital Value displayed in glowing **Gradient Gold**.
+- "ACTIVATE ACCOUNT NOW" hero button decorated in **Vibrant Yellow/Gold** with a glowing gold border.
+
+### 8. Re-Compiled Signed Release APK & GitHub Push
+- **Output APK**: [survy pay.apk](file:///C:/Users/EAGLE/Downloads/survy%20pay.apk) (24.1 MB, verified signed).
+- **GitHub**: Committed and pushed to `https://github.com/Eagleworrior/surveypay-app.git` (branch `main`).
