@@ -1,27 +1,27 @@
-# Implementation Plan - Final Neon Color Fixes & 3-Survey Activation Rule Confirmation
+# Implementation Plan - Comprehensive Audit & Fix of All App Features
 
-Confirm the 3-free-surveys activation rule and anti-repeat restriction, and permanently fix the remaining white text on:
-1. **Sign Up & Log In Headers / Buttons** in `authV()`.
-2. **M-Pesa & Bank Tabs** in `wdV()`.
-3. **Surveys & Withdrawals Sub-Tabs** in `histV()`.
+Perform a thorough audit and refactoring of `index.html` (and sync to Android assets) to guarantee that **every single feature and fix requested by the user is fully intact, bug-free, and never reverted**:
+1. **Separated Auth Forms**: Sign Up requires Full Name, Email, Phone, Password, and Confirm Password (5 fields). Login requires Email and Password only.
+2. **Zero White Text Neon Styling**: Every text element, header, title, description, label, form field, button, survey question, option, and bottom nav label is explicitly styled with vibrant neon colors (Cyan, Emerald, Amber, Gold, Purple, Rose/Pink) with zero plain white text.
+3. **Professional Boxed Bottom Navigation**: Bottom nav bar remains permanently visible across all tabs (Earn, Me, Balance, History, Withdraw) inside professional glowing card boxes.
+4. **50 Unique Questions & 3-Free-Surveys Lock**: 12 surveys with 50 unique questions each. After 3 free completions, remaining surveys lock automatically and prompt for the 200 KES account activation via real-time Safaricom STK Push.
+5. **Withdrawal Balance Deduction**: Successful withdrawals deduct the exact amount from the user's available balance instantly.
+6. **Synchronous History & Balance**: History and Balance views update and render instantly without hanging.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Zero White Text Remaining**: All auth headers, withdrawal M-Pesa/Bank tabs, and history sub-tabs are now explicitly colored in neon tones.
-> - **Rules Confirmed**: 3 free surveys max before mandatory 200 KES account activation, with strict anti-repeat protection (no taking the same survey twice).
+> - **Comprehensive Verification**: All fixes are unified and verified together to ensure nothing is reverted or left broken.
 
 ## Proposed Changes
 
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Update `authV()` header/button text colors to vibrant neon cyan/emerald.
-- Update `wdV()` M-Pesa and Bank tab text colors to vibrant neon emerald/cyan.
-- Update `histV()` Surveys and Withdrawals sub-tab text colors to vibrant neon purple/indigo.
-- Confirm and test 3 free surveys rule and anti-repeat check in `simulateApiLocally()`.
+- Audit and consolidate all HTML views (`authV`, `profileV`, `earnV`, `runV`, `actV`, `balV`, `histV`, `wdV`) to ensure 100% neon colored text and correct field bindings.
+- Ensure bottom nav is always rendered permanently in `draw()`.
 - Sync `index.html` to `app/src/main/assets/index.html`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Test auth screen, withdrawal tabs, and history sub-tabs in WebView / browser to confirm zero white text remaining.
+- Test all user flows in WebView / browser to confirm auth forms, zero white text, boxed bottom nav, survey locking, STK push, and withdrawal balance deductions.
