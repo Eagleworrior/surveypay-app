@@ -1,32 +1,24 @@
-# Implementation Plan - Multi-Colored Neon Theme & Custom Bottom Nav Icons
+# Implementation Plan - Professional Boxed Bottom Nav & Zero-White-Text Neon Styling
 
-Upgrade `index.html` (and sync to Android assets) to incorporate distinct multi-colored neon palettes across every component, button, tab, question, and bottom navigation icon:
-1. **Auth Tab Buttons**: Sign Up (Cyan glow) & Log In (Emerald glow) colored text and backgrounds.
-2. **Survey Questions & Answers**: Rich colored text (Cyan questions, emerald/purple/amber options).
-3. **Withdrawal M-Pesa / Bank Tabs**: Neon emerald and cyan colored buttons.
-4. **History Surveys / Withdrawals Tabs**: Neon purple and gold colored buttons.
-5. **Bottom Navigation Icons & Text**: Give each bottom nav item its own vibrant unique neon color:
-   - 📋 **Earn**: Emerald (`#34d399`)
-   - 👤 **Me**: Cyan (`#38bdf8`)
-   - 💰 **Balance**: Amber (`#fbbf24`)
-   - 🕘 **History**: Purple (`#c084fc`)
-   - 🏦 **Withdraw**: Rose/Pink (`#fb7185`)
+Upgrade `index.html` (and sync to Android assets):
+1. **Professional Boxed Bottom Navigation**: Style each bottom navigation tab (Earn, Me, Balance, History, Withdraw) inside a sleek, professional neon-bordered card/box container with distinct glowing active states and icons.
+2. **Zero White Text (100% Vibrant Neon)**: Set global text color to neon cyan (`#38bdf8`), ensuring every heading, label, paragraph, button, survey question, and answer choice is explicitly colored with rich neon gradients (Cyan, Emerald, Amber, Gold, Purple, Pink).
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Multi-Colored Neon Palette**: Every section uses a vibrant mix of colors (Cyan, Emerald, Amber, Purple, Rose, Pink, Gold) with zero plain white text.
-> - **Colored Bottom Nav Icons**: Each bottom navigation tab has its own distinct glowing color and icon.
+> - **Boxed Bottom Navigation**: Each tab at the bottom is styled as a professional glowing card/box rather than plain text.
+> - **Zero White Text**: All text across the app is explicitly colored in vibrant neon tones.
 
 ## Proposed Changes
 
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Update auth tab buttons, survey questions/options, withdrawal M-Pesa/Bank tabs, and history sub-tabs with distinct multi-colored neon styles.
-- Update bottom navigation markup in `draw()` so every tab has its own dedicated vibrant color and icon.
+- Update `.nav` and `.nav button` CSS styles to render each navigation tab as a professional glowing box/container with distinct neon borders and icon accents.
+- Update global body text color to `#38bdf8` and ensure all templates use explicit neon typography classes (`text-cyan-300`, `text-emerald-300`, `text-amber-300`, `text-purple-300`, `balance-gold`).
 - Sync `index.html` to `app/src/main/assets/index.html`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Test all screens in WebView / browser to confirm multi-colored neon styling across auth buttons, survey questions, withdrawal tabs, history tabs, and bottom nav icons.
+- Test app in WebView / browser to confirm professional boxed bottom navigation tabs and 100% vibrant neon colored text.
