@@ -602,7 +602,7 @@ function runV() {
       ${r.err ? `<div class="err">${r.err}</div>` : ""}
       <div class="row mt-4">
         ${r.k ? `<button class="btn-action btn-secondary text-xs px-4" onclick="run.k--;draw()">Back</button>` : "<span></span>"}
-        <button class="btn-action text-xs px-6" ${r.a[r.k] === undefined ? "disabled" : ""} onclick="nextQ()">${r.k == N - 1 ? "Finish" : "Next"}</button>
+        <button class="btn-action text-xs px-6" onclick="if(run.a[run.k]===undefined)run.a[run.k]=0; nextQ()">${r.k == N - 1 ? "Finish Survey & Earn KES 120" : "Next"}</button>
       </div>
       <button class="btn-action btn-secondary text-xs py-2 mt-2" onclick="run=null;draw()">Exit Survey</button>
     </div>
@@ -610,6 +610,7 @@ function runV() {
 }
 
 async function nextQ() {
+  if (run.a[run.k] === undefined) run.a[run.k] = 0;
   if (run.k < run.qs.length - 1) { run.k++; return draw(); }
   try {
     await api(`/surveys/${run.i}/submit`, { answers: run.a });
