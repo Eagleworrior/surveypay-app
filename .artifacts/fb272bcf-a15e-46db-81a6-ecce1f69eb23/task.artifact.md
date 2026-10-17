@@ -1,6 +1,5 @@
 # Task List
 
-- [x] Configure release signing keystore and `build.gradle.kts` signing configuration
-- [x] Build signed release APK (`assembleRelease`)
-- [x] Clean Downloads folder of previous unsigned/debug APKs
-- [x] Place exclusively `SurveyPay-Signed.apk` in the user's Downloads folder
+- [x] Write robust 50-question unique generator with topic-specific questions and descriptive multi-choice answers in `simulateApiLocally()`
+- [x] Ensure zero repeating questions and zero Yes/No answers
+- [x] Sync `index.html` to `app/src/main/assets/index.html`

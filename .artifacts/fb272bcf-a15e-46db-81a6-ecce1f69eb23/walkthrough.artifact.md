@@ -1,12 +1,15 @@
-# Walkthrough - Signed Release APK Export
+# Walkthrough - 50 Unique Non-Repeating Survey Questions with Descriptive Answers
 
-Successfully generated the signed release APK and placed it cleanly in the user's Downloads folder.
+Upgraded the survey question generator so that every survey generates **50 completely unique, non-repeating market research questions**, complete with **4 unique descriptive multiple-choice answers** (with zero Yes/No or True/False options).
 
-## Accomplishments
+## Changes Made
 
-1. **Keystore Generation & Signing**: Created a release keystore (`surveypay-release.jks`) and configured Gradle signing configs in `build.gradle.kts`.
-2. **Signed Build**: Compiled `assembleRelease` resulting in a fully signed production APK (`app-release.apk`).
-3. **Clean Export**: Cleaned up all other APKs from the Downloads folder and placed exclusively **`SurveyPay-Signed.apk`** in `C:\Users\EAGLE\Downloads`.
+### Frontend (`index.html` & `app/src/main/assets/index.html`)
+- **50 Unique Questions**: Dynamic question generator cycles through distinct topical sub-factors (reliability, pricing, security, support, performance, features, recommendations) to ensure all 50 questions per survey are unique.
+- **Descriptive Multi-Choice Answers**: Answers are professional, practical multiple-choice statements with zero binary Yes/No or True/False choices.
+- **Synced Assets**: Updated `app/src/main/assets/index.html`.
 
-## Deliverable
-- **`SurveyPay-Signed.apk`** is now available in your Downloads folder.
+## Verification Results
+- 50 unique questions verified per survey.
+- Descriptive answer options verified.
+- Anti-repeat checking and activation limits remain active.
