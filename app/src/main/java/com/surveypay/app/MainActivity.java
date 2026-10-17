@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
             settings.setUseWideViewPort(true);
             settings.setSupportZoom(false);
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                settings.setForceDark(WebSettings.FORCE_DARK_OFF);
+            }
 
             webView.setWebViewClient(new WebViewClient());
             webView.setWebChromeClient(new WebChromeClient() {
