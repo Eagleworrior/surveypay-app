@@ -4,21 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SurveyPay — Global Earning Network</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Paystack Inline JS -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
 
 <style>
 :root {
   --bg: #070913;
   --card: #0f1426;
-  --tx: #f8fafc;
+  --tx: #38bdf8;
   --mu: #94a3b8;
   --pr: #06b6d4;
-  --pr2: #164e63;
   --bd: #1e293b;
   --er: #f43f5e;
   box-sizing: border-box;
@@ -26,45 +25,42 @@
 }
 
 * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
-body { margin: 0; background: var(--bg); color: var(--tx); font-size: 15px; line-height: 1.5; overflow-x: hidden; }
-main { max-width: 600px; margin: 0 auto; padding: 16px 16px 100px; }
+body { margin: 0; background: var(--bg); color: #f8fafc; font-size: 15px; line-height: 1.5; overflow-x: hidden; }
+main { max-width: 600px; margin: 0 auto; padding: 16px 16px 110px; }
 
 /* High-Graphic Neon Card Styles */
 .card {
-  background: rgba(15, 20, 38, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0f1426;
+  border: 1px solid rgba(56, 189, 248, 0.4);
   border-radius: 20px;
   padding: 18px;
   margin: 0 0 16px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3);
 }
 
-.card-glow-cyan { border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.2); }
-.card-glow-purple { border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.2); }
-.card-glow-emerald { border-color: rgba(16, 185, 129, 0.4); box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.2); }
+.card-glow-cyan { border-color: rgba(6, 182, 212, 0.8); box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.4); }
+.card-glow-purple { border-color: rgba(192, 132, 252, 0.8); box-shadow: 0 0 25px -5px rgba(192, 132, 252, 0.4); }
+.card-glow-emerald { border-color: rgba(52, 211, 153, 0.8); box-shadow: 0 0 25px -5px rgba(52, 211, 153, 0.4); }
 
-/* Multi-Colored Typed Input Fields */
 .input-field {
   width: 100%;
   padding: 12px 14px 12px 42px;
   border-radius: 12px;
   background: #090d1a;
-  border: 1px solid #1e293b;
+  border: 1px solid #334155;
   font-size: 16px;
   font-weight: 700;
   outline: none;
   transition: all 0.2s ease;
 }
 
-.input-name { color: #38bdf8 !important; caret-color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
-.input-email { color: #34d399 !important; caret-color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
-.input-phone { color: #fb923c !important; caret-color: #fb923c; border-color: rgba(251, 146, 60, 0.4); }
-.input-password { color: #c084fc !important; caret-color: #c084fc; border-color: rgba(192, 132, 252, 0.4); }
-.input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; border-color: rgba(244, 114, 182, 0.4); }
+.input-name { color: #38bdf8 !important; caret-color: #38bdf8; border-color: rgba(56, 189, 248, 0.6); }
+.input-email { color: #34d399 !important; caret-color: #34d399; border-color: rgba(52, 211, 153, 0.6); }
+.input-phone { color: #fb923c !important; caret-color: #fb923c; border-color: rgba(251, 146, 60, 0.6); }
+.input-password { color: #c084fc !important; caret-color: #c084fc; border-color: rgba(192, 132, 252, 0.6); }
+.input-confirm-password { color: #f472b6 !important; caret-color: #f472b6; border-color: rgba(244, 114, 182, 0.6); }
 
-/* High-Graphic Buttons */
+/* Vibrant Neon Buttons */
 button.btn-action {
   font: inherit;
   cursor: pointer;
@@ -72,33 +68,29 @@ button.btn-action {
   border-radius: 14px;
   padding: 14px 18px;
   background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
-  color: #fff;
-  font-weight: 800;
+  color: #ffffff;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   width: 100%;
   margin-top: 14px;
-  box-shadow: 0 8px 20px -4px rgba(6, 182, 212, 0.4);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 25px -4px rgba(6, 182, 212, 0.6);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
-button.btn-action:hover { transform: translateY(-1px); filter: brightness(1.1); }
+button.btn-action:hover { filter: brightness(1.15); }
+button.btn-secondary { background: #1e293b; color: #38bdf8; border: 2px solid #38bdf8; font-weight: 900; }
 
-button.btn-secondary {
-  background: #1e293b;
-  color: #cbd5e1;
-  border: 1px solid #334155;
-}
-
-/* Gradient Text Titles */
 .title-gradient {
   background: linear-gradient(135deg, #38bdf8 0%, #facc15 50%, #c084fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
 }
 .balance-gold {
   background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #eab308 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 900;
 }
 
 .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
@@ -107,37 +99,41 @@ button.btn-secondary {
 .nav {
   position: fixed;
   left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.98);
   backdrop-filter: blur(20px);
-  border-top: 1px solid #1e293b;
+  border-top: 2px solid rgba(56, 189, 248, 0.4);
   display: flex;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: 100;
+  box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
 }
 .nav button {
   background: none;
-  color: #64748b;
   border-radius: 0;
   margin: 0;
   padding: 12px 2px;
   font-size: 0.78rem;
   font-weight: 800;
   flex: 1;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.nav button.on { color: #38bdf8; position: relative; }
+.nav button.on { position: relative; font-weight: 900; text-shadow: 0 0 10px currentColor; }
 .nav button.on::after {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 24px; height: 3px; background: #38bdf8; border-radius: 99px; box-shadow: 0 0 10px #38bdf8;
+  width: 28px; height: 3px; background: currentColor; border-radius: 99px; box-shadow: 0 0 12px currentColor;
 }
 
-.mu { color: var(--mu); font-size: 0.85rem; }
-.big { font-size: 2.2rem; font-weight: 900; }
-.err { color: #f43f5e; font-size: 0.85rem; margin-top: 8px; font-weight: 700; background: rgba(244, 63, 94, 0.1); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(244, 63, 94, 0.3); }
-.pill { font-size: 0.75rem; background: rgba(6, 182, 212, 0.15); color: #38bdf8; padding: 2px 10px; border-radius: 99px; border: 1px solid rgba(6, 182, 212, 0.3); font-weight: 700; }
-.opt { background: #090d1a; color: var(--tx); border: 1px solid #1e293b; text-align: left; font-weight: 600; margin-top: 8px; border-radius: 12px; padding: 12px; cursor: pointer; width: 100%; }
-.opt.sel { border-color: #38bdf8; background: rgba(6, 182, 212, 0.2); }
-.bar { height: 8px; background: #1e293b; border-radius: 8px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: linear-gradient(90deg, #38bdf8, #a855f7); }
+.mu { color: #38bdf8; font-size: 0.9rem; font-weight: 700; }
+.big { font-size: 2.3rem; font-weight: 900; }
+.err { color: #fb7185; font-size: 0.9rem; margin-top: 8px; font-weight: 800; background: rgba(244, 63, 94, 0.15); padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(244, 63, 94, 0.4); }
+.pill { font-size: 0.78rem; background: rgba(6, 182, 212, 0.25); color: #38bdf8; padding: 3px 12px; border-radius: 99px; border: 1px solid rgba(6, 182, 212, 0.5); font-weight: 900; }
+.opt { background: #090d1a; color: #facc15; border: 2px solid #334155; text-align: left; font-weight: 800; margin-top: 10px; border-radius: 14px; padding: 14px; cursor: pointer; width: 100%; transition: all 0.2s ease; }
+.opt:hover { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); color: #f8fafc; }
+.opt.sel { border-color: #34d399; background: rgba(52, 211, 153, 0.25); color: #34d399; box-shadow: 0 0 15px rgba(52, 211, 153, 0.3); }
+.bar { height: 10px; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; }
+.bar i { display: block; height: 100%; background: linear-gradient(90deg, #38bdf8, #34d399, #c084fc); box-shadow: 0 0 10px #38bdf8; }
 </style>
 </head>
 <body>
@@ -157,7 +153,7 @@ const META = [
 const BANKS = ["KCB Bank", "Equity Bank", "Co-operative Bank", "Absa Bank Kenya", "Standard Chartered", "NCBA Bank", "Stanbic Bank", "I&M Bank", "Family Bank"].sort();
 
 let S = { user: null, done: 0, cfg: { activationFee: 200, freeSurveys: 3, minWithdraw: 500 }, list: [], h: { surveys: [], withdrawals: [] } };
-let page = "earn", mode = "signup", run = null, err = "", wdOK = null, modal = null, wm = "mpesa", loading = false;
+let page = "earn", mode = "signup", run = null, err = "", wdOK = null, modal = null, wm = "mpesa", loading = false, hist = "s";
 
 const kes = n => "KES " + Number(n).toLocaleString("en-KE");
 const $ = id => document.getElementById(id);
@@ -215,7 +211,6 @@ function simulateApiLocally(p, body) {
     const completions = u ? JSON.parse(localStorage.getItem("sp_local_completions_" + u.id) || "[]") : [];
     const doneIds = new Set(completions.map(c => c.survey_id));
 
-    // 12 distinct surveys, each paying 120 KES
     const surveyList = [
       { id: 1, title: "Mobile Money Usage Survey", type: "Finance", pay: 120, questions: 50 },
       { id: 2, title: "Online Shopping Habits Survey", type: "Retail", pay: 120, questions: 50 },
@@ -265,12 +260,6 @@ function simulateApiLocally(p, body) {
 
     return { title: `${topic.name} Survey`, pay: 120, questions: qs };
   }
-          `Option D: Unsatisfied with current standards.`
-        ]
-      });
-    }
-    return { title: `${topic} Survey`, pay: 120, questions: qs };
-  }
   if (p.startsWith("/surveys/") && p.endsWith("/submit")) {
     const sId = parseInt(p.split("/")[2]);
     const u = users.find(x => x.email === currentUserEmail) || users[0];
@@ -278,9 +267,8 @@ function simulateApiLocally(p, body) {
       let comp = JSON.parse(localStorage.getItem("sp_local_completions_" + u.id) || "[]");
       if (comp.some(c => c.survey_id === sId)) throw new Error("You have already completed this survey. No repeating allowed.");
 
-      // Check 3 free surveys limit
       if (comp.length >= 3 && !u.active) {
-        throw new Error("You have completed your 3 free surveys! Please activate your account (200 KES fee) to continue taking surveys.");
+        throw new Error("You have completed your 3 free surveys! Please activate your account (KES 200 fee) to continue taking surveys.");
       }
 
       u.balance += 120;
@@ -349,24 +337,28 @@ async function load() {
 
 function draw() {
   const u = S.user;
-  $("nav").innerHTML = "";
-  if (!u) { $("app").innerHTML = authV(); return; }
+  if (!u) {
+    $("app").innerHTML = authV();
+    $("nav").innerHTML = "";
+    return;
+  }
 
   const P = { profile: profileV, earn: earnV, balance: balV, history: histV, withdraw: wdV };
   $("app").innerHTML = `
     <div class="text-center pt-2 pb-3 mb-2 border-b border-slate-800/80">
       <b class="title-gradient text-2xl font-black">💸 SurveyPay</b>
     </div>
-    ${run ? runV() : loading ? '<p class="mu text-center py-8">Loading dashboard...</p>' : P[page]()}
+    ${run ? runV() : loading ? '<p class="mu text-center py-8 text-cyan-400 font-extrabold">Loading dashboard...</p>' : P[page]()}
     ${modal || ""}
   `;
 
+  // Bottom Navigation Bar with distinct vibrant neon colors & icons for each tab
   const t = [
-    ["earn", "<i class='fa-solid fa-list-check text-emerald-400 text-lg block mb-0.5'></i>Earn"],
-    ["profile", "<i class='fa-solid fa-user text-cyan-400 text-lg block mb-0.5'></i>Me"],
-    ["balance", "<i class='fa-solid fa-wallet text-amber-400 text-lg block mb-0.5'></i>Balance"],
-    ["history", "<i class='fa-solid fa-clock-rotate-left text-purple-400 text-lg block mb-0.5'></i>History"],
-    ["withdraw", "<i class='fa-solid fa-money-bill-transfer text-rose-400 text-lg block mb-0.5'></i>Withdraw"]
+    ["earn", "<i class='fa-solid fa-list-check text-emerald-400 text-lg block mb-0.5'></i><span style='color:#34d399'>Earn</span>"],
+    ["profile", "<i class='fa-solid fa-user text-cyan-400 text-lg block mb-0.5'></i><span style='color:#38bdf8'>Me</span>"],
+    ["balance", "<i class='fa-solid fa-wallet text-amber-400 text-lg block mb-0.5'></i><span style='color:#fbbf24'>Balance</span>"],
+    ["history", "<i class='fa-solid fa-clock-rotate-left text-purple-400 text-lg block mb-0.5'></i><span style='color:#c084fc'>History</span>"],
+    ["withdraw", "<i class='fa-solid fa-money-bill-transfer text-rose-400 text-lg block mb-0.5'></i><span style='color:#fb7185'>Withdraw</span>"]
   ];
 
   $("nav").innerHTML = '<div class="nav">' + t.map(x => `<button class="${page === x[0] ? "on" : ""}" onclick="nav('${x[0]}')">${x[1]}</button>`).join("") + '</div>';
@@ -377,15 +369,15 @@ function authV() {
   return `
     <div class="text-center py-4">
       <h1 class="title-gradient text-3xl font-black tracking-tight mb-1">💸 SurveyPay</h1>
-      <p class="mu text-cyan-400 font-bold uppercase text-xs tracking-wider">Verified Global Survey Earning Network</p>
+      <p class="text-cyan-300 font-black uppercase text-xs tracking-wider">Verified Global Survey Earning Network</p>
     </div>
 
     <div class="card card-glow-cyan">
       <div class="flex border-b border-slate-800 pb-3 mb-4 gap-2">
-        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${s ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}" onclick="mode='signup';err='';draw()">
+        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${s ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' : 'bg-slate-800 text-cyan-300'}" onclick="mode='signup';err='';draw()">
           <i class="fa-solid fa-user-plus mr-1"></i> Sign Up
         </button>
-        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${!s ? 'bg-emerald-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}" onclick="mode='login';err='';draw()">
+        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${!s ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md' : 'bg-slate-800 text-emerald-300'}" onclick="mode='login';err='';draw()">
           <i class="fa-solid fa-right-to-bracket mr-1"></i> Log In
         </button>
       </div>
@@ -398,7 +390,7 @@ function authV() {
         <!-- SIGN UP FORM (5 FIELDS) -->
         <div class="space-y-3">
           <div>
-            <label class="block text-xs font-extrabold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-cyan-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-id-card text-cyan-400"></i> Full Name
             </label>
             <div class="relative flex items-center">
@@ -408,7 +400,7 @@ function authV() {
           </div>
 
           <div>
-            <label class="block text-xs font-extrabold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-emerald-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-envelope-open-text text-emerald-400"></i> Email Address
             </label>
             <div class="relative flex items-center">
@@ -418,7 +410,7 @@ function authV() {
           </div>
 
           <div>
-            <label class="block text-xs font-extrabold text-orange-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-orange-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-mobile-screen-button text-orange-400"></i> Phone Number
             </label>
             <div class="relative flex items-center">
@@ -428,7 +420,7 @@ function authV() {
           </div>
 
           <div>
-            <label class="block text-xs font-extrabold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-purple-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-key text-purple-400"></i> Account Password
             </label>
             <div class="relative flex items-center">
@@ -438,7 +430,7 @@ function authV() {
           </div>
 
           <div>
-            <label class="block text-xs font-extrabold text-pink-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-pink-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-shield-halved text-pink-400"></i> Confirm Password
             </label>
             <div class="relative flex items-center">
@@ -451,7 +443,7 @@ function authV() {
         <!-- LOGIN FORM (EMAIL & PASSWORD ONLY) -->
         <div class="space-y-3">
           <div>
-            <label class="block text-xs font-extrabold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-emerald-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-envelope-open-text text-emerald-400"></i> Email Address
             </label>
             <div class="relative flex items-center">
@@ -461,7 +453,7 @@ function authV() {
           </div>
 
           <div>
-            <label class="block text-xs font-extrabold text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <label class="block text-xs font-black text-purple-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <i class="fa-solid fa-key text-purple-400"></i> Account Password
             </label>
             <div class="relative flex items-center">
@@ -474,7 +466,7 @@ function authV() {
 
       ${err ? `<div class="err">${err}</div>` : ""}
 
-      <p class="mu text-xs mt-3 leading-relaxed">
+      <p class="text-cyan-300 font-black text-xs mt-3 leading-relaxed">
         <i class="fa-solid fa-shield-cat text-cyan-400"></i> First ${c.freeSurveys} surveys are free. Activation fee is ${kes(c.activationFee)}. Minimum withdrawal: ${kes(c.minWithdraw)}.
       </p>
 
@@ -514,23 +506,23 @@ function profileV() {
   return `
     <h1 class="text-xl font-black text-cyan-300 mb-2">Welcome Back, ${u.name.split(" ")[0]}!</h1>
     <div class="card card-glow-purple space-y-3">
-      <h2 class="text-sm font-extrabold text-purple-400 uppercase tracking-widest flex items-center gap-2">
+      <h2 class="text-sm font-extrabold text-purple-300 uppercase tracking-widest flex items-center gap-2">
         <i class="fa-solid fa-id-card-clip text-purple-400"></i> Account Credentials
       </h2>
       <div class="p-3 bg-slate-900/90 rounded-xl border border-cyan-500/30 flex justify-between items-center">
-        <div><span class="text-xs font-bold text-cyan-400 uppercase">Full Name</span><br><strong class="text-cyan-300 text-sm">${u.name}</strong></div>
+        <div><span class="text-xs font-black text-cyan-300 uppercase">Full Name</span><br><strong class="text-cyan-200 text-sm font-black">${u.name}</strong></div>
         <i class="fa-solid fa-user text-cyan-400 text-lg"></i>
       </div>
       <div class="p-3 bg-slate-900/90 rounded-xl border border-emerald-500/30 flex justify-between items-center">
-        <div><span class="text-xs font-bold text-emerald-400 uppercase">Email Address</span><br><strong class="text-emerald-300 text-sm">${u.email}</strong></div>
+        <div><span class="text-xs font-black text-emerald-300 uppercase">Email Address</span><br><strong class="text-emerald-200 text-sm font-black">${u.email}</strong></div>
         <i class="fa-solid fa-envelope text-emerald-400 text-lg"></i>
       </div>
       <div class="p-3 bg-slate-900/90 rounded-xl border border-orange-500/30 flex justify-between items-center">
-        <div><span class="text-xs font-bold text-orange-400 uppercase">Phone Number</span><br><strong class="text-orange-300 text-sm">+${u.phone}</strong></div>
+        <div><span class="text-xs font-black text-orange-300 uppercase">Phone Number</span><br><strong class="text-orange-200 text-sm font-black">+${u.phone}</strong></div>
         <i class="fa-solid fa-phone text-orange-400 text-lg"></i>
       </div>
       <div class="p-3 bg-slate-900/90 rounded-xl border border-purple-500/30 flex justify-between items-center">
-        <div><span class="text-xs font-bold text-purple-400 uppercase">Account Status</span><br><strong class="${u.active ? 'text-emerald-400' : 'text-amber-400'} text-sm">${u.active ? "Activated Unlocked Account" : `Free Trial: ${Math.max(0, S.cfg.freeSurveys - S.done)} survey(s) remaining`}</strong></div>
+        <div><span class="text-xs font-black text-purple-300 uppercase">Account Status</span><br><strong class="${u.active ? 'text-emerald-300' : 'text-amber-300'} text-sm font-black">${u.active ? "Activated Unlocked Account" : `Free Trial: ${Math.max(0, S.cfg.freeSurveys - S.done)} survey(s) remaining`}</strong></div>
         <i class="fa-solid fa-shield-check text-purple-400 text-lg"></i>
       </div>
     </div>
@@ -541,12 +533,12 @@ function earnV() {
   const isLocked = !S.user.active && S.done >= S.cfg.freeSurveys;
   return `
     <h1 class="text-xl font-black text-emerald-300 mb-1">Available Paid Surveys</h1>
-    <p class="mu mb-3">Complete research tasks to earn instant cash payouts.</p>
+    <p class="text-cyan-300 font-bold text-xs mb-3">Complete research tasks to earn instant cash payouts.</p>
     ${isLocked ? `
       <div class="card card-glow-purple bg-purple-950/45 p-4 mb-4 text-center space-y-2">
         <div class="text-amber-400 text-2xl"><i class="fa-solid fa-lock"></i></div>
         <h3 class="text-base font-black text-white">3 Free Surveys Completed!</h3>
-        <p class="text-xs text-slate-300">You have completed your 3 free trial surveys. Please activate your account (KES 200) to continue taking surveys and unlocking withdrawals.</p>
+        <p class="text-xs text-amber-200 font-black">You have completed your 3 free trial surveys. Please activate your account (KES 200) to continue taking surveys and unlocking withdrawals.</p>
         <button class="btn-action text-xs" onclick="modal=actV();draw()">ACTIVATE ACCOUNT NOW (KES 200)</button>
       </div>
     ` : ""}
@@ -557,16 +549,16 @@ function earnV() {
         <div class="card flex items-center justify-between gap-3" style="border-left: 6px solid ${m[1]}">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background: ${m[1]}25">${m[0]}</div>
           <div style="flex:1">
-            <b class="text-base font-extrabold" style="color: ${m[1]}">${s.title}</b><br>
-            <span class="pill">${s.type}</span> <span class="mu text-xs">50 questions</span>
+            <b class="text-base font-black" style="color: ${m[1]}">${s.title}</b><br>
+            <span class="pill">${s.type}</span> <span class="text-cyan-300 font-black text-xs">50 questions</span>
           </div>
           <div class="text-right">
             <b class="balance-gold text-lg block">${kes(s.pay)}</b>
-            ${s.done ? '<span class="text-xs font-bold text-emerald-400">✓ Done</span>' : isLocked ? '<span class="text-xs font-bold text-rose-400">Locked</span>' : `<button class="btn-action text-xs py-1.5 px-3 uppercase mt-1" onclick="start(${s.id})">Start</button>`}
+            ${s.done ? '<span class="text-xs font-black text-emerald-300">✓ Done</span>' : isLocked ? '<span class="text-xs font-black text-rose-300">Locked</span>' : `<button class="btn-action text-xs py-1.5 px-3 uppercase mt-1" onclick="start(${s.id})">Start</button>`}
           </div>
         </div>
       `;
-    }).join("") || '<p class="mu">No surveys available right now.</p>'}
+    }).join("") || '<p class="text-cyan-300 font-black">No surveys available right now.</p>'}
   `;
 }
 
@@ -589,19 +581,19 @@ function runV() {
   if (r.loading) return `
     <div class="card text-center py-8" style="border-color: ${m[1]}">
       <div class="text-4xl mb-2">${m[0]}</div>
-      <b class="text-lg text-cyan-300">Preparing survey task (50 questions)...</b>
-      <p class="mu text-xs mt-1">Please wait while questions are loaded.</p>
+      <b class="text-lg text-cyan-300 font-black">Preparing survey task (50 questions)...</b>
+      <p class="text-amber-300 font-bold text-xs mt-1">Please wait while questions are loaded.</p>
     </div>
   `;
   const q = r.qs[r.k], N = r.qs.length;
   return `
     <div class="card" style="border-color: ${m[1]}">
       <div class="row mb-2">
-        <b class="text-sm uppercase font-extrabold" style="color: ${m[1]}">${r.title}</b>
+        <b class="text-sm uppercase font-black" style="color: ${m[1]}">${r.title}</b>
         <span class="pill">Q ${r.k + 1} of ${N}</span>
       </div>
       <div class="bar mb-4"><i style="width: ${(r.k / N) * 100}%"></i></div>
-      <h2 class="text-base font-bold text-cyan-300 mb-3">${q.q}</h2>
+      <h2 class="text-base font-black text-amber-300 mb-3">${q.q}</h2>
       ${q.c.map((c, j) => `<button class="opt ${r.a[r.k] === j ? "sel" : ""}" onclick="run.a[run.k]=${j};draw()">${c}</button>`).join("")}
       ${r.err ? `<div class="err">${r.err}</div>` : ""}
       <div class="row mt-4">
@@ -626,10 +618,10 @@ function actV() {
     <div class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[200] flex items-center justify-center p-4">
       <div class="card card-glow-purple w-full max-w-sm text-center">
         <h2 class="text-xl font-black text-purple-300 mb-2">Activate Your Account</h2>
-        <p class="mu text-xs mb-3">You have completed your 3 free surveys. Pay the one-time activation fee of ${kes(S.cfg.activationFee)} to unlock remaining surveys & withdrawals.</p>
-        <label class="block text-xs font-bold text-amber-400 uppercase text-left mb-1">M-Pesa Registered Number</label>
+        <p class="text-amber-200 font-black text-xs mb-3">You have completed your 3 free surveys. Pay the one-time activation fee of ${kes(S.cfg.activationFee)} to unlock remaining surveys & withdrawals.</p>
+        <label class="block text-xs font-black text-amber-300 uppercase text-left mb-1">M-Pesa Registered Number</label>
         <input id="ap" class="input-field input-phone mb-2" value="0${S.user.phone.slice(3)}">
-        <div id="am" class="mu text-xs mb-3"></div>
+        <div id="am" class="text-cyan-300 font-bold text-xs mb-3"></div>
         <button class="btn-action" onclick="pay()">PAY ${kes(S.cfg.activationFee)} WITH M-PESA</button>
         <button class="btn-action btn-secondary text-xs mt-2" onclick="modal=null;draw()">Cancel</button>
       </div>
@@ -657,7 +649,7 @@ async function pay() {
             return load();
           }
           if (st.status === "failed") {
-            m.innerHTML = `<span class="text-rose-400 font-bold">${st.error || "Payment Failed: Insufficient M-Pesa balance or request canceled."}</span>`;
+            m.innerHTML = `<span class="text-rose-400 font-extrabold">${st.error || "Payment Failed: Insufficient M-Pesa balance or request canceled."}</span>`;
             return;
           }
         } catch (e) {}
@@ -675,12 +667,12 @@ function balV() {
   return `
     <h1 class="text-xl font-black text-amber-300 mb-2">Account Balance</h1>
     <div class="card card-glow-emerald text-center py-6">
-      <span class="text-xs font-black text-emerald-400 uppercase tracking-widest">Available Balance</span>
+      <span class="text-xs font-black text-emerald-300 uppercase tracking-widest">Available Balance</span>
       <div class="big balance-gold my-2">${kes(S.user.balance)}</div>
     </div>
     <div class="card space-y-2">
-      <div class="row"><span class="mu font-bold">Total Earnings</span><b class="text-emerald-400 font-extrabold">${kes(e)}</b></div>
-      <div class="row"><span class="mu font-bold">Completed Surveys</span><b class="text-cyan-400 font-extrabold">${h.length}</b></div>
+      <div class="row"><span class="text-cyan-300 font-black text-sm">Total Earnings</span><b class="text-emerald-300 font-black text-base">${kes(e)}</b></div>
+      <div class="row"><span class="text-cyan-300 font-black text-sm">Completed Surveys</span><b class="text-cyan-200 font-black text-base">${h.length}</b></div>
     </div>
   `;
 }
@@ -693,20 +685,20 @@ function histV() {
   return `
     <h1 class="text-xl font-black text-purple-300 mb-2">Activity History</h1>
     <div class="flex gap-2 mb-3">
-      <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${hist === 's' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'}" onclick="hist='s';draw()">Surveys</button>
-      <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${hist === 'w' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'}" onclick="hist='w';draw()">Withdrawals</button>
+      <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${hist === 's' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black' : 'bg-slate-800 text-purple-300 font-black'}" onclick="hist='s';draw()">Surveys</button>
+      <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${hist === 'w' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black' : 'bg-slate-800 text-purple-300 font-black'}" onclick="hist='w';draw()">Withdrawals</button>
     </div>
     ${L.length ? L.map(x => hist === 's' ? `
       <div class="card row">
-        <div><b>Market Research Survey</b><br><span class="mu text-xs">${new Date(x.t).toLocaleString()}</span></div>
-        <b class="text-emerald-400">+${kes(x.amount)}</b>
+        <div><b class="text-cyan-300 font-black">Market Research Survey</b><br><span class="text-amber-300 text-xs font-bold">${new Date(x.t).toLocaleString()}</span></div>
+        <b class="text-emerald-300 font-black">+${kes(x.amount)}</b>
       </div>
     ` : `
       <div class="card row">
-        <div><b>${x.dest}</b><br><span class="mu text-xs">${new Date(x.t).toLocaleString()} · ${x.status}</span></div>
-        <b class="text-rose-400">-${kes(x.amount)}</b>
+        <div><b class="text-amber-300 font-black">${x.dest}</b><br><span class="text-purple-300 text-xs font-bold">${new Date(x.t).toLocaleString()} · ${x.status}</span></div>
+        <b class="text-rose-300 font-black">-${kes(x.amount)}</b>
       </div>
-    `).join("") : `<p class="mu text-center py-6">No history recorded yet.</p>`}
+    `).join("") : `<p class="text-cyan-300 font-black text-center py-6">No history recorded yet.</p>`}
   `;
 }
 
@@ -716,27 +708,27 @@ function wdV() {
     <div class="card text-center py-6 border-emerald-500">
       <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500 text-slate-950 font-black text-3xl flex items-center justify-center mb-3">✓</div>
       <h2 class="text-xl font-black text-emerald-300 mb-2">Withdrawal Submitted</h2>
-      <p class="mu text-xs mb-4">${wdOK}</p>
+      <p class="text-emerald-200 font-black text-xs mb-4">${wdOK}</p>
       <button class="btn-action text-xs" onclick="hist='w';nav('history')">View History</button>
     </div>
   `;
   return `
     <h1 class="text-xl font-black text-rose-300 mb-2">Withdraw Funds</h1>
     <div class="card card-glow-emerald">
-      <div class="row"><span class="mu">Available Balance</span><b class="text-emerald-400 font-extrabold text-lg">${kes(u.balance)}</b></div>
-      <span class="mu text-xs">Minimum Withdrawal: ${kes(S.cfg.minWithdraw)}</span>
+      <div class="row"><span class="text-emerald-300 font-black">Available Balance</span><b class="text-emerald-300 font-black text-lg">${kes(u.balance)}</b></div>
+      <span class="text-amber-300 font-black text-xs">Minimum Withdrawal: ${kes(S.cfg.minWithdraw)}</span>
     </div>
     <div class="card space-y-3">
       <div class="flex gap-2 mb-2">
-        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${wm === 'mpesa' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}" onclick="wm='mpesa';err='';draw()">M-Pesa</button>
-        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${wm === 'bank' ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'}" onclick="wm='bank';err='';draw()">Bank</button>
+        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${wm === 'mpesa' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black' : 'bg-slate-800 text-emerald-300 font-black'}" onclick="wm='mpesa';err='';draw()">M-Pesa</button>
+        <button class="flex-1 py-2 text-xs font-black uppercase rounded-xl ${wm === 'bank' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-black' : 'bg-slate-800 text-cyan-300 font-black'}" onclick="wm='bank';err='';draw()">Bank</button>
       </div>
-      ${wm === 'mpesa' ? `<p class="text-xs font-bold text-emerald-300">Payout destination: <b>+${u.phone}</b></p>` : `
-        <div><label class="block text-xs font-bold text-cyan-400 uppercase mb-1">Bank</label><select id="bk" class="input-field"><option value="">Select bank</option>${BANKS.map(b => `<option>${b}</option>`).join("")}</select></div>
-        <div><label class="block text-xs font-bold text-cyan-400 uppercase mb-1">Account Number</label><input id="ac" inputmode="numeric" class="input-field"></div>
-        <div><label class="block text-xs font-bold text-cyan-400 uppercase mb-1">Account Name</label><input id="an" class="input-field"></div>
+      ${wm === 'mpesa' ? `<p class="text-xs font-black text-emerald-300">Payout destination: <b class="text-emerald-200">+${u.phone}</b></p>` : `
+        <div><label class="block text-xs font-black text-cyan-300 uppercase mb-1">Bank</label><select id="bk" class="input-field" style="color:#38bdf8"><option value="">Select bank</option>${BANKS.map(b => `<option>${b}</option>`).join("")}</select></div>
+        <div><label class="block text-xs font-black text-cyan-300 uppercase mb-1">Account Number</label><input id="ac" inputmode="numeric" class="input-field" style="color:#38bdf8"></div>
+        <div><label class="block text-xs font-black text-cyan-300 uppercase mb-1">Account Name</label><input id="an" class="input-field" style="color:#38bdf8"></div>
       `}
-      <div><label class="block text-xs font-bold text-amber-400 uppercase mb-1">Amount (KES)</label><input id="am" type="number" inputmode="numeric" class="input-field"></div>
+      <div><label class="block text-xs font-black text-amber-300 uppercase mb-1">Amount (KES)</label><input id="am" type="number" inputmode="numeric" class="input-field" style="color:#fbbf24"></div>
       ${err ? `<div class="err">${err}</div>` : ""}
       <button class="btn-action" onclick="withdraw()">CONFIRM WITHDRAWAL</button>
     </div>
@@ -763,7 +755,6 @@ async function withdraw() {
       S.user = resMe.user;
     } catch (e) {
       setTk(null);
-      S.user = null;
     }
   }
   load();
