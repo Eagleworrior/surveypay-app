@@ -1,24 +1,27 @@
-# Implementation Plan - Professional Boxed Bottom Nav & Zero-White-Text Neon Styling
+# Implementation Plan - Final Neon Color Fixes & 3-Survey Activation Rule Confirmation
 
-Upgrade `index.html` (and sync to Android assets):
-1. **Professional Boxed Bottom Navigation**: Style each bottom navigation tab (Earn, Me, Balance, History, Withdraw) inside a sleek, professional neon-bordered card/box container with distinct glowing active states and icons.
-2. **Zero White Text (100% Vibrant Neon)**: Set global text color to neon cyan (`#38bdf8`), ensuring every heading, label, paragraph, button, survey question, and answer choice is explicitly colored with rich neon gradients (Cyan, Emerald, Amber, Gold, Purple, Pink).
+Confirm the 3-free-surveys activation rule and anti-repeat restriction, and permanently fix the remaining white text on:
+1. **Sign Up & Log In Headers / Buttons** in `authV()`.
+2. **M-Pesa & Bank Tabs** in `wdV()`.
+3. **Surveys & Withdrawals Sub-Tabs** in `histV()`.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Boxed Bottom Navigation**: Each tab at the bottom is styled as a professional glowing card/box rather than plain text.
-> - **Zero White Text**: All text across the app is explicitly colored in vibrant neon tones.
+> - **Zero White Text Remaining**: All auth headers, withdrawal M-Pesa/Bank tabs, and history sub-tabs are now explicitly colored in neon tones.
+> - **Rules Confirmed**: 3 free surveys max before mandatory 200 KES account activation, with strict anti-repeat protection (no taking the same survey twice).
 
 ## Proposed Changes
 
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Update `.nav` and `.nav button` CSS styles to render each navigation tab as a professional glowing box/container with distinct neon borders and icon accents.
-- Update global body text color to `#38bdf8` and ensure all templates use explicit neon typography classes (`text-cyan-300`, `text-emerald-300`, `text-amber-300`, `text-purple-300`, `balance-gold`).
+- Update `authV()` header/button text colors to vibrant neon cyan/emerald.
+- Update `wdV()` M-Pesa and Bank tab text colors to vibrant neon emerald/cyan.
+- Update `histV()` Surveys and Withdrawals sub-tab text colors to vibrant neon purple/indigo.
+- Confirm and test 3 free surveys rule and anti-repeat check in `simulateApiLocally()`.
 - Sync `index.html` to `app/src/main/assets/index.html`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Test app in WebView / browser to confirm professional boxed bottom navigation tabs and 100% vibrant neon colored text.
+- Test auth screen, withdrawal tabs, and history sub-tabs in WebView / browser to confirm zero white text remaining.
