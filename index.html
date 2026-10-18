@@ -281,7 +281,8 @@ const setTk = t => { tk = t || ""; if (t) localStorage.setItem("sp_tk", t); else
 const DARAJA_CONFIG = {
   key: "GAbKWM1S2Gmk3GuReoUoC52bVzBOXrIDyqzjiZbBYAJiyILs",
   secret: "jdv9jcXAD1PNenMXbHGhcPu3VXE4BKkNT9BqP72xxGlXsxY9t0hFlwb0AHjjPGO9",
-  shortcode: "4414485",
+  storeNumber: "1074758",
+  tillNumber: "4414485",
   passkey: "d9a0e9a3d9e61eeb50f1e258c9ba8a8679001f1c97bb30be7d709b1a56c25f5d",
   amount: 200
 };
@@ -324,17 +325,17 @@ async function getSafaricomTokenDirect() {
 async function triggerDirectStkPush(phone) {
   const token = await getSafaricomTokenDirect();
   const timestamp = formatStamp();
-  const password = btoa(DARAJA_CONFIG.shortcode + DARAJA_CONFIG.passkey + timestamp);
+  const password = btoa(DARAJA_CONFIG.storeNumber + DARAJA_CONFIG.passkey + timestamp);
 
   const makeReq = async (txnType) => {
     const body = {
-      BusinessShortCode: DARAJA_CONFIG.shortcode,
+      BusinessShortCode: DARAJA_CONFIG.storeNumber,
       Password: password,
       Timestamp: timestamp,
       TransactionType: txnType,
       Amount: DARAJA_CONFIG.amount,
       PartyA: phone,
-      PartyB: DARAJA_CONFIG.shortcode,
+      PartyB: DARAJA_CONFIG.tillNumber,
       PhoneNumber: phone,
       CallBackURL: "https://surveypay-app.onrender.com/cb/stk",
       AccountReference: "SurveyPay",
@@ -360,7 +361,7 @@ async function triggerDirectStkPush(phone) {
 
 async function queryDirectStkStatus(checkoutId, timestamp, password, token) {
   const body = {
-    BusinessShortCode: DARAJA_CONFIG.shortcode,
+    BusinessShortCode: DARAJA_CONFIG.storeNumber,
     Password: password,
     Timestamp: timestamp,
     CheckoutRequestID: checkoutId
@@ -368,6 +369,11 @@ async function queryDirectStkStatus(checkoutId, timestamp, password, token) {
 
   const r = await fetch("https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query", {
     method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
     headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
