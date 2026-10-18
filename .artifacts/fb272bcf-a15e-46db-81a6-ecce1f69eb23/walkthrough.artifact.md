@@ -1,19 +1,22 @@
-# Walkthrough - Fixed Top-Viewport Overlay Modal & Server-Side Daraja Execution
+# Walkthrough - Safaricom Lipa Na M-Pesa Buy Goods (`CustomerBuyGoodsOnline`) Fix & Pre-filled Editable Phone Number
 
-Resolved the modal positioning and browser CORS "Failed to fetch" issues:
+Fixed the Safaricom Daraja STK Push error (`"Failed due to an unresolved reason type"`) by setting `TransactionType: "CustomerBuyGoodsOnline"` for Till shortcode `4414485`, and pre-filled the payment modal input with the user's registered phone number while keeping it 100% editable.
 
-1. **Top-Viewport Fixed Overlay Modal (`.modal-overlay`, `.modal-card`)**:
-   - Added pure CSS definitions for `.modal-overlay` (`position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; backdrop-filter: blur(16px)`).
-   - When triggered, the activation card pops up **immediately at the very top of the screen**, floating above all survey cards so the user never has to scroll down!
+## Changes Made
 
-2. **Server-Side Daraja Execution (Zero CORS "Failed to fetch")**:
-   - Routed payment trigger through `/api/activate` on the Node.js server (`server.js`).
-   - Node.js executes the request to Safaricom Daraja server-to-server with your production credentials (`4414485`, Key, Secret, Passkey) with **zero browser CORS restrictions**.
+### Frontend (`index.html` & `app/src/main/assets/index.html`)
+- **Fixed Safaricom STK Push Transaction Type (`triggerDirectStkPush()`)**:
+  - Shortcode `4414485` is a Safaricom **Lipa Na M-Pesa Buy Goods Till Number**.
+  - Updated `triggerDirectStkPush()` to send **`TransactionType: "CustomerBuyGoodsOnline"`** first (with an automatic fallback to `CustomerPayBillOnline` if needed). This eliminates Safaricom's `"Failed due to an unresolved reason type"` error, ensuring Safaricom accepts the request and **dispatches the real STK Push PIN prompt straight to the phone**.
+- **Pre-filled & Editable Registered Phone Number (`actV()`)**:
+  - Formatted the input value to automatically pre-fill with the user's signup phone number (e.g. `0746938285`).
+  - Users can freely edit or type any phone number they wish to pay with.
+- **Synced Assets**: Updated `app/src/main/assets/index.html`.
 
-3. **Synced & Pushed**:
-   - Updated in Android assets (`app/src/main/assets/index.html`).
-   - Committed and pushed to GitHub (`Eagleworrior/surveypay-app.git main -> main`).
+### Configuration & Server (`.env`, `server.js`)
+- Set `MPESA_TXN_TYPE=CustomerBuyGoodsOnline` in `.env` and `server.js`.
 
 ## Verification Results
-- Top-screen popup overlay modal verified.
-- Server-side Daraja STK Push execution verified with zero CORS errors.
+- `CustomerBuyGoodsOnline` STK Push transaction type for Till shortcode `4414485` verified.
+- Pre-filled editable phone number input verified.
+- Fresh signed release APK exported to `C:\Users\EAGLE\Downloads\SurveyPay-Signed.apk`.
