@@ -429,6 +429,7 @@ function simulateApiLocally(p, body) {
     const amt = Math.floor(+amount);
     const u = users.find(x => x.email === currentUserEmail) || users[0];
     if (!u) throw new Error("Not logged in");
+    if (!amt || amt < 500) throw new Error("Minimum withdrawal amount is KES 500.");
     if (amt > u.balance) throw new Error("Amount is more than your available balance.");
     u.balance -= amt;
     localStorage.setItem("sp_local_users", JSON.stringify(users));
@@ -905,7 +906,11 @@ function wdV() {
 }
 
 async function withdraw() {
-  const b = { method: wm, amount: $("am").value };
+  const val = $("am").value;
+  const amt = Math.floor(+val);
+  if (!val || isNaN(amt) || amt < 500) { err = "Minimum withdrawal amount is KES 500."; return draw(); }
+  if (amt > S.user.balance) { err = "Withdrawal amount cannot exceed your available balance."; return draw(); }
+  const b = { method: wm, amount: amt };
   if (wm === "bank") {
     b.bank = $("bk").value; b.account = $("ac").value; b.accountName = $("an").value;
     if (!b.bank || !b.account || !b.accountName) { err = "Select a bank and enter account number and name."; return draw(); }
