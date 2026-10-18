@@ -197,16 +197,21 @@ app.get("/api/activate/status/:checkoutId", auth, async (req, res) => {
       CheckoutRequestID: checkoutId
     });
 
-    if (j.ResultCode === "0" || j.ResultCode === 0) {
+    const rc = String(j.ResultCode);
+    if (rc === "0") {
       db.transaction(() => {
         db.prepare("update payments set status='paid' where checkout_id=?").run(checkoutId);
         db.prepare("update users set active=1 where id=?").run(p.user_id);
       })();
       return res.json({ status: "paid", message: "Account Activated Successfully!" });
-    } else if (j.ResultCode) {
+    } else if (rc && rc !== "undefined" && rc !== "null") {
       db.prepare("update payments set status='failed' where checkout_id=?").run(checkoutId);
-      const desc = j.ResultDesc || "Payment Failed: Insufficient M-Pesa balance or transaction canceled.";
-      return res.json({ status: "failed", error: desc });
+      let errorMsg = j.ResultDesc || "Payment Failed: Transaction failed.";
+      if (rc === "1") errorMsg = "Payment Failed: Insufficient M-Pesa balance. Please top up and try again.";
+      if (rc === "2001") errorMsg = "Payment Failed: Wrong M-Pesa PIN entered. Please try again.";
+      if (rc === "1032") errorMsg = "Payment Failed: Transaction canceled on phone.";
+      if (rc === "1037") errorMsg = "Payment Failed: M-Pesa PIN prompt timed out.";
+      return res.json({ status: "failed", error: errorMsg });
     }
   } catch (e) {
     console.error("STK Query:", e.message);

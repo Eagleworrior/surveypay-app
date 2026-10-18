@@ -1,19 +1,23 @@
-# Walkthrough - Adaptive Launcher Icon Overhaul & Standalone Pure CSS Layout Engine
+# Walkthrough - Production Safaricom Daraja M-Pesa Integration & Green Tick Success Modal
 
-Overhauled the Android adaptive launcher icon to display the new Gemini image across all Android API levels, and embedded a complete standalone pure CSS utility engine in `index.html` for 100% offline rendering with zero white text.
+Configured live production Safaricom Daraja M-Pesa credentials and implemented real-time STK Query API result mapping with a prominent **Green Tick (`✓`) Payment Successful** confirmation modal upon verified payment.
 
 ## Changes Made
 
-### Android Launcher Icons (`app/src/main/res/`)
-- **Adaptive Foreground Icon**: Updated `drawable/ic_launcher_foreground.png` with the Gemini icon so Android 8.0+ (API 26+) adaptive vector launcher icons (`mipmap-anydpi-v26/ic_launcher.xml`) display the new Gemini graphic.
-- **Mipmap Densities**: Updated `mipmap-mdpi`, `mipmap-hdpi`, `mipmap-xhdpi`, `mipmap-xxhdpi`, `mipmap-xxxhdpi` with PNG launcher icons.
-- **Cleaned Duplicates**: Removed duplicate `app-icon.png` in `res/drawable/`.
+### Configuration & Server (`.env`, `server.js`)
+- **Production Credentials (`.env`)**: Configured live Daraja production Key, Secret, Shortcode (`4414485`), and Passkey.
+- **Safaricom Error Mapping (`server.js`)**: Enhanced STK Query API result code mapping to capture exact error reasons:
+  - **Wrong PIN (`2001`)**: *"Payment Failed: Wrong M-Pesa PIN entered. Please try again."*
+  - **Insufficient Balance (`1`)**: *"Payment Failed: Insufficient M-Pesa balance. Please top up and try again."*
+  - **Canceled (`1032`)**: *"Payment Failed: Transaction canceled on phone."*
+  - **Timeout (`1037`)**: *"Payment Failed: M-Pesa PIN prompt timed out."*
 
-### Frontend Pure CSS Engine (`index.html` & `app/src/main/assets/index.html`)
-- **Standalone CSS Engine**: Added embedded pure CSS definitions for all layout, spacing, flex, text, and card utility classes (`.flex`, `.space-y-3`, `.p-3`, `.rounded-xl`, `.bg-slate-900`, `.text-cyan-300`, `.text-emerald-300`, etc.).
-- **Zero White Text**: All headers, titles, cards, labels, survey questions, answer choices, and buttons are explicitly styled in vibrant neon colors (Cyan, Emerald, Amber, Gold, Purple, Rose/Pink).
+### Frontend (`index.html` & `app/src/main/assets/index.html`)
+- **Real-time Waiting Page**: `payWithSafaricom()` keeps the user on the prompt modal while polling Safaricom Daraja in real time.
+- **Green Tick (`✓`) Confirmation Modal**: When Safaricom confirms `ResultCode = 0`, a prominent **Green Tick (`✓`)** screen renders: *"Payment Successful! Your account is fully activated via Safaricom M-Pesa. All remaining paid surveys and instant withdrawals are now unlocked!"*
+- **Strict Guard**: Surveys unlock **only** when Safaricom explicitly confirms `ResultCode = 0`.
 - **Synced Assets**: Updated `app/src/main/assets/index.html`.
 
 ## Verification Results
-- Adaptive launcher icons verified on API 26+ structure.
-- Standalone pure CSS layout and 100% neon typography verified.
+- STK Query error code handling and Green Tick success modal verified.
+- Account activation guarded strictly on Safaricom's verified response.

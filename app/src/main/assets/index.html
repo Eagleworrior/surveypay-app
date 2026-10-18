@@ -737,7 +737,7 @@ function actV() {
 
 async function payWithSafaricom() {
   const m = $("am");
-  m.innerHTML = `<span class="text-amber-300 font-black animate-pulse">⏳ Sending M-Pesa STK Push to your phone (+254...). Please enter your PIN when prompted. Do not leave this page!</span>`;
+  m.innerHTML = `<span class="text-amber-300 font-black animate-pulse">⏳ Sending M-Pesa STK Push to your phone (+254...). Please check your phone for the M-Pesa PIN prompt. Do not leave this page!</span>`;
   try {
     const r = await api("/activate", { phone: $("ap").value });
     const cid = r.checkoutId;
@@ -750,9 +750,17 @@ async function payWithSafaricom() {
         const st = await api(`/activate/status/${cid}`);
         if (st.status === "paid") {
           S.user = (await api("/me")).user;
-          modal = null;
-          alert("Account Activated Successfully via Safaricom M-Pesa!");
-          return load();
+          modal = `
+            <div class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+              <div class="card card-glow-emerald w-full max-w-sm text-center py-6">
+                <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500 text-slate-950 font-black text-4xl flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/50">✓</div>
+                <h2 class="text-2xl font-black text-emerald-300 mb-2">Payment Successful!</h2>
+                <p class="text-emerald-100 font-bold text-xs mb-4">Your account is fully activated via Safaricom M-Pesa. All remaining paid surveys and instant withdrawals are now unlocked!</p>
+                <button class="btn-action text-xs" onclick="modal=null;load()">START EARNING NOW</button>
+              </div>
+            </div>
+          `;
+          return draw();
         }
         if (st.status === "failed") {
           m.innerHTML = `<span class="text-rose-400 font-black">❌ ${st.error || "Payment Failed: Insufficient balance or incorrect M-Pesa PIN."}</span>`;
@@ -760,9 +768,9 @@ async function payWithSafaricom() {
         }
       } catch (e) {}
     }
-    m.innerHTML = `<span class="text-rose-400 font-black">❌ Payment timed out. Please ensure you entered your M-Pesa PIN correctly.</span>`;
+    m.innerHTML = `<span class="text-rose-400 font-black">❌ Payment timed out. Please ensure you entered your M-Pesa PIN correctly on your phone.</span>`;
   } catch (e) {
-    if ($("am")) $("am.innerHTML") = `<span class="text-rose-400 font-black">❌ ${e.message}</span>`;
+    if ($("am")) $("am").innerHTML = `<span class="text-rose-400 font-black">❌ ${e.message}</span>`;
   }
 }
 
