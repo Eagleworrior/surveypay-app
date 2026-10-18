@@ -501,6 +501,14 @@ function draw() {
   ];
 
   $("nav").innerHTML = '<div class="nav">' + t.map(x => `<button class="${page === x[0] ? "on" : ""}" onclick="nav('${x[0]}')">${x[1]}</button>`).join("") + '</div>';
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  load();
+});
+setTimeout(() => {
+  if (!$("app").innerHTML.trim()) load();
+}, 100);
 </script>
 </body>
 </html>

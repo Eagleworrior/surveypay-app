@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             webView = new WebView(this);
+            webView.setBackgroundColor(0xFF070913);
             setContentView(webView);
 
             WebSettings settings = webView.getSettings();
