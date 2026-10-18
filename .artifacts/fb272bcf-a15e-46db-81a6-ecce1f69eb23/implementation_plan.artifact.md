@@ -1,32 +1,28 @@
-# Implementation Plan - Top-Positioned Activation Modal & Real-Time Safaricom STK Push Fix
+# Implementation Plan - Fixed Top Popup Modal & Server-Side Daraja CORS Fix
 
-Fix the M-Pesa STK Push payment flow and reposition the activation modal to the top of the screen:
-1. **Explanation of Why STK Push Was Not Received**:
-   - Standalone Android WebViews (`file:///android_asset/index.html`) run locally on the phone. Safaricom Daraja STK Push requires a live, publicly accessible backend server (`https://your-backend.com` running `server.js` with your production Daraja keys) so Safaricom's servers can dispatch the STK Push prompt to the user's M-Pesa phone number.
-   - Previously, local fallback simulation returned `status: "paid"` automatically, giving a false success. We will **disable automatic simulated payment success** so the app strictly demands a real STK Push response.
-2. **Top-Positioned Activation Modal**:
-   - Reposition the activation card/modal (`actV()`) to the **top center of the screen** (`fixed top-4 inset-x-0 z-[300]`) so the M-Pesa phone input and Pay button are instantly visible without scrolling.
-3. **Live Backend Base URL Configuration**:
-   - Add a configurable `API_BASE` variable in `index.html` so the app can connect directly to your live production backend server when deployed.
+Fix the "Safaricom Error: Failed to fetch" browser CORS restriction and convert the activation payment card into a fixed top-screen popup modal:
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Top-Positioned Payment Modal**: The activation payment card will appear right at the top of the screen where users can see it immediately.
-> - **No Fake Local Success**: Disables local simulated payment success so accounts are activated ONLY when Safaricom Daraja confirms real M-Pesa payment (`ResultCode = 0`).
-> - **Live Server Requirement**: Real M-Pesa STK Push prompts require your backend `server.js` to be hosted on a live public URL (e.g. Render / Railway / VPS with SSL) so Safaricom can send M-Pesa prompts to phones.
+> - **Why "Failed to fetch" Happened in Browser/WebView**: Web browsers and Android WebViews block client-side JavaScript from calling `https://api.safaricom.co.ke` directly due to CORS (Cross-Origin Resource Sharing) security policies.
+> - **The Official Server-Side Solution**: The app calls `/api/activate` on your Node.js backend (`server.js`), which executes the Safaricom Daraja STK Push server-to-server with your production credentials (`4414485`, Key, Secret, Passkey) with zero CORS restrictions!
+> - **Top Fixed Popup Modal**: `actV()` will be converted into a fixed top-viewport overlay popup (`fixed inset-0 z-[500] flex items-start justify-center pt-6 bg-slate-950/90 backdrop-blur-md`). When triggered, it immediately covers the top of the screen over any survey list without needing any scrolling!
 
 ## Proposed Changes
 
+### Server (`server.js`)
+#### [MODIFY] [server.js](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/server.js)
+- Ensure Node.js server executes `/api/activate` and `/api/activate/status/:checkoutId` via Daraja production API with server-side fetch (zero CORS issues).
+
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Reposition `actV()` activation modal container to `top-4` (top of screen).
-- Disable automatic `status: "paid"` in `simulateApiLocally()` for activation endpoints; demand real STK Query confirmation.
-- Add `API_BASE_URL` configuration for connecting to live backend server.
+- Route activation requests via `/api/activate` and `/api/activate/status/:checkoutId`.
+- Update `actV()` modal styling to `fixed inset-0 z-[500] flex items-start justify-center pt-6 bg-slate-950/90 backdrop-blur-md` so it immediately pops up at the very top of the screen.
 - Sync `index.html` to `app/src/main/assets/index.html`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Test activation modal positioning in WebView / browser to confirm top placement.
-- Verify that activation requires verified Safaricom payment and does not auto-activate.
+- Test triggering activation modal in WebView/browser to verify it pops up immediately at the top of the viewport.
+- Test M-Pesa STK Push API flow to confirm server-side Daraja execution with zero CORS errors.
