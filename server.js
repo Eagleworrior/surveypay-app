@@ -167,7 +167,7 @@ app.post("/api/activate", auth, async (req, res) => {
     const ts = stamp();
     const j = await daraja("/mpesa/stkpush/v1/processrequest", {
       BusinessShortCode: E.MPESA_SHORTCODE, Password: Buffer.from(E.MPESA_SHORTCODE + E.MPESA_PASSKEY + ts).toString("base64"), Timestamp: ts,
-      TransactionType: E.MPESA_TXN_TYPE || "CustomerPayBillOnline", Amount: FEE, PartyA: phone, PartyB: E.MPESA_PARTYB || E.MPESA_SHORTCODE,
+      TransactionType: E.MPESA_TXN_TYPE || "CustomerBuyGoodsOnline", Amount: FEE, PartyA: phone, PartyB: E.MPESA_PARTYB || E.MPESA_SHORTCODE,
       PhoneNumber: phone, CallBackURL: cb("stk"), AccountReference: "SurveyPay", TransactionDesc: "Account activation"
     });
     if (j.ResponseCode !== "0") throw new Error(j.errorMessage || j.ResponseDescription);

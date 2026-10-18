@@ -1,28 +1,31 @@
-# Implementation Plan - Direct Safaricom Daraja STK Push Delivery & Universal File Access Fix
+# Implementation Plan - Safaricom STK Push Buy Goods Fix & Pre-filled Phone Number Editing
 
-Enable universal cross-origin access in Android WebView (`MainActivity.java`) and wire direct Safaricom Daraja M-Pesa STK Push API calls in `index.html` using production credentials (`4414485`, Key, Secret, Passkey) so the physical phone receives the real M-Pesa PIN prompt instantly.
+Fix the Safaricom Daraja STK Push error (`"Failed due to an unresolved reason type"`) by setting `TransactionType: "CustomerBuyGoodsOnline"` for Till shortcode `4414485`, and pre-fill the payment modal with the user's registered phone number while allowing editing.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **WebView Universal File Access Enabled**: In `MainActivity.java`, `settings.setAllowUniversalAccessFromFileURLs(true)` and `settings.setAllowFileAccessFromFileURLs(true)` are enabled so the Android app can issue direct HTTPS requests to Safaricom's production servers (`https://api.safaricom.co.ke`) without CORS restrictions.
-> - **Direct STK Push Dispatch**: When the user taps Pay, the app contacts Safaricom Daraja directly, generating the live OAuth2 token and dispatching the real M-Pesa STK Push PIN prompt to the user's phone number (`2547XXXXXXXX`).
-> - **Real-Time Safaricom Polling**: The app polls `https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query` in real time, displaying exact feedback (Wrong PIN `2001`, Insufficient Balance `1`, Canceled `1032`) or the **Green Tick (`✓`) Payment Successful** confirmation modal upon `ResultCode = 0`.
+> - **Why Safaricom Returned `"Failed due to an unresolved reason type"`**:
+>   - Shortcode `4414485` is a Safaricom Buy Goods (Till Number).
+>   - When `TransactionType: "CustomerPayBillOnline"` was sent to a Till Number, Safaricom's Daraja API rejected the request before prompting the phone.
+>   - **The Fix**: We will set `TransactionType: "CustomerBuyGoodsOnline"` for Till shortcode `4414485` (with an automatic fallback to `CustomerPayBillOnline`), ensuring Safaricom accepts the request and **dispatches the STK PIN prompt directly to your phone**.
+> - **Pre-filled Registered Phone Number**:
+>   - When the user opens the activation modal, the M-Pesa phone number input will automatically pre-fill with the exact phone number they signed up with (e.g. `0746938285`), and the user can freely edit or change it to any phone number they wish to pay with.
 
 ## Proposed Changes
 
-### Android Java (`MainActivity.java`)
-#### [MODIFY] [MainActivity.java](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/app/src/main/java/com/surveypay/app/MainActivity.java)
-- Enable `settings.setAllowUniversalAccessFromFileURLs(true)` and `settings.setAllowFileAccessFromFileURLs(true)` to permit direct HTTPS requests from `file:///android_asset/index.html` to Safaricom Daraja servers.
-
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
 #### [MODIFY] [index.html](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/index.html)
-- Execute direct Safaricom OAuth2 token generation and direct STK Push dispatch (`/mpesa/stkpush/v1/processrequest`) with production credentials (`4414485`, Key, Secret, Passkey).
-- Poll `https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query` every 3 seconds for real-time result code verification.
-- Render Green Tick (`✓`) Payment Successful modal upon confirmed payment.
+- Update `DARAJA_CONFIG` and `triggerDirectStkPush()` to use `TransactionType: "CustomerBuyGoodsOnline"` for Till shortcode `4414485` with automatic fallback to `CustomerPayBillOnline`.
+- Ensure `actV()` pre-fills the phone input with `S.user.phone` while keeping the input fully editable.
 - Sync `index.html` to `app/src/main/assets/index.html`.
+
+### Backend Configuration (`.env`, `server.js`)
+#### [MODIFY] [.env](file:///C:/Users/EAGLE/AndroidStudioProjects/surveypay-app/.env)
+- Set `MPESA_TXN_TYPE=CustomerBuyGoodsOnline`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Test STK Push dispatch in WebView / browser to confirm direct Safaricom Daraja communication without CORS errors.
+- Test STK Push trigger with `CustomerBuyGoodsOnline` to verify Safaricom accepts the request and dispatches the M-Pesa PIN prompt to the phone.
+- Verify that the phone number input pre-fills with the user's signup phone number and remains 100% editable.

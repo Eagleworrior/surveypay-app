@@ -326,26 +326,34 @@ async function triggerDirectStkPush(phone) {
   const timestamp = formatStamp();
   const password = btoa(DARAJA_CONFIG.shortcode + DARAJA_CONFIG.passkey + timestamp);
 
-  const body = {
-    BusinessShortCode: DARAJA_CONFIG.shortcode,
-    Password: password,
-    Timestamp: timestamp,
-    TransactionType: "CustomerPayBillOnline",
-    Amount: DARAJA_CONFIG.amount,
-    PartyA: phone,
-    PartyB: DARAJA_CONFIG.shortcode,
-    PhoneNumber: phone,
-    CallBackURL: "https://surveypay-app.onrender.com/cb/stk",
-    AccountReference: "SurveyPay",
-    TransactionDesc: "Account Activation"
+  const makeReq = async (txnType) => {
+    const body = {
+      BusinessShortCode: DARAJA_CONFIG.shortcode,
+      Password: password,
+      Timestamp: timestamp,
+      TransactionType: txnType,
+      Amount: DARAJA_CONFIG.amount,
+      PartyA: phone,
+      PartyB: DARAJA_CONFIG.shortcode,
+      PhoneNumber: phone,
+      CallBackURL: "https://surveypay-app.onrender.com/cb/stk",
+      AccountReference: "SurveyPay",
+      TransactionDesc: "Account Activation"
+    };
+
+    const r = await fetch("https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    return r.json();
   };
 
-  const r = await fetch("https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest", {
-    method: "POST",
-    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  const j = await r.json();
+  let j = await makeReq("CustomerBuyGoodsOnline");
+  if (j.ResponseCode !== "0") {
+    console.warn("BuyGoods STK failed, trying PayBill fallback...", j);
+    j = await makeReq("CustomerPayBillOnline");
+  }
   if (j.ResponseCode !== "0") throw new Error(j.errorMessage || j.ResponseDescription || "STK Push failed.");
   return { checkoutId: j.CheckoutRequestID, timestamp, password, token };
 }
@@ -815,6 +823,7 @@ async function nextQ() {
 
 /* FIXED TOP-SCREEN OVERLAY POPUP MODAL */
 function actV() {
+  const defaultPhone = S.user && S.user.phone ? (S.user.phone.startsWith("254") ? "0" + S.user.phone.slice(3) : S.user.phone) : "0746938285";
   return `
     <div class="modal-overlay">
       <div class="modal-card text-center">
@@ -825,7 +834,7 @@ function actV() {
           You completed your 3 free trial surveys! Enter your M-Pesa number below to send an STK Push PIN prompt to your phone and unlock all surveys & withdrawals.
         </p>
         <label class="block text-xs font-black text-amber-300 uppercase text-left mb-1">M-Pesa Registered Number</label>
-        <input id="ap" class="input-field input-phone mb-2" value="${S.user && S.user.phone ? '0' + S.user.phone.slice(3) : '0712345678'}">
+        <input id="ap" class="input-field input-phone mb-2" value="${defaultPhone}">
         <div id="am" class="text-cyan-300 font-bold text-xs mb-3">Click below to send M-Pesa STK Push PIN prompt to your phone.</div>
         <button class="btn-action" onclick="payWithSafaricomDirect()">PAY ${kes(S.cfg.activationFee)} WITH SAFARICOM M-PESA</button>
         <button class="btn-action btn-secondary text-xs mt-2" onclick="modal=null;draw()">Cancel</button>
