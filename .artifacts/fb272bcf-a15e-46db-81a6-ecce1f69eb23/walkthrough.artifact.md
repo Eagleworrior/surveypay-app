@@ -1,23 +1,23 @@
-# Walkthrough - Production Safaricom Daraja M-Pesa Integration & Green Tick Success Modal
+# Walkthrough - Direct Safaricom Daraja Production Integration, Top-Positioned Modal & Green Tick Confirmation
 
-Configured live production Safaricom Daraja M-Pesa credentials and implemented real-time STK Query API result mapping with a prominent **Green Tick (`✓`) Payment Successful** confirmation modal upon verified payment.
+Implemented direct Safaricom Daraja STK Push & Query API calls inside the app using live production credentials (`4414485`, Key, Secret, Passkey), positioned the payment modal at the top of the screen, and added a prominent **Green Tick (`✓`) Payment Successful** confirmation modal.
 
 ## Changes Made
 
-### Configuration & Server (`.env`, `server.js`)
-- **Production Credentials (`.env`)**: Configured live Daraja production Key, Secret, Shortcode (`4414485`), and Passkey.
-- **Safaricom Error Mapping (`server.js`)**: Enhanced STK Query API result code mapping to capture exact error reasons:
-  - **Wrong PIN (`2001`)**: *"Payment Failed: Wrong M-Pesa PIN entered. Please try again."*
-  - **Insufficient Balance (`1`)**: *"Payment Failed: Insufficient M-Pesa balance. Please top up and try again."*
-  - **Canceled (`1032`)**: *"Payment Failed: Transaction canceled on phone."*
-  - **Timeout (`1037`)**: *"Payment Failed: M-Pesa PIN prompt timed out."*
-
 ### Frontend (`index.html` & `app/src/main/assets/index.html`)
-- **Real-time Waiting Page**: `payWithSafaricom()` keeps the user on the prompt modal while polling Safaricom Daraja in real time.
-- **Green Tick (`✓`) Confirmation Modal**: When Safaricom confirms `ResultCode = 0`, a prominent **Green Tick (`✓`)** screen renders: *"Payment Successful! Your account is fully activated via Safaricom M-Pesa. All remaining paid surveys and instant withdrawals are now unlocked!"*
-- **Strict Guard**: Surveys unlock **only** when Safaricom explicitly confirms `ResultCode = 0`.
+- **Top-Positioned Payment Modal (`actV()`)**: Repositioned activation modal container to `top-2 inset-x-2 z-[300]` at the very top of the screen so the M-Pesa phone number input and Pay button are instantly visible without scrolling.
+- **Direct Safaricom Daraja API Integration**:
+  - **OAuth2 Token Generation**: Authenticates with Safaricom Daraja production servers (`https://api.safaricom.co.ke/oauth/v1/generate`).
+  - **Direct STK Push Request (`payWithSafaricomDirect()`)**: Calls `/mpesa/stkpush/v1/processrequest` with shortcode `4414485`, passkey, timestamp, and 200 KES fee to trigger the M-Pesa PIN prompt directly on the user's phone.
+  - **Real-Time STK Query Polling (`queryDirectStkStatus()`)**: Polls `/mpesa/stkpushquery/v1/query` every 3 seconds for real-time Safaricom result codes.
+- **Real-Time Safaricom Error Feedback**:
+  - **Wrong PIN (`2001`)**: *"❌ Payment Failed: Wrong M-Pesa PIN entered on phone."*
+  - **Insufficient Balance (`1`)**: *"❌ Payment Failed: Insufficient M-Pesa balance."*
+  - **Canceled (`1032`)**: *"❌ Payment Failed: Transaction was canceled on your phone."*
+- **Green Tick (`✓`) Confirmation Modal**: Displays a prominent **Green Tick (`✓`)** screen when Safaricom confirms `ResultCode = 0`, unlocking remaining surveys and withdrawals.
 - **Synced Assets**: Updated `app/src/main/assets/index.html`.
 
 ## Verification Results
-- STK Query error code handling and Green Tick success modal verified.
-- Account activation guarded strictly on Safaricom's verified response.
+- Top positioning of payment modal verified.
+- Direct Safaricom Daraja STK Push and STK Query API integration verified.
+- Green Tick success modal display verified.
