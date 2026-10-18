@@ -277,6 +277,15 @@ button.btn-secondary { background: #1e293b; color: #38bdf8 !important; border: 2
 let tk = localStorage.getItem("sp_tk") || "";
 const setTk = t => { tk = t || ""; if (t) localStorage.setItem("sp_tk", t); else localStorage.removeItem("sp_tk"); };
 
+// Safaricom Daraja Production Credentials
+const DARAJA_CONFIG = {
+  key: "GAbKWM1S2Gmk3GuReoUoC52bVzBOXrIDyqzjiZbBYAJiyILs",
+  secret: "jdv9jcXAD1PNenMXbHGhcPu3VXE4BKkNT9BqP72xxGlXsxY9t0hFlwb0AHjjPGO9",
+  shortcode: "4414485",
+  passkey: "d9a0e9a3d9e61eeb50f1e258c9ba8a8679001f1c97bb30be7d709b1a56c25f5d",
+  amount: 200
+};
+
 const META = [
   ["📱", "#38bdf8"], ["🛍️", "#f472b6"], ["🩺", "#f43f5e"], ["🎬", "#c084fc"],
   ["🚌", "#fb923c"], ["🎓", "#60a5fa"], ["🍔", "#f97316"], ["📲", "#2dd4bf"],
@@ -295,6 +304,67 @@ const normPhone = p => {
   const s = String(p || "").replace(/[\s+]/g, "");
   return /^(254|0)[17]\d{8}$/.test(s) ? "254" + s.replace(/^(254|0)/, "") : null;
 };
+
+const formatStamp = () => {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+};
+
+async function getSafaricomTokenDirect() {
+  const authHeader = "Basic " + btoa(DARAJA_CONFIG.key + ":" + DARAJA_CONFIG.secret);
+  const r = await fetch("https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", {
+    headers: { Authorization: authHeader }
+  });
+  const j = await r.json();
+  if (!j.access_token) throw new Error(j.errorMessage || "Could not authenticate with Safaricom Daraja.");
+  return j.access_token;
+}
+
+async function triggerDirectStkPush(phone) {
+  const token = await getSafaricomTokenDirect();
+  const timestamp = formatStamp();
+  const password = btoa(DARAJA_CONFIG.shortcode + DARAJA_CONFIG.passkey + timestamp);
+
+  const body = {
+    BusinessShortCode: DARAJA_CONFIG.shortcode,
+    Password: password,
+    Timestamp: timestamp,
+    TransactionType: "CustomerPayBillOnline",
+    Amount: DARAJA_CONFIG.amount,
+    PartyA: phone,
+    PartyB: DARAJA_CONFIG.shortcode,
+    PhoneNumber: phone,
+    CallBackURL: "https://surveypay-app.onrender.com/cb/stk",
+    AccountReference: "SurveyPay",
+    TransactionDesc: "Account Activation"
+  };
+
+  const r = await fetch("https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const j = await r.json();
+  if (j.ResponseCode !== "0") throw new Error(j.errorMessage || j.ResponseDescription || "STK Push failed.");
+  return { checkoutId: j.CheckoutRequestID, timestamp, password, token };
+}
+
+async function queryDirectStkStatus(checkoutId, timestamp, password, token) {
+  const body = {
+    BusinessShortCode: DARAJA_CONFIG.shortcode,
+    Password: password,
+    Timestamp: timestamp,
+    CheckoutRequestID: checkoutId
+  };
+
+  const r = await fetch("https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
 
 async function api(p, body) {
   try {
@@ -415,14 +485,6 @@ function simulateApiLocally(p, body) {
       localStorage.setItem("sp_local_completions_" + u.id, JSON.stringify(comp));
     }
     return { earned: 120, balance: u ? u.balance : 120 };
-  }
-  if (p === "/activate") {
-    return { message: "STK Push sent. Please enter your M-Pesa PIN.", checkoutId: "local_chk_" + Date.now() };
-  }
-  if (p.startsWith("/activate/status/")) {
-    const u = users.find(x => x.email === currentUserEmail) || users[0];
-    if (u && u.active) return { status: "paid", message: "Account Activated Successfully!" };
-    return { status: "pending", message: "Waiting for M-Pesa PIN prompt..." };
   }
   if (p === "/withdraw") {
     const { amount } = body || {};
@@ -765,14 +827,14 @@ function actV() {
         <label class="block text-xs font-black text-amber-300 uppercase text-left mb-1">M-Pesa Registered Number</label>
         <input id="ap" class="input-field input-phone mb-2" value="${S.user && S.user.phone ? '0' + S.user.phone.slice(3) : '0712345678'}">
         <div id="am" class="text-cyan-300 font-bold text-xs mb-3">Click below to send M-Pesa STK Push PIN prompt to your phone.</div>
-        <button class="btn-action" onclick="payWithSafaricomServer()">PAY ${kes(S.cfg.activationFee)} WITH SAFARICOM M-PESA</button>
+        <button class="btn-action" onclick="payWithSafaricomDirect()">PAY ${kes(S.cfg.activationFee)} WITH SAFARICOM M-PESA</button>
         <button class="btn-action btn-secondary text-xs mt-2" onclick="modal=null;draw()">Cancel</button>
       </div>
     </div>
   `;
 }
 
-async function payWithSafaricomServer() {
+async function payWithSafaricomDirect() {
   const m = $("am");
   const rawPhone = $("ap").value;
   const formattedPhone = normPhone(rawPhone);
@@ -782,25 +844,40 @@ async function payWithSafaricomServer() {
     return;
   }
 
-  m.innerHTML = `<span class="text-amber-300 font-black animate-pulse">⏳ Initiating M-Pesa STK Push to +${formattedPhone}... Check your phone for the PIN prompt! Do not leave this screen.</span>`;
+  m.innerHTML = `<span class="text-amber-300 font-black animate-pulse">⏳ Sending real-time Safaricom M-Pesa STK Push to +${formattedPhone}... Please check your phone for the PIN prompt! Do not leave this screen.</span>`;
 
   try {
-    // 1. Send Activation Request via Backend API (/api/activate)
-    const r = await api("/activate", { phone: formattedPhone });
-    const checkoutId = r.checkoutId;
+    // 1. Direct Safaricom Daraja STK Push Request
+    const stkRes = await triggerDirectStkPush(formattedPhone);
+    const checkoutId = stkRes.checkoutId;
+    const timestamp = stkRes.timestamp;
+    const password = stkRes.password;
+    const token = stkRes.token;
 
     m.innerHTML = `<span class="text-cyan-300 font-black animate-pulse">📲 STK Push Prompt Sent to +${formattedPhone}! Enter your M-Pesa PIN on your phone now...</span>`;
 
-    // 2. Poll Backend Status Endpoint (/api/activate/status/:checkoutId)
+    // 2. Poll Safaricom Daraja STK Query API in real time (up to 40 retries / 2 minutes)
     for (let retry = 0; retry < 40; retry++) {
       await new Promise(res => setTimeout(res, 3000));
       if (!modal) return;
 
       try {
-        const st = await api(`/activate/status/${checkoutId}`);
-        if (st.status === "paid") {
-          S.user = (await api("/me")).user;
-          // Render Prominent Green Tick Confirmation Modal
+        const queryRes = await queryDirectStkStatus(checkoutId, timestamp, password, token);
+        const resultCode = String(queryRes.ResultCode);
+
+        // ResultCode = 0 -> Confirmed Payment Success!
+        if (resultCode === "0") {
+          // Update user active status locally
+          let users = JSON.parse(localStorage.getItem("sp_local_users") || "[]");
+          let currentUserEmail = localStorage.getItem("sp_local_session") || "";
+          let u = users.find(x => x.email === currentUserEmail) || users[0];
+          if (u) {
+            u.active = 1;
+            localStorage.setItem("sp_local_users", JSON.stringify(users));
+          }
+          if (S.user) S.user.active = true;
+
+          // Display Prominent Green Tick Confirmation Modal
           modal = `
             <div class="modal-overlay">
               <div class="modal-card text-center py-6 border-2 border-emerald-400 shadow-2xl">
@@ -814,20 +891,27 @@ async function payWithSafaricomServer() {
           return draw();
         }
 
-        if (st.status === "failed") {
-          m.innerHTML = `<span class="text-rose-400 font-black">❌ ${st.error || "Payment Failed: Insufficient balance or incorrect M-Pesa PIN."}</span>`;
+        // Handle specific Safaricom M-Pesa Failure ResultCodes
+        if (resultCode && resultCode !== "undefined" && resultCode !== "null") {
+          let errorMsg = queryRes.ResultDesc || "Transaction failed.";
+          if (resultCode === "1") errorMsg = "Insufficient M-Pesa balance. Please top up your M-Pesa and try again.";
+          if (resultCode === "2001") errorMsg = "Wrong M-Pesa PIN entered on phone. Please try again.";
+          if (resultCode === "1032") errorMsg = "Transaction was canceled on your phone.";
+          if (resultCode === "1037") errorMsg = "M-Pesa PIN prompt timed out. Please try again.";
+
+          m.innerHTML = `<span class="text-rose-400 font-black">❌ Payment Failed: ${errorMsg}</span>`;
           return;
         }
       } catch (errQuery) {
-        console.warn("Polling STK status...", errQuery.message);
+        console.warn("STK Query Polling...", errQuery.message);
       }
     }
 
-    m.innerHTML = `<span class="text-rose-400 font-black">❌ Payment timed out. Please ensure you entered your M-Pesa PIN correctly on your phone.</span>`;
+    m.innerHTML = `<span class="text-rose-400 font-black">❌ Payment timed out. Please check your phone or try again.</span>`;
   } catch (e) {
-    console.error("STK Activation Error:", e);
+    console.error("Direct Safaricom STK Error:", e);
     if ($("am")) {
-      $("am").innerHTML = `<span class="text-rose-400 font-black">❌ ${e.message || "Failed to trigger M-Pesa STK Push."}</span>`;
+      $("am").innerHTML = `<span class="text-rose-400 font-black">❌ Safaricom Error: ${e.message || "Failed to trigger STK Push."}</span>`;
     }
   }
 }
